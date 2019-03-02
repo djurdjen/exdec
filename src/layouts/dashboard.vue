@@ -1,12 +1,14 @@
 <template>
   <div class="home" v-if="showRoutes">
-    <div class="home__nav">
+    <div @click="menuActive = true" class="home__header">Menu</div>
+    <div :class="['home__nav', { active: menuActive }]">
       <router-link :to="{ name: 'Entries' }">Entries</router-link>
       <router-link :to="{ name: 'Calculate' }">Berekenen</router-link>
       <router-link :to="{ name: 'Settings' }">Settings</router-link>
       <a href="#" @click.prevent="logout">Logout</a>
+      <div class="home__underlay" @click="menuActive = false"></div>
     </div>
-    <router-view />
+    <router-view class="home__view" />
   </div>
 </template>
 
@@ -18,8 +20,16 @@ export default {
   name: "home",
   data() {
     return {
-      showRoutes: false
+      showRoutes: false,
+      menuActive: false
     };
+  },
+  watch: {
+    $route: {
+      handler() {
+        this.menuActive = false;
+      }
+    }
   },
   async mounted() {
     try {
@@ -27,8 +37,8 @@ export default {
       await this.getSettings();
       this.showRoutes = true;
     } catch (err) {
-      console.log(err);
       this.$router.push({ name: "Login" });
+      Promise.reject(err);
     }
   },
   methods: {
@@ -43,13 +53,46 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/util.scss";
+
 .home {
+  &__underlay {
+    position: fixed;
+    left: 280px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  &__header {
+    height: 42px;
+    padding: 12px;
+    position: fixed;
+    background-color: white;
+    width: 100%;
+    z-index: 5;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  }
   &__nav {
-    display: flex;
+    display: none;
+    position: fixed;
+    flex-direction: column;
+    background-color: white;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 280px;
+    z-index: 10;
+    padding-top: 30px;
+
+    &.active {
+      display: flex;
+    }
     a {
       display: block;
       text-decoration: none;
-      padding: 10px 20px;
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
       color: inherit;
       &:visited {
         color: inherit;
@@ -58,6 +101,9 @@ export default {
         font-weight: bold;
       }
     }
+  }
+  &__view {
+    padding-top: 42px;
   }
 }
 </style>

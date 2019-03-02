@@ -10,12 +10,13 @@
       <input
         v-if="fieldData.transport === 'car'"
         type="text"
+        pattern="\d*"
         v-model="fieldData.kilometres"
         placeholder="Kilometers"
       />
       <input
         v-else
-        type="text"
+        type="number"
         v-model="fieldData.ticketPrice"
         placeholder="Prijs kaartje"
       />
@@ -25,20 +26,19 @@
         placeholder="Beschrijving"
       />
       <input v-model="fieldData.date" placeholder="Datum" type="date" />
-      <button>Send</button>
-      <span
-        v-if="entries.failed.send"
-        v-for="(error, key) in entries.failed.send"
-        class="create__error"
-        :key="key"
-        >{{ error }}</span
-      >
+      <div class="create__send-container">
+        <button>Voeg toe</button>
+        <span v-if="entries.failed.send" class="create__error">{{
+          entries.failed.send[0]
+        }}</span>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
+import { pushToast } from "../services/toaster.js";
 import Vue from "vue";
 
 export default {
@@ -87,6 +87,7 @@ export default {
         transport: this.fieldData.transport,
         [this.valueLabel]: this.fieldData[this.valueLabel].replace(",", ".")
       });
+      pushToast("success", "Reisdata succesvol opgeslagen");
       this.resetData();
     }
   }
@@ -113,8 +114,12 @@ export default {
     }
 
     button {
-      width: 100px;
       margin-top: 12px;
+    }
+  }
+  &__send-container {
+    button {
+      margin-right: 12px;
     }
   }
   &__error {

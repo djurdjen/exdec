@@ -1,19 +1,4 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans");
-@font-face {
-  font-family: Relative;
-  src: url("./assets/fonts/relative-book.woff2");
-  font-weight: lighter;
-}
-@font-face {
-  font-family: Relative;
-  src: url("./assets/fonts/relative-medium.woff2");
-  font-weight: normal;
-}
-@font-face {
-  font-family: Relative;
-  src: url("./assets/fonts/relative-bold.woff2");
-  font-weight: bold;
-}
 
 @import "./variables.scss";
 
@@ -55,6 +40,9 @@ span {
 
 form {
   width: 100%;
+}
+input[type="date"] {
+  -webkit-appearance: none;
 }
 input:not([type="radio"]):not([type="checkbox"]),
 textarea,

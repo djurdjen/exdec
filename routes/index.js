@@ -64,7 +64,7 @@ router.get("/verify", ensureAuthorized, (req, res, next) => {
 // ensureAuthorized middleware hijacks response status if token is invalid
 router.get("/entries", ensureAuthorized, (req, res, next) => {
   entry
-    .getEntries()
+    .getEntries(req)
     .then(data => {
       res.json(data);
     })

@@ -16,8 +16,14 @@ const User = connection.define(
     password: Sequelize.TEXT,
     settings: {
       type: Sequelize.TEXT,
-      validateSettings(val) {
-        return val;
+      validate: {
+        validateSettings(val) {
+          const settings = JSON.parse(val);
+          if (!("compensation" in settings)) {
+            return Promise.reject("Een of meerdere velden mist");
+          }
+          return true;
+        }
       }
     }
   },

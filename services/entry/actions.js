@@ -21,9 +21,13 @@ const actions = {
       return Promise.reject(err.errors);
     }
   },
-  async getEntries() {
+  async getEntries(req) {
     try {
-      return await Entry.findAll();
+      return await Entry.findAll({
+        where: {
+          userId: req.decoded.id
+        }
+      });
     } catch (err) {
       return Promise.reject(err.errors[0].message);
     }
