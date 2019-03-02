@@ -1,0 +1,11 @@
+$blue: #280096;
+$green: #e5f5e2;
+$red: #8b0000;
+$grey-light: #f8f8f8;
+$grey-border: #d0d0d0;
+
+@mixin truncate() {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

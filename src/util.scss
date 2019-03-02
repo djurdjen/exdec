@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+@font-face {
+  font-family: Relative;
+  src: url("./assets/fonts/relative-book.woff2");
+  font-weight: lighter;
+}
+@font-face {
+  font-family: Relative;
+  src: url("./assets/fonts/relative-medium.woff2");
+  font-weight: normal;
+}
+@font-face {
+  font-family: Relative;
+  src: url("./assets/fonts/relative-bold.woff2");
+  font-weight: bold;
+}
+
+@import "./variables.scss";
+
+body {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: "Relative", "Open Sans", sans-serif;
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    box-sizing: inherit;
+    margin: 0;
+    padding: 0;
+
+    &:before,
+    &:after {
+      box-sizing: inherit;
+    }
+  }
+}
+
+h1,
+h2,
+h3 {
+  padding-bottom: 0.7em;
+}
+
+span {
+  font-size: 14px;
+}
+
+.input {
+  &__label-b {
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    display: block;
+  }
+}
+
+form {
+  width: 100%;
+}
+input:not([type="radio"]):not([type="checkbox"]),
+textarea,
+select {
+  font-family: "Relative", "Open Sans", sans-serif;
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+  padding: 0px 14px;
+  margin-bottom: 8px;
+  background-color: white;
+  border: 1px solid $grey-border;
+  outline: none;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+
+  &:active {
+    outline: 0;
+  }
+}
+
+textarea {
+  height: auto;
+  padding: 12px 14px;
+}
+
+button {
+  display: inline-block;
+  width: auto;
+  padding: 6px 12px;
+  border: 2px solid $blue;
+  color: $blue;
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  border-radius: 4px;
+}
