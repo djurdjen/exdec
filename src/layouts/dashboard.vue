@@ -1,8 +1,10 @@
 <template>
   <div class="home" v-if="showRoutes">
-    <div @click="menuActive = true" class="home__header">Menu</div>
+    <div @click="menuActive = true" class="home__header">
+      <strong>Menu</strong>
+    </div>
     <div :class="['home__nav', { active: menuActive }]">
-      <router-link :to="{ name: 'Entries' }">Entries</router-link>
+      <router-link :to="{ name: 'Entries' }">Reizen</router-link>
       <router-link :to="{ name: 'Calculate' }">Berekenen</router-link>
       <router-link :to="{ name: 'Settings' }">Settings</router-link>
       <a href="#" @click.prevent="logout">Logout</a>

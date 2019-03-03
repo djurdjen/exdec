@@ -81,3 +81,17 @@ button {
   letter-spacing: -0.5px;
   border-radius: 4px;
 }
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: 200ms all ease-in-out;
+}
+
+.fade-enter-active {
+  transition-delay: 0.2s;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}

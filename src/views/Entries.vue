@@ -23,7 +23,7 @@
           ><br />
           <span><strong>Beschrijving: </strong>{{ entry.description }}</span
           ><br />
-          <span><strong>Datum: </strong>{{ entry.date }}</span
+          <span><strong>Datum: </strong>{{ entry.date | formatTime }}</span
           ><br />
           <a
             href="#"
@@ -34,19 +34,29 @@
         </div>
       </div>
     </div>
-    <div class="entries__to-top" v-scroll-to="'#app'"></div>
+    <transition name="fade">
+      <div
+        class="entries__to-top"
+        v-scroll-to="'#app'"
+        v-if="scrollTop > 100"
+      ></div>
+    </transition>
   </div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
 import CreateEntry from "../components/CreateEntry.vue";
+import date from "date-and-time";
+import "date-and-time/locale/nl";
+
 export default {
   name: "Entries",
   components: { CreateEntry },
   data() {
     return {
-      showCreator: true
+      showCreator: true,
+      scrollTop: document.documentElement.scrollTop
     };
   },
   computed: {
@@ -54,8 +64,17 @@ export default {
       entries: state => state.entries.data.reverse()
     })
   },
+  filters: {
+    formatTime(val) {
+      date.locale("nl");
+      return date.format(new Date(val), "dddd D MMMM YYYY"); // => 'Lunedì 11 gennaio'
+    }
+  },
   async mounted() {
     await this.getEntries();
+    window.addEventListener("scroll", () => {
+      this.scrollTop = document.documentElement.scrollTop;
+    });
   },
   methods: {
     ...mapActions(["getEntries", "removeEntry"])

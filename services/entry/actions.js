@@ -23,11 +23,12 @@ const actions = {
   },
   async getEntries(req) {
     try {
-      return await Entry.findAll({
+      const entries = await Entry.findAll({
         where: {
           userId: req.decoded.id
         }
       });
+      return entries;
     } catch (err) {
       return Promise.reject(err.errors[0].message);
     }

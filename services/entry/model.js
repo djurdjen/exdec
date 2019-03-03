@@ -59,7 +59,7 @@ const Entry = connection.define(
   },
   { tableName: "entries" }
 );
-// TODO: we set the relation but we set the right id later on in the process
+
 Entry.belongsTo(User.model);
 
 module.exports = {
