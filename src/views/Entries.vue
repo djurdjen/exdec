@@ -75,7 +75,7 @@ export default {
   async mounted() {
     await this.getEntries();
     window.addEventListener("scroll", () => {
-      this.scrollTop = document.documentElement.scrollTop;
+      this.scrollTop = window.pageYOffset;
     });
   },
   methods: {
