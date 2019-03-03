@@ -1,15 +1,19 @@
 <template>
   <div class="home" v-if="showRoutes">
-    <div @click="menuActive = true" class="home__header">
-      <strong>Menu</strong>
+    <div @click="menuActive = !menuActive" class="home__header">
+      <strong :class="{ cross: menuActive }">{{
+        !menuActive ? "Menu" : "×"
+      }}</strong>
     </div>
-    <div :class="['home__nav', { active: menuActive }]">
-      <router-link :to="{ name: 'Entries' }">Reizen</router-link>
-      <router-link :to="{ name: 'Calculate' }">Berekenen</router-link>
-      <router-link :to="{ name: 'Settings' }">Settings</router-link>
-      <a href="#" @click.prevent="logout">Logout</a>
-      <div class="home__underlay" @click="menuActive = false"></div>
-    </div>
+    <transition name="fade">
+      <div v-if="menuActive" :class="['home__nav']">
+        <router-link :to="{ name: 'Entries' }">Reizen</router-link>
+        <router-link :to="{ name: 'Calculate' }">Berekenen</router-link>
+        <router-link :to="{ name: 'Settings' }">Settings</router-link>
+        <a href="#" @click.prevent="logout">Logout</a>
+        <div class="home__underlay" @click="menuActive = false"></div>
+      </div>
+    </transition>
     <router-view class="home__view" />
   </div>
 </template>
@@ -72,11 +76,19 @@ export default {
     position: fixed;
     background-color: white;
     width: 100%;
-    z-index: 5;
+    z-index: 15;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+
+    .cross {
+      font-size: 27px;
+      line-height: 1em;
+      margin-top: -4px;
+      padding-left: 6px;
+      display: block;
+    }
   }
   &__nav {
-    display: none;
+    display: flex;
     position: fixed;
     flex-direction: column;
     background-color: white;
@@ -86,10 +98,8 @@ export default {
     width: 280px;
     z-index: 10;
     padding-top: 30px;
+    margin-top: 42px;
 
-    &.active {
-      display: flex;
-    }
     a {
       display: block;
       text-decoration: none;

@@ -1,6 +1,6 @@
 <template>
   <div class="create">
-    <form class="create__form" @submit.prevent="send">
+    <form class="create__form" @submit.prevent="send" novalidate>
       <select v-model="fieldData.transport">
         <option selected value="car">Auto</option>
         <option value="train">Trein</option>

@@ -4,7 +4,9 @@
       :class="['entries__header', { 'entries__header--shadow': !showCreator }]"
     >
       <h1>Reizen</h1>
-      <button @click.prevent="showCreator = !showCreator">Toggle</button>
+      <button @click.prevent="showCreator = !showCreator">
+        {{ showCreator ? "Verberg" : "Toevoegen" }}
+      </button>
     </div>
     <div
       :class="['entries__create', { 'entries__create--hidden': !showCreator }]"
@@ -153,6 +155,9 @@ export default {
 
       &.car {
         background-image: url("../assets/icons/car.svg");
+      }
+      &.bus {
+        background-image: url("../assets/icons/bus.svg");
       }
     }
   }
