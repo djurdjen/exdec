@@ -3,9 +3,9 @@ const model = require("./model");
 const Entry = model.model;
 const connection = model.connection;
 const actions = {
-  async createEntryTable({ force }) {
+  async createEntryTable({ force, alter }) {
     try {
-      await connection.sync({ force });
+      await connection.sync({ force, alter });
     } catch (err) {
       return Promise.reject(err);
     }

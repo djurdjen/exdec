@@ -16,7 +16,10 @@ const args =
   }) || [];
 
 Promise.all([
-  seedEntries.createEntryTable({ force: args.includes("fresh") }),
+  seedEntries.createEntryTable({
+    force: args.includes("fresh"),
+    alter: args.includes("alter")
+  }),
   seedUsers.createUserTable({ force: args.includes("fresh") })
 ])
   .then(() => {
@@ -42,6 +45,6 @@ Promise.all([
     });
   })
   .catch(err => {
-    console.log(`\x1b[31m${err.original.sqlMessage}\x1b[0m`);
+    console.log(`\x1b[31m${err}\x1b[0m`);
     process.exit();
   });

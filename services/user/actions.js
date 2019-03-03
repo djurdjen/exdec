@@ -44,9 +44,9 @@ const actions = {
       return Promise.reject(err.errors);
     }
   },
-  async createUserTable({ force }) {
+  async createUserTable({ force, alter }) {
     try {
-      await connection.sync({ force });
+      await connection.sync({ force, alter });
     } catch (err) {
       return Promise.reject(err.errors);
     }
