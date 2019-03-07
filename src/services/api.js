@@ -10,5 +10,12 @@ const api = axios.create({
   timeout: 5000,
   withCredentials: true
 });
+api.interceptors.response.use(
+  resp => resp.data,
+
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 export default api;

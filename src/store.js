@@ -34,7 +34,7 @@ export default new Vuex.Store({
     },
     FETCHED_ENTRIES(state, entries) {
       Vue.delete(state.loading, "entries");
-      Vue.set(state.entries, "data", entries.data);
+      Vue.set(state.entries, "data", entries);
     },
     SEND_ARTICLE(state) {
       Vue.delete(state.entries.failed, "send");
@@ -62,9 +62,9 @@ export default new Vuex.Store({
     async login({ commit }, auth) {
       const resp = await api.post("login", auth);
       Object.assign(api.defaults, {
-        headers: { "x-auth-token": resp.data.token }
+        headers: { "x-auth-token": resp.token }
       });
-      localStorage.setItem("token", resp.data.token);
+      localStorage.setItem("token", resp.token);
     },
     // the verify token function is for retrieving the user data that fits the token
     async verifyToken({ state, commit }) {
@@ -74,8 +74,8 @@ export default new Vuex.Store({
           headers: { "x-auth-token": localStorage.getItem("token") }
         });
       }
-      const tokenData = await api.get("verify?_=" + new Date().getTime()); // prevent cache
-      commit("SET_USER_DATA", tokenData.data);
+      const tokenData = await api.get("verify?=" + new Date().getTime()); // prevent cache
+      commit("SET_USER_DATA", tokenData);
     },
     async logoutUser() {
       localStorage.removeItem("token");
@@ -110,8 +110,8 @@ export default new Vuex.Store({
     async getSettings({ commit }) {
       commit("FETCHING_SETTINGS");
       const resp = await api.get("settings");
-      console.log(resp.data.settings);
-      commit("FETCHING_SETTINGS_SUCCESS", JSON.parse(resp.data.settings));
+      console.log(resp.settings);
+      commit("FETCHING_SETTINGS_SUCCESS", JSON.parse(resp.settings));
     },
 
     async editSettings({ commit, dispatch }, settings = {}) {

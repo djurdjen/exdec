@@ -69,7 +69,7 @@ export default {
   filters: {
     formatTime(val) {
       date.locale("nl");
-      return date.format(new Date(val), "dddd D MMMM YYYY"); // => 'Lunedì 11 gennaio'
+      return date.format(new Date(val), "dddd D MMMM YYYY");
     }
   },
   async mounted() {
@@ -145,8 +145,8 @@ export default {
     align-items: center;
 
     .icon {
-      width: 30px;
-      height: 30px;
+      min-width: 30px;
+      min-height: 30px;
       margin-right: 20px;
       background: {
         size: cover;

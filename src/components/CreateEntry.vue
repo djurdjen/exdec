@@ -25,7 +25,7 @@
         v-model="fieldData.description"
         placeholder="Beschrijving"
       />
-      <input v-model="fieldData.date" placeholder="Datum" type="date" />
+      <InputDate v-model="fieldData.date" />
       <div class="create__send-container">
         <button>Voeg toe</button>
         <span v-if="entries.failed.send" class="create__error">{{
@@ -39,10 +39,12 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { pushToast } from "../services/toaster.js";
+import InputDate from "../elements/InputDate.vue";
 import Vue from "vue";
 
 export default {
   name: "CreateEntry",
+  components: { InputDate },
   data() {
     return {
       fieldData: { ...this.dataModel() }
@@ -59,13 +61,6 @@ export default {
   },
   methods: {
     ...mapActions(["sendEntry"]),
-    createNewDate() {
-      const date = new Date();
-      const month = date.getMonth() + 1;
-      return `${date.getFullYear()}-${month < 10 ? "0" + month : month}-${
-        date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
-      }`;
-    },
     resetData() {
       for (const key of Object.keys(this.$data.fieldData)) {
         Vue.set(this.fieldData, key, this.dataModel()[key]);
@@ -77,7 +72,7 @@ export default {
         description: "",
         transport: "car",
         ticketPrice: "",
-        date: this.createNewDate()
+        date: this.$createNewDate()
       };
     },
     async send() {

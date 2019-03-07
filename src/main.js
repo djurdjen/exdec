@@ -4,6 +4,9 @@ import router from "./router";
 import store from "./store";
 import VueScrollTo from "vue-scrollto";
 
+import prototypes from "./services/prototypes";
+
+Vue.use(prototypes);
 Vue.use(VueScrollTo);
 
 Vue.config.productionTip = false;
