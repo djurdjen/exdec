@@ -21,6 +21,19 @@ const actions = {
       return Promise.reject(err.errors);
     }
   },
+  async editEntry(req) {
+    try {
+      const entry = await Entry.findOne({
+        where: {
+          id: req.body.id
+        },
+        limit: 1
+      });
+      await entry.update({ ...req.body });
+    } catch (err) {
+      return Promise.reject(err.errors);
+    }
+  },
   async getEntries(req) {
     try {
       const entries = await Entry.findAll({

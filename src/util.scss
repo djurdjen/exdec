@@ -38,6 +38,12 @@ span {
   }
 }
 
+label {
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+}
+
 form {
   width: 100%;
 }
@@ -52,7 +58,7 @@ select {
   height: 40px;
   border-radius: 4px;
   padding: 0px 14px;
-  margin-bottom: 8px;
+  margin: 8px 0;
   background-color: white;
   border: 1px solid $grey-border;
   outline: none;
@@ -73,13 +79,19 @@ button {
   display: inline-block;
   width: auto;
   padding: 6px 12px;
-  border: 2px solid $blue;
-  color: $blue;
+  border: 2px solid $primary;
+  color: $primary;
   font-size: 14px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.5px;
   border-radius: 4px;
+  background-color: white;
+
+  &.cta {
+    background-color: $primary;
+    color: white;
+  }
 }
 
 .fade-enter-active,

@@ -2,34 +2,41 @@
   <div class="create">
     <form class="create__form" @submit.prevent="send" novalidate>
       <select v-model="fieldData.transport">
-        <option selected value="car">Auto</option>
-        <option value="train">Trein</option>
-        <option value="tram">Tram</option>
-        <option value="bus">Bus</option>
+        <option
+          v-for="(option, key) in transportation"
+          :selected="key === 0"
+          :key="key"
+          :value="option.val"
+          >{{ option.name }}</option
+        >
       </select>
-      <input
+      <InputTextSelect
+        v-model="fieldData.description"
+        placeholder="Beschrijving"
+        :choices="presets"
+      />
+      <label class="create__field">
+        <input type="checkbox" v-model="saveAsPreset" />
+        Sla beschrijving op als preset
+      </label>
+      <InputText
         v-if="fieldData.transport === 'car'"
-        type="text"
         pattern="\d*"
         v-model="fieldData.kilometres"
         placeholder="Kilometers"
       />
-      <input
+      <InputText
         v-else
         type="number"
         v-model="fieldData.ticketPrice"
         placeholder="Prijs kaartje"
       />
-      <input
-        type="text"
-        v-model="fieldData.description"
-        placeholder="Beschrijving"
-      />
+
       <InputDate v-model="fieldData.date" />
       <div class="create__send-container">
-        <button>Voeg toe</button>
-        <span v-if="entries.failed.send" class="create__error">{{
-          entries.failed.send[0]
+        <button class="cta">Voeg toe</button>
+        <span v-if="failed.send" class="create__error">{{
+          failed.send[0]
         }}</span>
       </div>
     </form>
@@ -40,18 +47,26 @@
 import { mapActions, mapState } from "vuex";
 import { pushToast } from "../services/toaster.js";
 import InputDate from "../elements/InputDate.vue";
+import InputText from "../elements/InputText.vue";
+import InputTextSelect from "../elements/InputTextSelect.vue";
 import Vue from "vue";
+import { transportation } from "../services/presets.js";
 
 export default {
   name: "CreateEntry",
-  components: { InputDate },
+  components: { InputDate, InputText, InputTextSelect },
   data() {
     return {
-      fieldData: { ...this.dataModel() }
+      fieldData: { ...this.dataModel() },
+      saveAsPreset: false,
+      transportation
     };
   },
   computed: {
-    ...mapState(["entries"]),
+    ...mapState({
+      failed: state => state.entries.failed,
+      presets: state => state.settings.presets || []
+    }),
     valueLabel() {
       if (this.fieldData.transport === "car") {
         return "kilometres";
@@ -60,11 +75,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["sendEntry"]),
+    ...mapActions(["sendEntry", "addPreset"]),
     resetData() {
       for (const key of Object.keys(this.$data.fieldData)) {
         Vue.set(this.fieldData, key, this.dataModel()[key]);
       }
+      this.saveAsPreset = false;
     },
     dataModel() {
       return {
@@ -76,14 +92,21 @@ export default {
       };
     },
     async send() {
-      await this.sendEntry({
-        description: this.fieldData.description,
-        date: this.fieldData.date,
-        transport: this.fieldData.transport,
-        [this.valueLabel]: this.fieldData[this.valueLabel].replace(",", ".")
-      });
-      pushToast("success", "Reisdata succesvol opgeslagen");
-      this.resetData();
+      try {
+        await this.sendEntry({
+          description: this.fieldData.description,
+          date: this.fieldData.date,
+          transport: this.fieldData.transport,
+          [this.valueLabel]: this.fieldData[this.valueLabel].replace(",", ".")
+        });
+        if (this.saveAsPreset) {
+          await this.addPreset(this.fieldData.description);
+        }
+        pushToast("success", "Reisdata succesvol opgeslagen");
+        this.resetData();
+      } catch (err) {
+        pushToast("failed", "Er is iets mis gegaan met opslaan");
+      }
     }
   }
 };
@@ -111,6 +134,9 @@ export default {
     button {
       margin-top: 12px;
     }
+  }
+  &__field {
+    margin: 6px 0 12px;
   }
   &__send-container {
     button {

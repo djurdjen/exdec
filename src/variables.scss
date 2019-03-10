@@ -1,8 +1,9 @@
-$blue: #280096;
+$primary: #68a360;
 $green: #e5f5e2;
 $red: #8b0000;
 $grey-light: #f8f8f8;
 $grey-border: #d0d0d0;
+$grey-background: #e8e8e8;
 
 @mixin truncate() {
   white-space: nowrap;

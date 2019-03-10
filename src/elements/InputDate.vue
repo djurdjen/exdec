@@ -2,7 +2,7 @@
   <label>
     {{ label }}
     <input
-      :value="value"
+      :value="dateValue()"
       @input="$emit('input', $event.target.value)"
       placeholder="Datum"
       type="date"
@@ -15,6 +15,11 @@ export default {
   props: {
     value: { type: [Number, String], default: "" },
     label: { type: String, default: "" }
+  },
+  methods: {
+    dateValue() {
+      return this.$createNewDate({ existing: this.value });
+    }
   }
 };
 </script>

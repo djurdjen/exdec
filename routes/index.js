@@ -86,6 +86,18 @@ router.post("/entries", ensureAuthorized, (req, res, next) => {
     });
 });
 
+router.put("/entries/:id", ensureAuthorized, (req, res) => {
+  entry
+    .editEntry(req)
+    .then(data => {
+      res.json({ message: "success!", data: data });
+    })
+    .catch(err => {
+      res.status(400);
+      res.send({ error: err.map(msg => msg.message) });
+    });
+});
+
 router.delete("/entries/:id", ensureAuthorized, (req, res, next) => {
   entry
     .deleteEntry(req.params.id)

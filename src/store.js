@@ -55,6 +55,17 @@ export default new Vuex.Store({
     },
     DELETE_ARTICLE_FAILED(state, err) {
       state.error = err;
+    },
+    EDIT_ARTICLE(state) {
+      Vue.delete(state.entries.failed, "edit");
+      Vue.set(state.loading, "edit-article", true);
+    },
+    EDIT_ARTICLE_SUCCESS(state) {
+      Vue.delete(state.loading, "edit-article");
+    },
+    EDIT_ARTICLE_FAILED(state, msg) {
+      Vue.delete(state.loading, "edit-article");
+      Vue.set(state.entries.failed, "edit", msg);
     }
   },
   actions: {
@@ -96,6 +107,17 @@ export default new Vuex.Store({
         return Promise.reject("Error in saving article");
       }
     },
+    async editEntry({ commit, dispatch }, entry) {
+      commit("EDIT_ARTICLE", entry.id);
+      try {
+        await api.put(`entries/${entry.id}`, entry);
+        // await dispatch("getEntries");
+        commit("EDIT_ARTICLE_SUCCESS");
+      } catch (err) {
+        commit("EDIT_ARTICLE_FAILED", err.response.data.error);
+        return Promise.reject("Error in saving article");
+      }
+    },
     async removeEntry({ commit, dispatch }, id) {
       commit("DELETE_ARTICLE", id);
       try {
@@ -110,12 +132,29 @@ export default new Vuex.Store({
     async getSettings({ commit }) {
       commit("FETCHING_SETTINGS");
       const resp = await api.get("settings");
-      console.log(resp.settings);
       commit("FETCHING_SETTINGS_SUCCESS", JSON.parse(resp.settings));
     },
 
-    async editSettings({ commit, dispatch }, settings = {}) {
-      await api.put("settings", settings);
+    async addPreset({ commit, state, dispatch }, preset) {
+      if (!preset) {
+        return;
+      }
+      const settingObj = JSON.parse(JSON.stringify(state.settings));
+      if (!state.settings.presets) {
+        settingObj.presets = [];
+      }
+      settingObj.presets.push(preset);
+      dispatch("editSettings", settingObj);
+    },
+
+    async editSettings({ dispatch }, settings = {}) {
+      try {
+        await api.put("settings", settings);
+        await dispatch("getSettings");
+        Promise.resolve();
+      } catch (err) {
+        Promise.reject(err);
+      }
     }
   }
 });

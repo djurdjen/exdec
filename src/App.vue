@@ -17,7 +17,7 @@
   padding: 30px;
   a {
     font-weight: bold;
-    color: $blue;
+    color: $primary;
     &.router-link-exact-active {
       color: #42b983;
     }

@@ -5,7 +5,7 @@
 
 export default function(Vue) {
   Vue.prototype.$createNewDate = (settings = {}) => {
-    const date = new Date();
+    const date = settings.existing ? new Date(settings.existing) : new Date();
     if (settings.month) {
       date.setMonth(date.getMonth() + settings.month);
     }
