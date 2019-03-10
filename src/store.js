@@ -32,9 +32,13 @@ export default new Vuex.Store({
     FETCHING_ENTRIES(state) {
       Vue.set(state.loading, "entries", true);
     },
-    FETCHED_ENTRIES(state, entries) {
+    FETCHING_ENTRIES_SUCESS(state, entries) {
       Vue.delete(state.loading, "entries");
-      Vue.set(state.entries, "data", entries);
+      const settingsObj = {};
+      for (const entry of Object.values(entries)) {
+        settingsObj[entry.id] = entry;
+      }
+      Vue.set(state.entries, "data", settingsObj);
     },
     SEND_ARTICLE(state) {
       Vue.delete(state.entries.failed, "send");
@@ -50,22 +54,34 @@ export default new Vuex.Store({
     DELETE_ARTICLE(state, id) {
       state.deleting = id;
     },
-    DELETE_ARTICLE_SUCCESS(state) {
+    DELETE_ARTICLE_SUCCESS(state, id) {
+      Vue.delete(state.entries.data, id);
       state.deleting = null;
     },
     DELETE_ARTICLE_FAILED(state, err) {
       state.error = err;
     },
-    EDIT_ARTICLE(state) {
+    EDIT_ENTRY(state) {
       Vue.delete(state.entries.failed, "edit");
-      Vue.set(state.loading, "edit-article", true);
+      Vue.set(state.loading, "edit-entry", true);
     },
-    EDIT_ARTICLE_SUCCESS(state) {
-      Vue.delete(state.loading, "edit-article");
+    EDIT_ENTRY_SUCCESS(state, entry) {
+      Vue.set(state.entries.data, entry.id, entry);
+      Vue.delete(state.loading, "edit-entry");
     },
-    EDIT_ARTICLE_FAILED(state, msg) {
-      Vue.delete(state.loading, "edit-article");
+    EDIT_ENTRY_FAILED(state, msg) {
+      Vue.delete(state.loading, "edit-entry");
       Vue.set(state.entries.failed, "edit", msg);
+    },
+    EDIT_SETTINGS(state) {
+      Vue.set(state.loading, "edit-settings", true);
+    },
+    EDIT_SETTINGS_SUCCESS(state, settings) {
+      Vue.set(state, "settings", settings);
+      Vue.delete(state.loading, "edit-settings");
+    },
+    EDIT_SETTINGS_FAILED(state) {
+      Vue.delete(state.loading, "edit-settings");
     }
   },
   actions: {
@@ -94,7 +110,7 @@ export default new Vuex.Store({
     async getEntries({ commit }) {
       commit("FETCHING_ENTRIES");
       const entries = await api.get("entries");
-      commit("FETCHED_ENTRIES", entries);
+      commit("FETCHING_ENTRIES_SUCESS", entries);
     },
     async sendEntry({ commit, dispatch }, data) {
       commit("SEND_ARTICLE");
@@ -107,23 +123,21 @@ export default new Vuex.Store({
         return Promise.reject("Error in saving article");
       }
     },
-    async editEntry({ commit, dispatch }, entry) {
-      commit("EDIT_ARTICLE", entry.id);
+    async editEntry({ commit }, entry) {
+      commit("EDIT_ENTRY", entry.id);
       try {
         await api.put(`entries/${entry.id}`, entry);
-        // await dispatch("getEntries");
-        commit("EDIT_ARTICLE_SUCCESS");
+        commit("EDIT_ENTRY_SUCCESS", entry);
       } catch (err) {
-        commit("EDIT_ARTICLE_FAILED", err.response.data.error);
+        commit("EDIT_ENTRY_FAILED", err.response.data.error);
         return Promise.reject("Error in saving article");
       }
     },
-    async removeEntry({ commit, dispatch }, id) {
+    async removeEntry({ commit }, id) {
       commit("DELETE_ARTICLE", id);
       try {
         await api.delete(`entries/${id}`);
-        await dispatch("getEntries");
-        commit("DELETE_ARTICLE_SUCCESS");
+        commit("DELETE_ARTICLE_SUCCESS", id);
       } catch (err) {
         commit("DELETE_ARTICLE_FAILED", err.response.data.error);
         return Promise.reject("Error in deleting article");
@@ -135,24 +149,24 @@ export default new Vuex.Store({
       commit("FETCHING_SETTINGS_SUCCESS", JSON.parse(resp.settings));
     },
 
-    async addPreset({ commit, state, dispatch }, preset) {
+    async addPreset({ state, dispatch }, preset) {
       if (!preset) {
         return;
       }
       const settingObj = JSON.parse(JSON.stringify(state.settings));
-      if (!state.settings.presets) {
-        settingObj.presets = [];
-      }
+      settingObj.presets = settingObj.presets || [];
       settingObj.presets.push(preset);
       dispatch("editSettings", settingObj);
     },
 
-    async editSettings({ dispatch }, settings = {}) {
+    async editSettings({ commit }, settings = {}) {
+      commit("EDIT_SETTINGS");
       try {
         await api.put("settings", settings);
-        await dispatch("getSettings");
+        commit("EDIT_SETTINGS_SUCCESS", settings);
         Promise.resolve();
       } catch (err) {
+        commit("EDIT_SETTINGS_FAILED", settings);
         Promise.reject(err);
       }
     }

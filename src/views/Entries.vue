@@ -122,7 +122,10 @@ export default {
   },
   computed: {
     ...mapState({
-      entries: state => state.entries.data.reverse(),
+      entries: state =>
+        Object.keys(state.entries.data).length
+          ? Object.values(state.entries.data).reverse()
+          : {},
       error: state => state.entries.failed
     })
   },
@@ -150,6 +153,8 @@ export default {
     async editSingleEntry(data) {
       try {
         await this.editEntry(data);
+        this.entryDetail = null;
+        // create a pulse animation to see which entry you just edited
         pushToast("success", "Reisdata succesvol gewijzigd");
       } catch (err) {
         pushToast("failed", "Er is iets mis gegaan met opslaan");
@@ -160,7 +165,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/util.scss";
+@import "@/variables.scss";
 .entries {
   text-align: left;
   display: flex;

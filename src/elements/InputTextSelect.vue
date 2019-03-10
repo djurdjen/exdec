@@ -75,7 +75,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/util.scss";
+@import "@/variables.scss";
 .input-text-select {
   position: relative;
   &.choices-active {

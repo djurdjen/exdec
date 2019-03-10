@@ -1,5 +1,5 @@
 <template>
-  <div v-if="entries.length">
+  <div v-if="Object.keys(entries).length">
     <!-- {{ entries }} -->
     <InputDate v-model="beginDate" />
     <InputDate v-model="endDate" />
@@ -40,7 +40,7 @@ export default {
   methods: {
     ...mapActions(["getEntries"]),
     calculateTotals() {
-      const values = this.entries.filter(e => {
+      const values = Object.values(this.entries).filter(e => {
         const entryDate = new Date(e.date);
         return (
           entryDate <= new Date(this.endDate) &&

@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/util.scss";
+@import "@/variables.scss";
 
 .home {
   &__underlay {
