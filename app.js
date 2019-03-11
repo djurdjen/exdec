@@ -26,6 +26,11 @@ app.set("view options", { layout: false });
 // define api route
 app.use("/api", api);
 
+app.all("/tmp", function(req, res) {
+  res.status(403).send({
+    message: "Access Forbidden"
+  });
+});
 // Route wildcard for Vue application
 app.get("/*", function(req, res) {
   res.sendFile(path.join(__dirname, "dist") + "/index.html");

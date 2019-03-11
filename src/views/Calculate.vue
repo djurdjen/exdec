@@ -17,6 +17,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import InputDate from "../elements/InputDate.vue";
+import createXls from "../services/createXls.js";
 
 export default {
   name: "Calculate",
@@ -40,21 +41,27 @@ export default {
   methods: {
     ...mapActions(["getEntries"]),
     calculateTotals() {
-      const values = Object.values(this.entries).filter(e => {
+      let values = Object.values(this.entries).filter(e => {
         const entryDate = new Date(e.date);
         return (
           entryDate <= new Date(this.endDate) &&
           entryDate >= new Date(this.beginDate)
         );
       });
-      this.total = values
-        .map(v => {
-          return Number(
+      // add totals to value obj
+      values = values.map(v => {
+        return {
+          ...v,
+          total: Number(
             v.kilometres ? v.kilometres * this.compensation : v.ticketPrice
-          );
-        })
+          )
+        };
+      });
+      this.total = values
+        .map(v => v.total)
         .reduce((a, b) => a + b)
         .toFixed(2);
+      createXls(values);
     }
   }
 };

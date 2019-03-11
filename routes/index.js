@@ -1,12 +1,12 @@
-var express = require("express");
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const secret = require("../services/secrets");
 const auth = require("../services/auth");
-var entry = require("../services/entry/actions");
-var userActions = require("../services/user/actions");
-var ensureAuthorized = require("../services/ensureAuthorized");
+const entry = require("../services/entry/actions");
+const userActions = require("../services/user/actions");
+const ensureAuthorized = require("../services/ensureAuthorized");
 const jwt = require("jsonwebtoken");
 
 router.post("/register", (req, res, next) => {
@@ -109,5 +109,4 @@ router.delete("/entries/:id", ensureAuthorized, (req, res, next) => {
       res.send({ error: err.map(msg => msg.message) });
     });
 });
-
 module.exports = router;
