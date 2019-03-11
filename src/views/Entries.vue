@@ -14,7 +14,12 @@
       <CreateEntry />
     </div>
     <div class="entries__list">
-      <div class="entries__single" v-for="entry in entries" :key="entry.id">
+      <div
+        :class="['entries__single', { pulse: pulser === entry.id }]"
+        v-for="entry in entries"
+        :key="entry.id"
+        :id="'entry_' + entry.id"
+      >
         <div class="entries__single-meta" @click="toggleEntry(entry)">
           <div :class="['icon', entry.transport]" />
           <div>
@@ -26,14 +31,7 @@
             ><br />
             <span><strong>Beschrijving: </strong>{{ entry.description }}</span
             ><br />
-            <span><strong>Datum: </strong>{{ entry.date | formatTime }}</span
-            ><br />
-            <a
-              href="#"
-              class="entries__delete"
-              @click.prevent="removeEntry(entry.id)"
-              >Delete</a
-            >
+            <span><strong>Datum: </strong>{{ entry.date | formatTime }}</span>
           </div>
         </div>
         <!-- Edit field for single entry -->
@@ -71,7 +69,7 @@
           <InputTextSelect
             v-model="entryDetail.description"
             placeholder="Beschrijving"
-            :choices="['Optie 1', 'Optie 2']"
+            :choices="presets"
           />
           <InputDate v-model="entryDetail.date" label="Datum" />
           <br />
@@ -84,10 +82,15 @@
               error.edit[0]
             }}</span>
           </div>
+          <a
+            href="#"
+            class="entries__delete"
+            @click.prevent="toggleRemove(entryDetail.id)"
+            >Verwijder</a
+          >
         </div>
       </div>
     </div>
-
     <transition name="fade">
       <div
         class="entries__to-top"
@@ -108,6 +111,7 @@ import InputTextSelect from "../elements/InputTextSelect.vue";
 import InputDate from "../elements/InputDate.vue";
 import { transportation } from "../services/presets.js";
 import { pushToast } from "../services/toaster.js";
+import { setTimeout, clearTimeout } from "timers";
 
 export default {
   name: "Entries",
@@ -117,7 +121,9 @@ export default {
       showCreator: true,
       scrollTop: document.documentElement.scrollTop,
       entryDetail: null,
-      transportation
+      transportation,
+      pulser: null,
+      pulserTimeout: null
     };
   },
   computed: {
@@ -126,7 +132,8 @@ export default {
         Object.keys(state.entries.data).length
           ? Object.values(state.entries.data).reverse()
           : {},
-      error: state => state.entries.failed
+      error: state => state.entries.failed,
+      presets: state => state.settings.presets || []
     })
   },
   filters: {
@@ -146,8 +153,12 @@ export default {
     toggleEntry(entry = null) {
       if (this.entryDetail && this.entryDetail.id === entry.id) {
         this.entryDetail = null;
+        this.$store.commit("EDIT_ENTRY_CANCEL");
       } else {
         this.entryDetail = JSON.parse(JSON.stringify(entry));
+        setTimeout(() => {
+          this.$scrollTo(`#entry_${entry.id}`, 300, { offset: -56 });
+        }, 100);
       }
     },
     async editSingleEntry(data) {
@@ -156,9 +167,18 @@ export default {
         this.entryDetail = null;
         // create a pulse animation to see which entry you just edited
         pushToast("success", "Reisdata succesvol gewijzigd");
+        clearTimeout(this.pulserTimeout);
+        this.pulser = data.id;
+        this.$scrollTo(`#entry_${data.id}`, 300, { offset: -56 });
+        this.pulserTimeout = setTimeout(() => {
+          this.pulser = null;
+        }, 2500);
       } catch (err) {
         pushToast("failed", "Er is iets mis gegaan met opslaan");
       }
+    },
+    async toggleRemove(id) {
+      await this.removeEntry(id);
     }
   }
 };
@@ -196,9 +216,6 @@ export default {
     h1 {
       padding: 0;
     }
-    button {
-      height: 30px;
-    }
   }
   &__create {
     box-shadow: 0px 5px 12px -4px rgba(0, 0, 0, 0.4);
@@ -217,6 +234,20 @@ export default {
     flex: 1;
   }
   &__single {
+    &.pulse {
+      animation: pulse-entry 2.5s forwards;
+      @keyframes pulse-entry {
+        0% {
+          background-color: #c9f1c3;
+        }
+        50% {
+          background-color: #c9f1c3;
+        }
+        100% {
+          background-color: white;
+        }
+      }
+    }
     &-meta {
       padding: 12px 20px;
       border: 1px solid rgba(0, 0, 0, 0.15);
@@ -241,11 +272,13 @@ export default {
       }
     }
     &-edit {
+      position: relative;
       padding: 20px;
       background: $grey-background;
     }
     &-send {
       display: flex;
+      align-items: center;
       button {
         margin-right: 12px;
       }
@@ -277,27 +310,5 @@ export default {
       repeat: no-repeat;
     }
   }
-  // &__modal {
-  //   position: fixed;
-  //   left: 0;
-  //   right: 0;
-  //   top: 0;
-  //   bottom: 0;
-  //   background-color: rgba(0, 0, 0, 0.6);
-  //   z-index: 10;
-
-  //   &-container {
-  //     padding: 20px;
-  //     width: calc(100% - 24px);
-  //     max-width: 400px;
-  //     margin: 0 12px;
-  //     background-color: white;
-  //     border-radius: 6px;
-  //     position: absolute;
-  //     top: 50%;
-  //     left: 50%;
-  //     transform: translate(-50%, -50%);
-  //   }
-  // }
 }
 </style>

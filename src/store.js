@@ -73,6 +73,9 @@ export default new Vuex.Store({
       Vue.delete(state.loading, "edit-entry");
       Vue.set(state.entries.failed, "edit", msg);
     },
+    EDIT_ENTRY_CANCEL(state) {
+      Vue.delete(state.entries.failed, "edit");
+    },
     EDIT_SETTINGS(state) {
       Vue.set(state.loading, "edit-settings", true);
     },

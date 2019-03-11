@@ -86,6 +86,9 @@ export default {
       border-bottom-left-radius: 0 !important;
     }
   }
+  input {
+    padding-right: 50px !important;
+  }
   &__picker {
     position: absolute;
     right: 1px;

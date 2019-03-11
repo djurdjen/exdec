@@ -83,6 +83,7 @@ export default {
       }
       .preset-name {
         font-size: 14px;
+        width: 100%;
         padding-right: 12px;
         border-right: 1px solid $grey-border;
       }
