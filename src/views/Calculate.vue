@@ -1,6 +1,7 @@
 <template>
   <div class="calculate" v-if="Object.keys(entries).length">
     <!-- {{ entries }} -->
+    <h1>Berekenen</h1>
     <InputDate label="Begindatum" v-model="beginDate" />
     <InputDate label="Einddatum" v-model="endDate" />
     <button class="calculate__button cta" @click.prevent="calculateTotals">
@@ -49,7 +50,8 @@ export default {
   computed: {
     ...mapState({
       entries: state => state.entries.data,
-      compensation: state => state.settings.compensation
+      compensation: state => state.settings.compensation,
+      settings: state => state.settings
     })
   },
   async mounted() {
@@ -92,7 +94,8 @@ export default {
       const table = instance.$mount();
       createPdf(table.$el, this.dataForExport, {
         endDate: this.endDate,
-        beginDate: this.beginDate
+        beginDate: this.beginDate,
+        ...this.settings
       });
     }
   }
@@ -103,8 +106,8 @@ export default {
 .calculate {
   padding: {
     top: 60px;
-    left: 16px;
-    right: 16px;
+    left: 20px;
+    right: 20px;
   }
   &__total {
     text-align: center;

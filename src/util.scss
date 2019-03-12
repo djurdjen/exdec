@@ -6,7 +6,8 @@
 body {
   box-sizing: border-box;
   margin: 0;
-  font-family: "Relative", "Open Sans", sans-serif;
+  $font-blackfont-family: "Relative", "Open Sans", sans-serif;
+  background-color: #f3f3f3;
   * {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;

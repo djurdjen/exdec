@@ -28,7 +28,7 @@
               .map(v => v.total)
               .reduce((a, b) => a + b)
               .toFixed(2)
-          }}
+          }},-
         </td>
       </tr>
     </tbody>

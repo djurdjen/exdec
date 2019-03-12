@@ -1,13 +1,18 @@
 <template>
   <label>
     {{ label }}
-    <input
-      :value="value"
-      @input="$emit('input', $event.target.value)"
-      :placeholder="placeholder"
-      :type="type"
-      :pattern="pattern"
-    />
+    <div class="input-container">
+      <input
+        :value="value"
+        @input="$emit('input', $event.target.value)"
+        :placeholder="placeholder"
+        :type="type"
+        :pattern="pattern"
+      />
+      <div v-if="!!$slots.default" class="input-unit">
+        <slot></slot>
+      </div>
+    </div>
   </label>
 </template>
 
@@ -23,4 +28,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss">
+.input-container {
+  display: flex;
+  align-items: center;
+}
+.input-unit {
+  padding: 0 12px;
+  font-size: 20px;
+}
+</style>

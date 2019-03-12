@@ -1,9 +1,14 @@
 <template>
   <div class="home" v-if="showRoutes">
     <div @click="menuActive = !menuActive" class="home__header">
-      <strong :class="{ cross: menuActive }">{{
-        !menuActive ? "Menu" : "×"
-      }}</strong>
+      <div class="home__header-wrapper">
+        <strong :class="{ cross: menuActive }">
+          <span v-if="menuActive" class="home__header-close">×</span>
+          <div class="home__header-bars" v-else>
+            <span class="home__header-bar" v-for="i in 3" :key="i"></span>
+          </div>
+        </strong>
+      </div>
     </div>
     <transition name="fade">
       <div v-if="menuActive" :class="['home__nav']">
@@ -74,17 +79,40 @@ export default {
     height: 42px;
     padding: 12px;
     position: fixed;
+    left: 0;
+    right: 0;
     background-color: white;
     width: 100%;
     z-index: 15;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+    font-size: 28px;
+    &-bars {
+      width: 22px;
+      height: 17px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      .home__header-bar {
+        width: 100%;
+        display: block;
+        height: 3px;
+        background-color: $font-black;
+      }
+    }
 
     .cross {
-      font-size: 27px;
-      line-height: 1em;
-      margin-top: -4px;
-      padding-left: 6px;
+      width: 24px;
+      height: 24px;
       display: block;
+      cursor: pointer;
+
+      span {
+        font-size: 27px;
+        line-height: 1em;
+        margin-top: -4px;
+        display: block;
+      }
     }
   }
   &__nav {

@@ -15,9 +15,29 @@ export default function(table, rawData, settings = {}) {
 
   var pageSize = doc.internal.pageSize;
   var pageWidth = pageSize.width ? pageSize.width : pageSize.getWidth();
-  doc.text(doc.splitTextToSize("Naam", pageWidth - 35, {}), 14, 30);
-  doc.text(doc.splitTextToSize("Bedrijf", pageWidth - 35, {}), 14, 38);
-  doc.text(doc.splitTextToSize("Rekeningnummer", pageWidth - 35, {}), 14, 46);
+  doc.text(
+    doc.splitTextToSize(`Naam: ${settings.name || ""}`, pageWidth - 35, {}),
+    14,
+    30
+  );
+  doc.text(
+    doc.splitTextToSize(
+      `Bedrijfsnaam: ${settings.company || ""}`,
+      pageWidth - 35,
+      {}
+    ),
+    14,
+    38
+  );
+  doc.text(
+    doc.splitTextToSize(
+      `Rekeningnummer: ${settings.bankAccount || ""}`,
+      pageWidth - 35,
+      {}
+    ),
+    14,
+    46
+  );
 
   doc.autoTable({
     html: table,
@@ -32,5 +52,5 @@ export default function(table, rawData, settings = {}) {
       }
     }
   });
-  doc.save("table.pdf");
+  doc.save(`${settings.beginDate}-${settings.endDate}.pdf`);
 }

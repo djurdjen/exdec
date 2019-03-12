@@ -24,13 +24,17 @@
         pattern="\d*"
         v-model="fieldData.kilometres"
         placeholder="Kilometers"
-      />
+      >
+        <strong>km</strong>
+      </InputText>
       <InputText
         v-else
         type="number"
         v-model="fieldData.ticketPrice"
         placeholder="Prijs kaartje"
-      />
+      >
+        <strong>&euro;</strong>
+      </InputText>
 
       <InputDate v-model="fieldData.date" />
       <div class="create__send-container">
@@ -78,7 +82,10 @@ export default {
     ...mapActions(["sendEntry", "addPreset"]),
     resetData() {
       for (const key of Object.keys(this.$data.fieldData)) {
-        Vue.set(this.fieldData, key, this.dataModel()[key]);
+        if (key !== "transport") {
+          // keep same transport type
+          Vue.set(this.fieldData, key, this.dataModel()[key]);
+        }
       }
       this.saveAsPreset = false;
     },
@@ -121,7 +128,6 @@ export default {
     flex-direction: column;
     input[type="text"] {
       width: 100%;
-      padding: 6px;
       font-size: 15px;
     }
     textarea {

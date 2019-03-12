@@ -1,6 +1,18 @@
 <template>
   <div class="settings">
-    <h2>Instellingen</h2>
+    <h1>Instellingen</h1>
+    <label>
+      Naam
+      <InputText type="text" v-model="settings.name" />
+    </label>
+    <label>
+      Bedrijf
+      <InputText type="text" v-model="settings.company" />
+    </label>
+    <label>
+      Rekeningnummer
+      <InputText type="text" v-model="settings.bankAccount" />
+    </label>
     <label>
       Kilometervergoeding
       <InputText type="text" v-model="settings.compensation" />
@@ -31,9 +43,7 @@ export default {
   components: { InputText },
   data() {
     return {
-      settings: {
-        compensation: 0.19
-      }
+      settings: {}
     };
   },
   mounted() {
@@ -60,8 +70,8 @@ export default {
 .settings {
   padding: {
     top: 56px;
-    left: 12px;
-    right: 12px;
+    left: 20px;
+    right: 20px;
   }
   &__presets {
     width: 100%;
