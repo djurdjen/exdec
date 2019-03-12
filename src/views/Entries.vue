@@ -39,18 +39,6 @@
           v-if="entryDetail && entry.id === entryDetail.id"
           class="entries__single-edit"
         >
-          <label>
-            Vervoer
-            <select v-model="entryDetail.transport">
-              <option
-                v-for="(option, key) in transportation"
-                :key="key"
-                :value="option.val"
-                >{{ option.name }}</option
-              >
-            </select>
-          </label>
-
           <InputText
             v-if="entryDetail.transport === 'car'"
             pattern="\d*"
