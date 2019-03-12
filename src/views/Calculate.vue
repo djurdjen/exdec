@@ -11,6 +11,11 @@
         <span>&euro; {{ total }},-</span></strong
       >
     </div>
+    <div v-if="dataForExport">
+      <a href="#" @click.prevent="exportData"
+        >Download xls <strong>(pre-alpha)</strong></a
+      >
+    </div>
   </div>
 </template>
 
@@ -26,7 +31,8 @@ export default {
     return {
       beginDate: this.$createNewDate({ month: -1 }),
       endDate: this.$createNewDate(),
-      total: null
+      total: null,
+      dataForExport: null
     };
   },
   computed: {
@@ -61,7 +67,10 @@ export default {
         .map(v => v.total)
         .reduce((a, b) => a + b)
         .toFixed(2);
-      createXls(values);
+      this.dataForExport = values;
+    },
+    exportData() {
+      createXls(this.dataForExport);
     }
   }
 };
