@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npx nodemon ./bin/www localhost 3000",
+    "start": "npx nodemon ./bin/www",
     "dev": "vue-cli-service serve --port 8080",
     "seed": "node ./seed/init",
     "build": "vue-cli-service build",
