@@ -5,6 +5,7 @@ const connection = model.connection;
 
 const actions = {
   async register(user, hash) {
+    console.log(user, hash);
     return await connection
       .sync()
       .then(() =>
@@ -20,7 +21,7 @@ const actions = {
         if (unique) {
           return Promise.resolve(user.dataValues);
         } else {
-          return Promise.reject("User already exists");
+          return Promise.reject("Gebruiker bestaat al");
         }
       });
   },

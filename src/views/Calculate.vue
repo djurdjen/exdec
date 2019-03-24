@@ -1,4 +1,5 @@
 <template>
+<div>
   <div class="calculate" v-if="Object.keys(entries).length">
     <!-- {{ entries }} -->
     <h1>Berekenen</h1>
@@ -26,6 +27,10 @@
       >
     </div>
   </div>
+  <div v-else>
+    Er is onvoldoende data om de reiskosten te berekenen
+  </div>
+</div>
 </template>
 
 <script>

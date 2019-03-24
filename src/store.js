@@ -96,6 +96,9 @@ export default new Vuex.Store({
       });
       localStorage.setItem("token", resp.token);
     },
+    async register({ commit }, data) {
+      return await api.post("register", data);
+    },
     // the verify token function is for retrieving the user data that fits the token
     async verifyToken({ state, commit }) {
       // check if the token is not yet stored in the store and check the localStorage

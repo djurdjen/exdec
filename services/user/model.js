@@ -7,7 +7,7 @@ const User = connection.define(
     username: {
       type: Sequelize.TEXT,
       validate: {
-        notEmpty: false,
+        notEmpty: true,
         isEmail: {
           msg: "Username must be an email adress"
         }

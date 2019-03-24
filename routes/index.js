@@ -17,7 +17,8 @@ router.post("/register", (req, res, next) => {
         res.json({ message: resp });
       })
       .catch(err => {
-        res.json({ message: err });
+        res.status(400);
+        res.send({ hasError: true, error: err });
       });
   });
 });
