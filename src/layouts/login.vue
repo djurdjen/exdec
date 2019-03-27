@@ -6,13 +6,38 @@
       <input type="password" v-model="password" placeholder="Wachtwoord" />
       <span class="login__error">{{ errorMsg }}</span>
       <button type="submit" class="cta">Login</button>
-      <a href="#" @click.prevent="mode = 'signup'">Maak een account</a>
+      <br />
+      <a href="#" @click.prevent="mode = 'signup'" class="btn"
+        >Maak een account</a
+      >
     </form>
-    <form name="new-user"  v-else-if="mode === 'signup'"  autocomplete="off" @submit.prevent="register">
-      <input type="email" v-model="signup.username" name="new-email" placeholder="E-mailadres" autocomplete="off" />
-      <input type="password" v-model="signup.password" name="new-password" placeholder="Nieuw wachtwoord"  autocomplete="off" />
-      <input type="password" v-model="signup.repeatPassword" name="new-password-repeat" placeholder="Herhaal wachtwoord" />
-            <span class="login__error">{{ signUperrorMsg }}</span>
+    <form
+      name="new-user"
+      v-else-if="mode === 'signup'"
+      autocomplete="off"
+      @submit.prevent="register"
+    >
+      <input
+        type="email"
+        v-model="signup.username"
+        name="new-email"
+        placeholder="E-mailadres"
+        autocomplete="off"
+      />
+      <input
+        type="password"
+        v-model="signup.password"
+        name="new-password"
+        placeholder="Nieuw wachtwoord"
+        autocomplete="off"
+      />
+      <input
+        type="password"
+        v-model="signup.repeatPassword"
+        name="new-password-repeat"
+        placeholder="Herhaal wachtwoord"
+      />
+      <span class="login__error">{{ signUperrorMsg }}</span>
       <button type="submit" class="cta">Registreer</button>
     </form>
   </div>
@@ -25,7 +50,7 @@ export default {
   name: "home",
   data() {
     return {
-      mode: 'login',
+      mode: "login",
       signup: {
         username: "",
         password: "",
@@ -48,12 +73,11 @@ export default {
         await this.doRegister({
           username: this.signup.username,
           password: this.signup.password
-        })
-        this.username = this.signup.username
-        this.password = this.signup.password
+        });
+        this.username = this.signup.username;
+        this.password = this.signup.password;
         await this.login();
-        
-      } catch(err){
+      } catch (err) {
         this.signUperrorMsg = err.response.data.error;
       }
     },
@@ -69,7 +93,7 @@ export default {
         this.errorMsg = err.response.data;
       }
     }
-  },
+  }
 };
 </script>
 
@@ -78,6 +102,8 @@ export default {
 .login {
   padding: 20px 40px;
   height: 90vh;
+  max-width: 480px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -85,7 +111,8 @@ export default {
   &__error {
     color: $red;
   }
-  button {
+  button,
+  .btn {
     width: 100%;
     margin-top: 20px;
   }

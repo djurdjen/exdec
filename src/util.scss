@@ -77,7 +77,8 @@ textarea {
   padding: 12px 14px;
 }
 
-button {
+button,
+.btn {
   display: inline-block;
   width: auto;
   padding: 6px 12px;
@@ -89,6 +90,7 @@ button {
   letter-spacing: -0.5px;
   border-radius: 4px;
   background-color: white;
+  text-decoration: none;
 
   &.cta {
     background-color: $primary;
