@@ -1,42 +1,42 @@
 <template>
-<div>
-  <div class="calculate" v-if="Object.keys(entries).length">
-    <!-- {{ entries }} -->
-    <h1>Berekenen</h1>
-    <InputDate label="Begindatum" v-model="beginDate" />
-    <InputDate label="Einddatum" v-model="endDate" />
-    <button class="calculate__button cta" @click.prevent="calculateTotals">
-      Berekenen
-    </button>
+  <div>
+    <div class="calculate" v-if="Object.keys(entries).length">
+      <!-- {{ entries }} -->
+      <h1>Berekenen</h1>
+      <InputDate label="Begindatum" v-model="beginDate" />
+      <InputDate label="Einddatum" v-model="endDate" />
+      <button class="calculate__button cta" @click.prevent="calculateTotals">
+        Berekenen
+      </button>
 
-    <div v-if="total" class="calculate__total">
-      <strong
-        >Totaal te declareren:<br />
-        <span>&euro; {{ total }},-</span></strong
-      >
+      <div v-if="total" class="calculate__total">
+        <strong
+          >Totaal te declareren:<br />
+          <span>&euro; {{ total }},-</span></strong
+        >
+      </div>
+      <div v-if="dataForExport" class="calculate__download">
+        <a
+          href="#"
+          class="calculate__download-link"
+          @click.prevent="exportToTable"
+          ><span>Download PDF</span></a
+        >
+        <a href="#" class="calculate__download-link" @click.prevent="mailData"
+          ><span>Verstuur mail<strong>(pre-alpha)</strong></span></a
+        >
+      </div>
     </div>
-    <div v-if="dataForExport" class="calculate__download">
-      <a
-        href="#"
-        class="calculate__download-link"
-        @click.prevent="exportToTable"
-        ><span>Download PDF</span></a
-      >
-      <a href="#" class="calculate__download-link" @click.prevent="exportData"
-        ><span>Download xls <strong>(pre-alpha)</strong></span></a
-      >
+    <div v-else>
+      Er is onvoldoende data om de reiskosten te berekenen
     </div>
   </div>
-  <div v-else>
-    Er is onvoldoende data om de reiskosten te berekenen
-  </div>
-</div>
 </template>
 
 <script>
 import { mapActions, mapState } from "vuex";
 import InputDate from "../elements/InputDate.vue";
-import createXls from "../services/createXls.js";
+import { pushToast } from "../services/toaster.js";
 import createPdf from "../services/createPdf.js";
 import PdfTableDesign from "../components/PdfTableDesign.vue";
 import Vue from "vue";
@@ -64,7 +64,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(["getEntries"]),
+    ...mapActions(["getEntries", "mail"]),
     calculateTotals() {
       let values = Object.values(this.entries).filter(e => {
         const entryDate = new Date(e.date);
@@ -74,6 +74,10 @@ export default {
         );
       });
       // add totals to value obj
+      if (!values.length) {
+        this.total = null;
+        return;
+      }
       values = values.map(v => {
         return {
           ...v,
@@ -88,20 +92,31 @@ export default {
         .toFixed(2);
       this.dataForExport = values;
     },
-    exportData() {
-      createXls(this.dataForExport);
+    async mailData() {
+      const file = await this.exportToTable("url");
+      try {
+        await this.mail(file); // arrayBuffer extension
+        pushToast("success", "Email is verzonden!");
+      } catch (err) {
+        pushToast("failed", "Er is iets mis gegaan!");
+      }
     },
-    exportToTable() {
+    async exportToTable(mode = "save") {
       const ComponentClass = Vue.extend(PdfTableDesign);
       const instance = new ComponentClass({
         propsData: { fields: this.dataForExport }
       });
       const table = instance.$mount();
-      createPdf(table.$el, this.dataForExport, {
-        endDate: this.endDate,
-        beginDate: this.beginDate,
-        ...this.settings
-      });
+      return await createPdf(
+        table.$el,
+        this.dataForExport,
+        {
+          endDate: this.endDate,
+          beginDate: this.beginDate,
+          ...this.settings
+        },
+        mode
+      );
     }
   }
 };

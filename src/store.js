@@ -85,6 +85,12 @@ export default new Vuex.Store({
     },
     EDIT_SETTINGS_FAILED(state) {
       Vue.delete(state.loading, "edit-settings");
+    },
+    SEND_MAIL(state) {
+      Vue.set(state.loading, "mailing", true);
+    },
+    SEND_MAIL_SUCCESS(state) {
+      Vue.delete(state.loading, "mailing");
     }
   },
   actions: {
@@ -174,6 +180,16 @@ export default new Vuex.Store({
       } catch (err) {
         commit("EDIT_SETTINGS_FAILED", settings);
         Promise.reject(err);
+      }
+    },
+    async mail({ commit, state }, file) {
+      commit("SEND_MAIL");
+      try {
+        await api.post("mail", { file, email: state.user.username });
+        commit("SEND_MAIL_SUCCESS");
+        return Promise.resolve();
+      } catch (err) {
+        return Promise.reject(err);
       }
     }
   }

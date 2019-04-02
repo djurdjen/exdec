@@ -8,6 +8,7 @@ const entry = require("../services/entry/actions");
 const userActions = require("../services/user/actions");
 const ensureAuthorized = require("../services/ensureAuthorized");
 const jwt = require("jsonwebtoken");
+const mail = require("../services/mail");
 
 router.post("/register", (req, res, next) => {
   bcrypt.hash(req.body.password, secret.saltRounds, function(err, hash) {
@@ -108,6 +109,16 @@ router.delete("/entries/:id", ensureAuthorized, (req, res, next) => {
     .catch(err => {
       res.status(400);
       res.send({ error: err.map(msg => msg.message) });
+    });
+});
+
+router.post("/mail", ensureAuthorized, (req, res, next) => {
+  mail(req.body)
+    .catch(err => {
+      console.log(err);
+    })
+    .then(() => {
+      res.json("succes");
     });
 });
 module.exports = router;
