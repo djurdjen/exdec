@@ -19,7 +19,7 @@ const main = async function(req) {
   const imageBuffer = decodeBase64Image(req.file);
   fs.writeFile(`tmp/${fileName}.pdf`, imageBuffer.data, function(err) {
     if (err) {
-      console.log("err", err);
+      return Promise.reject(err);
     }
   });
 
