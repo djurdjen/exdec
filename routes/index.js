@@ -115,6 +115,7 @@ router.delete("/entries/:id", ensureAuthorized, (req, res, next) => {
 router.post("/mail", ensureAuthorized, (req, res, next) => {
   mail(req.body)
     .catch(err => {
+      res.status(400);
       console.log(err);
     })
     .then(() => {

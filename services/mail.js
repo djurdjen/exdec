@@ -1,7 +1,6 @@
 const nodemailer = require("nodemailer");
 const fs = require("fs");
 
-// async..await is not allowed in global scope, must use a wrapper
 const main = async function(req) {
   // strip base64 from its url data
   function decodeBase64Image(dataString) {
@@ -22,19 +21,18 @@ const main = async function(req) {
       return Promise.reject(err);
     }
   });
-
-  let account = await nodemailer.createTestAccount();
+  let account = {};
+  if (process.env.MAIL_ENV === "dev") {
+    account = await nodemailer.createTestAccount();
+  }
+  // TODO: Merge this with mailgun - https://medium.com/hexient-labs/nodemailer-mailgun-4d9f18f955a9
   let transporter = nodemailer.createTransport({
     host: process.env.MAIL_HOST,
     port: process.env.MAIL_PORT,
-    secure: process.env.MAIL_SECURE,
+    secure: process.env.MAIL_ENV === "dev" ? false : true, // true for 465, false for other ports
     auth: {
-      user:
-        process.env.MAIL_ENV === "prod" ? process.env.MAIL_USER : account.user, // generated ethereal user
-      pass:
-        process.env.MAIL_ENV === "prod"
-          ? process.env.MAIL_PASSWORD
-          : account.pass // generated ethereal password
+      user: account.user, // generated ethereal user
+      pass: account.pass // generated ethereal password
     }
   });
 
@@ -54,19 +52,19 @@ const main = async function(req) {
   };
 
   // send mail with defined transport object
-  let info = await transporter.sendMail(mailOptions);
-
-  fs.unlink(`tmp/${fileName}.pdf`, err => {
-    if (err) {
-      console.log(err);
-    }
-  });
-  console.log("Message sent: %s", info.messageId);
-  // Preview only available when sending through an Ethereal account
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-
-  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-  // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+  try {
+    let info = await transporter.sendMail(mailOptions);
+    console.log("Message sent: %s", info.messageId);
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    fs.unlink(`tmp/${fileName}.pdf`, err => {
+      if (err) {
+        console.log(err);
+      }
+    });
+    return Promise.resolve();
+  } catch (err) {
+    return Promise.reject(err);
+  }
 };
 
 module.exports = main;

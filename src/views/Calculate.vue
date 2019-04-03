@@ -23,7 +23,7 @@
           ><span>Download PDF</span></a
         >
         <a href="#" class="calculate__download-link" @click.prevent="mailData"
-          ><span>Verstuur mail<strong>(pre-alpha)</strong></span></a
+          ><span>Verstuur mail<strong>(Dev only)</strong></span></a
         >
       </div>
     </div>
