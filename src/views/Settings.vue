@@ -69,9 +69,12 @@ export default {
 @import "@/variables.scss";
 .settings {
   padding: {
-    top: 56px;
+    top: 60px;
     left: 20px;
     right: 20px;
+  }
+  @include respond-to("medium-small") {
+    padding-top: 20px;
   }
   &__presets {
     width: 100%;

@@ -8,74 +8,79 @@
         {{ showCreator ? "Verberg" : "Toevoegen" }}
       </button>
     </div>
-    <div
-      :class="['entries__create', { 'entries__create--hidden': !showCreator }]"
-    >
-      <CreateEntry />
-    </div>
-    <div class="entries__list">
+    <div class="entries__data">
       <div
-        :class="['entries__single', { pulse: pulser === entry.id }]"
-        v-for="entry in entries"
-        :key="entry.id"
-        :id="'entry_' + entry.id"
+        :class="[
+          'entries__create',
+          { 'entries__create--hidden': !showCreator }
+        ]"
       >
-        <div class="entries__single-meta" @click="toggleEntry(entry)">
-          <div :class="['icon', entry.transport]" />
-          <div>
-            <span v-if="entry.kilometres"
-              ><strong>Kilometers: </strong>{{ entry.kilometres }}</span
-            >
-            <span v-else
-              ><strong>Ticketprijs: </strong>{{ entry.ticketPrice }}</span
-            ><br />
-            <span><strong>Beschrijving: </strong>{{ entry.description }}</span
-            ><br />
-            <span><strong>Datum: </strong>{{ entry.date | formatTime }}</span>
-          </div>
-        </div>
-        <!-- Edit field for single entry -->
+        <CreateEntry />
+      </div>
+      <div class="entries__list">
         <div
-          v-if="entryDetail && entry.id === entryDetail.id"
-          class="entries__single-edit"
+          :class="['entries__single', { pulse: pulser === entry.id }]"
+          v-for="entry in entries"
+          :key="entry.id"
+          :id="'entry_' + entry.id"
         >
-          <InputText
-            v-if="entryDetail.transport === 'car'"
-            pattern="\d*"
-            v-model="entryDetail.kilometres"
-            placeholder="Kilometers"
-            label="Kilometers"
-          />
-          <InputText
-            v-else
-            type="number"
-            v-model="entryDetail.ticketPrice"
-            placeholder="Prijs kaartje"
-            label="Prijs kaartje"
-          />
-
-          <InputTextSelect
-            v-model="entryDetail.description"
-            placeholder="Beschrijving"
-            :choices="presets"
-          />
-          <InputDate v-model="entryDetail.date" label="Datum" />
-          <br />
-
-          <div class="entries__single-send">
-            <button class="cta" @click.prevent="editSingleEntry(entryDetail)">
-              Aanpassen
-            </button>
-            <span v-if="error.edit" class="create__error">{{
-              error.edit[0]
-            }}</span>
+          <div class="entries__single-meta" @click="toggleEntry(entry)">
+            <div :class="['icon', entry.transport]" />
+            <div>
+              <span v-if="entry.kilometres"
+                ><strong>Kilometers: </strong>{{ entry.kilometres }}</span
+              >
+              <span v-else
+                ><strong>Ticketprijs: </strong>{{ entry.ticketPrice }}</span
+              ><br />
+              <span><strong>Beschrijving: </strong>{{ entry.description }}</span
+              ><br />
+              <span><strong>Datum: </strong>{{ entry.date | formatTime }}</span>
+            </div>
           </div>
-          <a
-            href="#"
-            class="entries__delete"
-            @click.prevent="toggleRemove(entryDetail.id)"
-            >Verwijder</a
+          <!-- Edit field for single entry -->
+          <div
+            v-if="entryDetail && entry.id === entryDetail.id"
+            class="entries__single-edit"
           >
+            <InputText
+              v-if="entryDetail.transport === 'car'"
+              pattern="\d*"
+              v-model="entryDetail.kilometres"
+              placeholder="Kilometers"
+              label="Kilometers"
+            />
+            <InputText
+              v-else
+              type="number"
+              v-model="entryDetail.ticketPrice"
+              placeholder="Prijs kaartje"
+              label="Prijs kaartje"
+            />
+
+            <InputTextSelect
+              v-model="entryDetail.description"
+              placeholder="Beschrijving"
+              :choices="presets"
+            />
+            <InputDate v-model="entryDetail.date" label="Datum" />
+            <br />
+
+            <div class="entries__single-send">
+              <button class="cta" @click.prevent="editSingleEntry(entryDetail)">
+                Aanpassen
+              </button>
+              <span v-if="error.edit" class="create__error">{{
+                error.edit[0]
+              }}</span>
+            </div>
+            <a
+              href="#"
+              class="entries__delete"
+              @click.prevent="toggleRemove(entryDetail.id)"
+              >Verwijder</a
+            >
+          </div>
         </div>
       </div>
     </div>
@@ -186,6 +191,7 @@ export default {
     padding: 12px;
     min-height: 60px;
     max-height: 60px;
+    width: 100%;
 
     &--shadow {
       animation: box-shadow-frames 0.3s;
@@ -204,6 +210,18 @@ export default {
     h1 {
       padding: 0;
     }
+    button {
+      @include respond-to("medium-small") {
+        display: none;
+      }
+    }
+  }
+
+  &__data {
+    @include respond-to("medium-small") {
+      display: flex;
+      flex-grow: 1;
+    }
   }
   &__create {
     box-shadow: 0px 5px 12px -4px rgba(0, 0, 0, 0.4);
@@ -211,15 +229,30 @@ export default {
     max-height: 400px;
     min-height: 271px;
     overflow: hidden;
+    @include respond-to("medium-small") {
+      max-height: none;
+      height: 100%;
+      width: 400px;
+      box-shadow: none;
+      border-right: 1px solid rgba(0, 0, 0, 0.15);
+      border-top: 1px solid rgba(0, 0, 0, 0.15);
+    }
 
     &--hidden {
       max-height: 0;
       min-height: 0;
       transition: 300ms ease-in-out all;
+      @include respond-to("medium-small") {
+        max-height: none;
+        min-height: 0;
+      }
     }
   }
   &__list {
     flex: 1;
+    @include respond-to("medium-small") {
+      overflow: auto;
+    }
   }
   &__single {
     &.pulse {
@@ -236,12 +269,18 @@ export default {
         }
       }
     }
+    &:last-child {
+      .entries__single-meta {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+      }
+    }
     &-meta {
       padding: 12px 20px;
-      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-top: 1px solid rgba(0, 0, 0, 0.15);
       position: relative;
       display: flex;
       align-items: center;
+
       .icon {
         min-width: 30px;
         min-height: 30px;

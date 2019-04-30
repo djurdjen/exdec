@@ -11,7 +11,6 @@
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  max-width: 600px;
   min-height: 100vh;
   margin: 0 auto;
   background-color: white;

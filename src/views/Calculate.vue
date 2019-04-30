@@ -123,12 +123,18 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/variables.scss";
+
 .calculate {
   padding: {
     top: 60px;
     left: 20px;
     right: 20px;
   }
+  @include respond-to("medium-small") {
+    padding-top: 20px;
+  }
+
   &__total {
     text-align: center;
     display: block;
