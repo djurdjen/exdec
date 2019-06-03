@@ -112,14 +112,17 @@ router.delete("/entries/:id", ensureAuthorized, (req, res, next) => {
     });
 });
 
-router.post("/mail", ensureAuthorized, (req, res, next) => {
-  mail(req.body)
-    .catch(err => {
-      res.status(400);
-      console.log(err);
-    })
-    .then(() => {
-      res.json("succes");
+router.post("/mail", ensureAuthorized, async (req, res) => {
+  try {
+    const settings = await userActions.getUserSettings(req.decoded.username);
+    await mail({
+      ...req.body,
+      ...{ email: JSON.parse(settings).altEmail || req.body.email }
     });
+    res.json("succes");
+  } catch (err) {
+    res.status(400);
+    res.json(err.message);
+  }
 });
 module.exports = router;

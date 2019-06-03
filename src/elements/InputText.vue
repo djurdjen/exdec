@@ -8,6 +8,7 @@
         :placeholder="placeholder"
         :type="type"
         :pattern="pattern"
+        :name="name"
       />
       <div v-if="!!$slots.default" class="input-unit">
         <slot></slot>
@@ -23,7 +24,8 @@ export default {
     label: { type: String, default: "" },
     pattern: { type: String, default: "" },
     placeholder: { type: String, default: "" },
-    type: { type: String, default: "text" }
+    type: { type: String, default: "text" },
+    name: { type: String, default: "text" }
   }
 };
 </script>

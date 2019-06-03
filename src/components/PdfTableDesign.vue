@@ -51,7 +51,8 @@ export default {
         car: "Auto",
         train: "Trein",
         tram: "Tram",
-        bus: "Bus"
+        bus: "Bus",
+        metro: "Metro"
       };
       return t[val];
     }
@@ -59,4 +60,27 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+table {
+  width: 100%;
+  text-align: left;
+  border-spacing: 0;
+
+  th {
+    color: white;
+    font-size: 15px;
+    background-color: #0081bf;
+  }
+  th,
+  td {
+    padding: 6px;
+  }
+  tr {
+    &:nth-of-type(odd) {
+      td {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+}
+</style>

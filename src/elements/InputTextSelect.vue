@@ -100,8 +100,8 @@ export default {
     &:before {
       content: "";
       position: absolute;
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border-right: 3px solid white;
       border-top: 3px solid white;
       display: block;

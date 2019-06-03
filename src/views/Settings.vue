@@ -1,22 +1,33 @@
 <template>
   <div class="settings">
     <h1>Instellingen</h1>
-    <label>
-      Naam
-      <InputText type="text" v-model="settings.name" />
-    </label>
-    <label>
-      Bedrijf
-      <InputText type="text" v-model="settings.company" />
-    </label>
-    <label>
-      Rekeningnummer
-      <InputText type="text" v-model="settings.bankAccount" />
-    </label>
-    <label>
-      Kilometervergoeding
-      <InputText type="text" v-model="settings.compensation" />
-    </label>
+    <InputText type="text" label="Naam" name="name" v-model="settings.name" />
+
+    <InputText
+      type="text"
+      label="Bedrijf"
+      name="company"
+      v-model="settings.company"
+    />
+
+    <InputText
+      type="text"
+      label="Rekeningnummer"
+      name="bankaccount"
+      v-model="settings.bankAccount"
+    />
+    <InputText
+      type="text"
+      label="Kilometervergoeding"
+      name="expensePerKilometer"
+      v-model="settings.compensation"
+    />
+    <InputText
+      label="Alternatief e-mailadres (hier worden declaratie bestanden naartoe gestuurd)"
+      type="email"
+      name="emailAlternative"
+      v-model="settings.altEmail"
+    />
     <div v-if="settings.presets" class="settings__presets">
       <strong class="settings__presets-header">Presets</strong>
       <div

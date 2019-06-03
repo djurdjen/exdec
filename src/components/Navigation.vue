@@ -164,6 +164,10 @@ export default {
       }
       &.router-link-exact-active {
         font-weight: bold;
+        @include respond-to("medium-small") {
+          background-color: $primary;
+          color: white;
+        }
       }
       i {
         font-size: 20px;

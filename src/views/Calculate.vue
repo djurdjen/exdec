@@ -1,30 +1,41 @@
 <template>
-  <div>
-    <div class="calculate" v-if="Object.keys(entries).length">
-      <!-- {{ entries }} -->
-      <h1>Berekenen</h1>
-      <InputDate label="Begindatum" v-model="beginDate" />
-      <InputDate label="Einddatum" v-model="endDate" />
-      <button class="calculate__button cta" @click.prevent="calculateTotals">
-        Berekenen
-      </button>
+  <div class="calculate">
+    <h1 class="calculate__header">Berekenen</h1>
+    <div class="calculate__body" v-if="Object.keys(entries).length">
+      <div class="calculate__body-form">
+        <!-- {{ entries }} -->
+        <InputDate label="Begindatum" v-model="beginDate" />
+        <InputDate label="Einddatum" v-model="endDate" />
+        <button class="calculate__button cta" @click.prevent="calculateTotals">
+          Berekenen
+        </button>
 
-      <div v-if="total" class="calculate__total">
-        <strong
-          >Totaal te declareren:<br />
-          <span>&euro; {{ total }},-</span></strong
-        >
+        <div v-if="total" class="calculate__total">
+          <strong
+            >Totaal te declareren:<br />
+            <span>&euro; {{ total }},-</span></strong
+          >
+        </div>
+        <div v-if="dataForExport" class="calculate__download">
+          <button
+            class="calculate__download-link"
+            @click.prevent="exportToTable"
+          >
+            <span>Download PDF</span>
+          </button>
+          <button class="calculate__download-link" @click.prevent="mailData">
+            <span>Verstuur mail<strong> (Dev)</strong></span>
+          </button>
+        </div>
       </div>
-      <div v-if="dataForExport" class="calculate__download">
-        <a
-          href="#"
-          class="calculate__download-link"
-          @click.prevent="exportToTable"
-          ><span>Download PDF</span></a
-        >
-        <a href="#" class="calculate__download-link" @click.prevent="mailData"
-          ><span>Verstuur mail<strong>(Dev only)</strong></span></a
-        >
+      <div class="calculate__body-table-preview" v-if="dataForExport">
+        <div class="calculate__body-table-preview-wrapper">
+          <pdf-table-design :fields="dataForExport" />
+        </div>
+      </div>
+      <div v-else class="calculate__body-table-preview-empty">
+        <i class="fa fa-table"></i>
+        <div>Doe een berekening voor een PDF voorbeeld</div>
       </div>
     </div>
     <div v-else>
@@ -107,7 +118,7 @@ export default {
         propsData: { fields: this.dataForExport }
       });
       const table = instance.$mount();
-      return await createPdf(
+      const resp = await createPdf(
         table.$el,
         this.dataForExport,
         {
@@ -117,6 +128,8 @@ export default {
         },
         mode
       );
+      instance.$destroy();
+      return resp;
     }
   }
 };
@@ -126,15 +139,63 @@ export default {
 @import "@/variables.scss";
 
 .calculate {
-  padding: {
-    top: 60px;
-    left: 20px;
-    right: 20px;
-  }
-  @include respond-to("medium-small") {
-    padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    min-height: 60px;
+    max-height: 60px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
 
+  &__body {
+    height: 100%;
+    display: flex;
+    width: 100%;
+
+    &-form {
+      width: 100%;
+      border-right: 1px solid rgba(0, 0, 0, 0.15);
+      padding: 20px;
+      max-width: 100%;
+
+      @include respond-to("medium-small") {
+        max-width: 420px;
+      }
+    }
+
+    &-table-preview {
+      flex-grow: 1;
+      overflow: auto;
+      padding: 20px 20px 0 20px;
+      display: none;
+      @include respond-to("medium-small") {
+        display: block;
+      }
+    }
+    &-table-preview-wrapper {
+      min-width: 700px;
+    }
+    &-table-preview-empty {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: grey;
+      font-size: 20px;
+      .fa {
+        font-size: 40px;
+        margin-bottom: 12px;
+      }
+    }
+  }
   &__total {
     text-align: center;
     display: block;

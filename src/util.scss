@@ -79,22 +79,29 @@ textarea {
 
 button,
 .btn {
-  display: inline-block;
-  width: auto;
-  padding: 6px 12px;
+  display: block;
+
+  padding: 12px 12px;
   border: 2px solid $primary;
   color: $primary;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.5px;
-  border-radius: 4px;
+  border-radius: 6px;
   background-color: white;
   text-decoration: none;
+  cursor: pointer;
 
   &.cta {
     background-color: $primary;
     color: white;
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  &:active {
+    opacity: 0.7;
   }
 }
 
