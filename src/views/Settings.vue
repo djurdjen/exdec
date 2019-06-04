@@ -83,6 +83,7 @@ export default {
     top: 60px;
     left: 20px;
     right: 20px;
+    bottom: 30px;
   }
   @include respond-to("medium-small") {
     padding-top: 20px;

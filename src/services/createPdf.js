@@ -2,7 +2,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 export default function(table, rawData, settings = {}, mode = "save") {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     var doc = new jsPDF("l");
     doc.setFontSize(18);
     doc.text(

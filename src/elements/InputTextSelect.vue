@@ -11,9 +11,10 @@
       :type="type"
       :pattern="pattern"
     />
-    <div class="input-text-select__picker" @click="toggleChoices">
-      <div class="picker__icon"></div>
-    </div>
+    <div
+      :class="['input-text-select__picker', { active: choicesActive }]"
+      @click="toggleChoices"
+    ></div>
     <div class="picker__choices" v-if="choicesActive">
       <span v-if="!choices.length" class="picker__choices-single"
         >Geen presets bechikbaar</span
@@ -97,6 +98,8 @@ export default {
     width: 40px;
     background: $primary;
     border-radius: 0 3px 3px 0;
+    cursor: pointer;
+
     &:before {
       content: "";
       position: absolute;
@@ -109,17 +112,23 @@ export default {
       left: 50%;
       transform: translate(-50%, -50%) rotate(135deg);
     }
+    &.active {
+      &:before {
+        top: calc(50% + 2px);
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+    }
   }
   .picker {
     &__choices {
       position: absolute;
       right: 0;
-      top: calc(100% - 8px);
+      top: calc(100% - 9px);
       width: 100%;
       background-color: white;
       border: 2px solid $primary;
       border-radius: 0 0 6px 6px;
-      box-shadow: 1px 5px 9px 2px rgba(0, 0, 0, 0.3);
+      box-shadow: 2px 3px 3px 0px rgba(0, 0, 0, 0.3);
       &-single {
         text-decoration: none;
         color: black;

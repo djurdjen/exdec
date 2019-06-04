@@ -82,7 +82,7 @@ export default {
     ...mapActions(["sendEntry", "addPreset"]),
     resetData() {
       for (const key of Object.keys(this.$data.fieldData)) {
-        if (key !== "transport") {
+        if (!key.match(/transport|date/g)) {
           // keep same transport type
           Vue.set(this.fieldData, key, this.dataModel()[key]);
         }
@@ -150,6 +150,10 @@ export default {
     }
   }
   &__error {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
     color: red;
   }
 }

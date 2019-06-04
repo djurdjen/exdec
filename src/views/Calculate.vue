@@ -21,10 +21,14 @@
             class="calculate__download-link"
             @click.prevent="exportToTable"
           >
-            <span>Download PDF</span>
+            <span><i class="far fa-file-pdf"></i>Download PDF</span>
           </button>
           <button class="calculate__download-link" @click.prevent="mailData">
-            <span>Verstuur mail<strong> (Dev)</strong></span>
+            <span
+              ><i class="far fa-envelope"></i>Verstuur mail<strong>
+                (Dev)</strong
+              ></span
+            >
           </button>
         </div>
       </div>
@@ -166,7 +170,7 @@ export default {
       max-width: 100%;
 
       @include respond-to("medium-small") {
-        max-width: 420px;
+        max-width: 360px;
       }
     }
 
@@ -184,12 +188,16 @@ export default {
     }
     &-table-preview-empty {
       width: 100%;
-      display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       color: grey;
       font-size: 20px;
+      display: none;
+      text-align: center;
+      @include respond-to("medium-small") {
+        display: flex;
+      }
       .fa {
         font-size: 40px;
         margin-bottom: 12px;
@@ -208,6 +216,7 @@ export default {
   }
   &__download {
     display: flex;
+    flex-direction: column;
     align-items: stretch;
     flex-wrap: wrap;
   }
@@ -217,8 +226,7 @@ export default {
   }
   &__download-link {
     min-height: 40px;
-    padding: 6px 12px;
-    width: calc(50% - 6px);
+    padding: 12px 12px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -227,11 +235,12 @@ export default {
     color: grey;
     text-align: center;
     border-radius: 4px;
-    &:nth-of-type(odd) {
-      margin-right: 6px;
-    }
-    &:nth-of-type(even) {
-      margin-left: 6px;
+    margin-bottom: 12px;
+    font-weight: 500;
+
+    i {
+      font-size: 18px;
+      margin-right: 12px;
     }
   }
 }

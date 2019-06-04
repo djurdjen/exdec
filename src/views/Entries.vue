@@ -104,6 +104,7 @@ import InputTextSelect from "../elements/InputTextSelect.vue";
 import InputDate from "../elements/InputDate.vue";
 import { transportation } from "../services/presets.js";
 import { pushToast } from "../services/toaster.js";
+import { modal } from "../services/modal.js";
 import { setTimeout, clearTimeout } from "timers";
 
 export default {
@@ -171,7 +172,15 @@ export default {
       }
     },
     async toggleRemove(id) {
-      await this.removeEntry(id);
+      try {
+        await modal({
+          copy: "Weet je zeker dat je deze invoer wil verwijderen?",
+          prompt: true
+        });
+        await this.removeEntry(id);
+      } catch (err) {
+        console.warn(err);
+      }
     }
   }
 };
@@ -255,6 +264,7 @@ export default {
     }
   }
   &__single {
+    cursor: pointer;
     &.pulse {
       animation: pulse-entry 2.5s forwards;
       @keyframes pulse-entry {

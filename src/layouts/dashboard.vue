@@ -46,15 +46,17 @@ export default {
 .home {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   @include respond-to("medium-small") {
     flex-direction: row;
+    height: 100vh;
   }
   &__view {
     padding-top: 42px;
 
     @include respond-to("medium-small") {
       padding-top: 0;
+      overflow: auto;
     }
     flex-grow: 1;
   }
