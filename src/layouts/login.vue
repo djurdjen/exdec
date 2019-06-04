@@ -6,7 +6,6 @@
       <input type="password" v-model="password" placeholder="Wachtwoord" />
       <span class="login__error">{{ errorMsg }}</span>
       <button type="submit" class="cta">Login</button>
-      <br />
       <a href="#" @click.prevent="mode = 'signup'" class="btn"
         >Maak een account</a
       >
