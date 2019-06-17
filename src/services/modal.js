@@ -6,7 +6,7 @@ import Modal from "../components/Modal.vue";
  *
  * @param {String} component
  */
-export function modal({ copy, prompt = false }) {
+export function modal({ copy, prompt = false, proceed = "Doorgaan" }) {
   return new Promise((resolve, reject) => {
     const dialog = new Vue({
       methods: {
@@ -25,7 +25,8 @@ export function modal({ copy, prompt = false }) {
         return h(Modal, {
           props: {
             copy,
-            prompt
+            prompt,
+            proceed
           },
           on: {
             close: this.closeHandler,

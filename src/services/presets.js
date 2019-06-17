@@ -6,4 +6,8 @@ const transportation = [
   { val: "metro", name: "Metro" }
 ];
 
-export { transportation };
+const getName = id => {
+  return transportation.find(t => t.val === id).name;
+};
+
+export { transportation, getName };

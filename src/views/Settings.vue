@@ -1,47 +1,50 @@
 <template>
   <div class="settings">
-    <h1>Instellingen</h1>
-    <InputText type="text" label="Naam" name="name" v-model="settings.name" />
+    <h1 class="settings__header">Instellingen</h1>
 
-    <InputText
-      type="text"
-      label="Bedrijf"
-      name="company"
-      v-model="settings.company"
-    />
+    <div class="settings__container">
+      <InputText type="text" label="Naam" name="name" v-model="settings.name" />
 
-    <InputText
-      type="text"
-      label="Rekeningnummer"
-      name="bankaccount"
-      v-model="settings.bankAccount"
-    />
-    <InputText
-      type="text"
-      label="Kilometervergoeding"
-      name="expensePerKilometer"
-      v-model="settings.compensation"
-    />
-    <InputText
-      label="Alternatief e-mailadres (hier worden declaratie bestanden naartoe gestuurd)"
-      type="email"
-      name="emailAlternative"
-      v-model="settings.altEmail"
-    />
-    <div v-if="settings.presets" class="settings__presets">
-      <strong class="settings__presets-header">Presets</strong>
-      <div
-        class="settings__presets-single"
-        v-for="(setting, key) in settings.presets"
-        :key="key"
-      >
-        <div class="preset-name">{{ setting }}</div>
+      <InputText
+        type="text"
+        label="Bedrijf"
+        name="company"
+        v-model="settings.company"
+      />
 
-        <div class="preset-delete" @click="removePreset(key)">Verwijder</div>
+      <InputText
+        type="text"
+        label="Rekeningnummer"
+        name="bankaccount"
+        v-model="settings.bankAccount"
+      />
+      <InputText
+        type="text"
+        label="Kilometervergoeding"
+        name="expensePerKilometer"
+        v-model="settings.compensation"
+      />
+      <InputText
+        label="Alternatief e-mailadres (hier worden declaratie bestanden naartoe gestuurd)"
+        type="email"
+        name="emailAlternative"
+        v-model="settings.altEmail"
+      />
+      <div v-if="settings.presets" class="settings__presets">
+        <strong class="settings__presets-header">Presets</strong>
+        <div
+          class="settings__presets-single"
+          v-for="(setting, key) in settings.presets"
+          :key="key"
+        >
+          <div class="preset-name">{{ setting }}</div>
+
+          <div class="preset-delete" @click="removePreset(key)">Verwijder</div>
+        </div>
       </div>
-    </div>
 
-    <button @click.prevent="editSettings" type="submit">Pas aan</button>
+      <button @click.prevent="editSettings" type="submit">Pas aan</button>
+    </div>
   </div>
 </template>
 
@@ -79,14 +82,30 @@ export default {
 <style lang="scss">
 @import "@/variables.scss";
 .settings {
-  padding: {
-    top: 60px;
-    left: 20px;
-    right: 20px;
-    bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    min-height: 60px;
+    max-height: 60px;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
-  @include respond-to("medium-small") {
-    padding-top: 20px;
+  &__container {
+    padding: {
+      top: 60px;
+      left: 20px;
+      right: 20px;
+      bottom: 30px;
+    }
+    @include respond-to("medium-small") {
+      padding-top: 20px;
+    }
   }
   &__presets {
     width: 100%;

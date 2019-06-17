@@ -3,7 +3,14 @@
     <h1 class="calculate__header">Berekenen</h1>
     <div class="calculate__body" v-if="Object.keys(entries).length">
       <div class="calculate__body-form">
-        <!-- {{ entries }} -->
+        <p>
+          Bereken hier de kosten over een bepaalde periode.<br />
+          <i
+            >(vraag toestemming aan de ontwikkelaar als je de uitdraai via mail
+            wil kunnen ontvangen)</i
+          >
+        </p>
+        <br />
         <InputDate label="Begindatum" v-model="beginDate" />
         <InputDate label="Einddatum" v-model="endDate" />
         <button class="calculate__button cta" @click.prevent="calculateTotals">
@@ -23,7 +30,11 @@
           >
             <span><i class="far fa-file-pdf"></i>Download PDF</span>
           </button>
-          <button class="calculate__download-link" @click.prevent="mailData">
+          <button
+            :disabled="mailLoading"
+            class="calculate__download-link"
+            @click.prevent="mailData"
+          >
             <span
               ><i class="far fa-envelope"></i>Verstuur mail<strong>
                 (Dev)</strong
@@ -71,7 +82,8 @@ export default {
     ...mapState({
       entries: state => state.entries.data,
       compensation: state => state.settings.compensation,
-      settings: state => state.settings
+      settings: state => state.settings,
+      mailLoading: state => state.loading.mailing
     })
   },
   async mounted() {
@@ -109,6 +121,7 @@ export default {
     },
     async mailData() {
       const file = await this.exportToTable("url");
+      this.loading = true;
       try {
         await this.mail(file); // arrayBuffer extension
         pushToast("success", "Email is verzonden!");

@@ -14,7 +14,7 @@
       </div>
       <div v-if="prompt" class="modal__prompt">
         <button href="#" class="cta" @click.prevent="$emit('send', $event)">
-          Verwijder
+          {{ proceed }}
         </button>
         <button @click.prevent="closeModal">Annuleer</button>
       </div>
@@ -26,7 +26,8 @@
 export default {
   props: {
     copy: { type: String, default: "" },
-    prompt: { type: Boolean, default: false }
+    prompt: { type: Boolean, default: false },
+    proceed: { type: String, required: true }
   },
   methods: {
     closeModal() {
@@ -98,7 +99,9 @@ export default {
       overflow: auto;
       max-height: 80vh;
       padding: 56px 0 30px;
-      font-weight: bold;
+      font-weight: 300;
+      font-size: 15px;
+      letter-spacing: 0.2px;
     }
   }
   &__prompt {

@@ -64,11 +64,17 @@
               :choices="presets"
             />
             <InputDate v-model="entryDetail.date" label="Datum" />
-            <br />
 
             <div class="entries__single-send">
-              <button class="cta" @click.prevent="editSingleEntry(entryDetail)">
-                Aanpassen
+              <button class="cancel" @click.prevent="cancelEdit()">
+                Annuleren
+              </button>
+              <button
+                class="cta"
+                :disabled="editLoading"
+                @click.prevent="editSingleEntry(entryDetail)"
+              >
+                Bewerken
               </button>
               <span v-if="error.edit" class="create__error">{{
                 error.edit[0]
@@ -127,7 +133,8 @@ export default {
           ? Object.values(state.entries.data).reverse()
           : {},
       error: state => state.entries.failed,
-      presets: state => state.settings.presets || []
+      presets: state => state.settings.presets || [],
+      editLoading: state => state.loading.editEntry
     })
   },
   filters: {
@@ -166,15 +173,19 @@ export default {
         this.$scrollTo(`#entry_${data.id}`, 300, { offset: -56 });
         this.pulserTimeout = setTimeout(() => {
           this.pulser = null;
-        }, 2500);
+        }, 2000);
       } catch (err) {
         pushToast("failed", "Er is iets mis gegaan met opslaan");
       }
+    },
+    cancelEdit() {
+      this.entryDetail = null;
     },
     async toggleRemove(id) {
       try {
         await modal({
           copy: "Weet je zeker dat je deze invoer wil verwijderen?",
+          proceed: "Verwijderen",
           prompt: true
         });
         await this.removeEntry(id);
@@ -314,10 +325,14 @@ export default {
       background: $grey-background;
     }
     &-send {
+      margin-top: 20px;
       display: flex;
       align-items: center;
       button {
-        margin-right: 12px;
+        margin-top: 0;
+        &:first-child {
+          margin-right: 12px;
+        }
       }
     }
   }

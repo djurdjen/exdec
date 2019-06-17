@@ -37,6 +37,7 @@ export default {
 
 <style lang="scss">
 .toast {
+  font-family: Arial, Helvetica, sans-serif;
   position: fixed;
   left: 0;
   bottom: 0;

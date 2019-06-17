@@ -32,6 +32,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import { modal } from "@/services/modal.js";
 
 export default {
   data() {
@@ -48,10 +49,19 @@ export default {
   },
   methods: {
     ...mapActions(["verifyToken", "logoutUser", "getSettings"]),
-    logout() {
-      this.logoutUser().then(() => {
-        window.location.href = "/login";
-      });
+    async logout() {
+      try {
+        await modal({
+          copy: "Weet je zeker dat je wil uitloggen?",
+          proceed: "Uitloggen",
+          prompt: true
+        });
+        this.logoutUser().then(() => {
+          window.location.href = "/login";
+        });
+      } catch (err) {
+        console.warn(err);
+      }
     }
   }
 };

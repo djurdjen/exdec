@@ -37,6 +37,7 @@
 
 <script>
 import date from "date-and-time";
+import { getName } from "@/services/presets.js";
 
 export default {
   props: {
@@ -47,14 +48,7 @@ export default {
       return date.format(new Date(val), "DD-MM-YYYY");
     },
     translateTransport(val) {
-      const t = {
-        car: "Auto",
-        train: "Trein",
-        tram: "Tram",
-        bus: "Bus",
-        metro: "Metro"
-      };
-      return t[val];
+      return getName(val);
     }
   }
 };

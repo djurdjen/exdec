@@ -63,14 +63,14 @@ export default new Vuex.Store({
     },
     EDIT_ENTRY(state) {
       Vue.delete(state.entries.failed, "edit");
-      Vue.set(state.loading, "edit-entry", true);
+      Vue.set(state.loading, "editEntry", true);
     },
     EDIT_ENTRY_SUCCESS(state, entry) {
       Vue.set(state.entries.data, entry.id, entry);
-      Vue.delete(state.loading, "edit-entry");
+      Vue.delete(state.loading, "editEntry");
     },
     EDIT_ENTRY_FAILED(state, msg) {
-      Vue.delete(state.loading, "edit-entry");
+      Vue.delete(state.loading, "editEntry");
       Vue.set(state.entries.failed, "edit", msg);
     },
     EDIT_ENTRY_CANCEL(state) {
@@ -140,6 +140,7 @@ export default new Vuex.Store({
       try {
         await api.put(`entries/${entry.id}`, entry);
         commit("EDIT_ENTRY_SUCCESS", entry);
+        return Promise.resolve();
       } catch (err) {
         commit("EDIT_ENTRY_FAILED", err.response.data.error);
         return Promise.reject("Error in saving article");

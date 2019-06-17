@@ -99,6 +99,14 @@ button,
     margin-top: 12px;
     width: 100%;
   }
+  &.cancel {
+    color: grey;
+    border-color: grey;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
 
   &:active {
     opacity: 0.7;
