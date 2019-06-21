@@ -45,7 +45,11 @@
       </div>
       <div class="calculate__body-table-preview" v-if="dataForExport">
         <div class="calculate__body-table-preview-wrapper">
-          <pdf-table-design :fields="dataForExport" />
+          <pdf-table-design
+            edit-mode
+            :fields="dataForExport"
+            @deleteEntry="deleteEntry"
+          />
         </div>
       </div>
       <div v-else class="calculate__body-table-preview-empty">
@@ -92,6 +96,14 @@ export default {
 
   methods: {
     ...mapActions(["getEntries", "mail"]),
+    deleteEntry(id) {
+      this.dataForExport = this.dataForExport.filter(entry => entry.id !== id);
+      // re-calculate total with deleted entries
+      this.total = this.dataForExport
+        .map(v => v.total)
+        .reduce((a, b) => a + b)
+        .toFixed(2);
+    },
     calculateTotals() {
       let values = Object.values(this.entries).filter(e => {
         const entryDate = new Date(e.date);

@@ -2,6 +2,7 @@
   <table>
     <thead>
       <tr class="warning">
+        <th v-if="editMode">-</th>
         <th>Datum</th>
         <th>Beschrijving</th>
         <th>Transport</th>
@@ -12,6 +13,11 @@
     </thead>
     <tbody>
       <tr v-for="(data, key) in fields" :key="key">
+        <td v-if="editMode">
+          <span class="delete-entry" @click="$emit('deleteEntry', data.id)"
+            ><i class="fas fa-times"></i>
+          </span>
+        </td>
         <td>{{ data.date | formatTime }}</td>
         <td>{{ data.description }}</td>
         <td>{{ data.transport | translateTransport }}</td>
@@ -20,7 +26,7 @@
         <td>{{ data.total.toFixed(2) }},-</td>
       </tr>
       <tr>
-        <td colspan="4"></td>
+        <td :colspan="editMode ? 5 : 4"></td>
         <td><strong>Subtotaal</strong></td>
         <td>
           {{
@@ -41,7 +47,8 @@ import { getName } from "@/services/presets.js";
 
 export default {
   props: {
-    fields: { type: [Array, Object], required: true }
+    fields: { type: [Array, Object], required: true },
+    editMode: { type: Boolean, default: false }
   },
   filters: {
     formatTime(val) {
@@ -59,6 +66,13 @@ table {
   width: 100%;
   text-align: left;
   border-spacing: 0;
+
+  .delete-entry {
+    cursor: pointer;
+    .fas {
+      color: darkred;
+    }
+  }
 
   th {
     color: white;

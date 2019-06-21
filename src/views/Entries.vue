@@ -24,7 +24,16 @@
           :key="entry.id"
           :id="'entry_' + entry.id"
         >
-          <div class="entries__single-meta" @click="toggleEntry(entry)">
+          <div
+            :class="[
+              'entries__single-meta',
+              {
+                'entries__single-meta--active':
+                  entryDetail && entry.id === entryDetail.id
+              }
+            ]"
+            @click="toggleEntry(entry)"
+          >
             <div :class="['icon', entry.transport]" />
             <div>
               <span v-if="entry.kilometres"
@@ -128,14 +137,20 @@ export default {
   },
   computed: {
     ...mapState({
-      entries: state =>
-        Object.keys(state.entries.data).length
-          ? Object.values(state.entries.data).reverse()
-          : {},
+      rawEntries: state => state.entries.data,
       error: state => state.entries.failed,
       presets: state => state.settings.presets || [],
       editLoading: state => state.loading.editEntry
-    })
+    }),
+    entries() {
+      if (!Object.keys(this.rawEntries).length) {
+        return {};
+      }
+
+      return Object.values(this.rawEntries).sort((a, b) => {
+        return new Date(b.date) - new Date(a.date);
+      });
+    }
   },
   filters: {
     formatTime(val) {
@@ -301,6 +316,15 @@ export default {
       position: relative;
       display: flex;
       align-items: center;
+
+      &--active {
+        background-color: $primary;
+        color: white;
+
+        .icon {
+          color: white;
+        }
+      }
 
       .icon {
         min-width: 30px;
