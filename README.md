@@ -6,13 +6,17 @@ yarn install
 
 ## Project setup Node
 
+Create a `.env` duplicate from the `.env.example` file.<br>
+Be sure to create a MySQL database and fill the `.env` with its credentials.<br>
+To be able to send your travel expenses by e-mail you'll need a Mailgun account : https://signup.mailgun.com/new/signup
+
 ### Watch and run node on port 3000
 
 ```
 yarn run start
 ```
 
-### Seed tables (make sure to create a databse first and fill the credentials in the .env file)
+### Seed tables
 
 ```
 yarn run seed
@@ -25,9 +29,6 @@ proxy is set on http://localhost:3000 in vue.config.js
 ```
 yarn dev
 ```
-
-For now use postman to create a user: http://localhost:3000/api/register<br>
-Endpoint accepts "username" and "password" as fields
 
 ### Compiles and minifies for production
 
