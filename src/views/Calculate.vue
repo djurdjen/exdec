@@ -139,6 +139,8 @@ export default {
         pushToast("success", "Email is verzonden!");
       } catch (err) {
         pushToast("failed", "Er is iets mis gegaan!");
+      } finally {
+        this.loading = false;
       }
     },
     async exportToTable(mode = "save") {

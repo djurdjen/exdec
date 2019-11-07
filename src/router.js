@@ -8,7 +8,7 @@ import Settings from "./views/Settings.vue";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: "history",
   routes: [
     {
@@ -39,3 +39,10 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  window.scrollTo(0, 0);
+  next();
+});
+
+export default router;

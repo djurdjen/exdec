@@ -36,11 +36,13 @@ export default {
 </script>
 
 <style lang="scss">
+@import "@/variables.scss";
+
 .toast {
   font-family: Arial, Helvetica, sans-serif;
   position: fixed;
   right: 0;
-  max-width: 400px;
+  max-width: 300px;
   width: 100%;
   top: 100px;
   color: white;
@@ -52,6 +54,10 @@ export default {
   padding: 12px 20px;
   transform: translateX(100%);
   border-radius: 5px 0 0 5px;
+
+  @include respond-to("medium-small") {
+    max-width: 400px;
+  }
 
   @keyframes HIDE {
     0% {

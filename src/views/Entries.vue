@@ -267,7 +267,7 @@ export default {
     overflow: hidden;
     @include respond-to("medium-small") {
       max-height: none;
-      height: 100%;
+      min-height: 100%;
       width: 354px;
       box-shadow: none;
       border-right: 1px solid rgba(0, 0, 0, 0.15);
@@ -286,7 +286,10 @@ export default {
   &__list {
     flex: 1;
     @include respond-to("medium-small") {
-      overflow: auto;
+      overflow: scroll;
+      -webkit-overflow-scrolling: touch;
+
+      max-height: calc(100vh - 60px);
     }
   }
   &__single {
