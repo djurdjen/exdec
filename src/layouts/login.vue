@@ -2,8 +2,12 @@
   <div class="login">
     <h1>Exdec</h1>
     <form @submit.prevent="login()" v-if="mode === 'login'">
-      <input type="email" v-model="username" placeholder="E-mailadres" />
-      <input type="password" v-model="password" placeholder="Wachtwoord" />
+      <label class="login__input email">
+        <input type="email" v-model="username" placeholder="E-mailadres" />
+      </label>
+      <label class="login__input password">
+        <input type="password" v-model="password" placeholder="Wachtwoord" />
+      </label>
       <span class="login__error">{{ errorMsg }}</span>
       <button type="submit" class="cta">Login</button>
       <a href="#" @click.prevent="mode = 'signup'" class="btn"
@@ -16,28 +20,38 @@
       autocomplete="off"
       @submit.prevent="register"
     >
-      <input
-        type="email"
-        v-model="signup.username"
-        name="new-email"
-        placeholder="E-mailadres"
-        autocomplete="off"
-      />
-      <input
-        type="password"
-        v-model="signup.password"
-        name="new-password"
-        placeholder="Nieuw wachtwoord"
-        autocomplete="off"
-      />
-      <input
-        type="password"
-        v-model="signup.repeatPassword"
-        name="new-password-repeat"
-        placeholder="Herhaal wachtwoord"
-      />
+      <label class="login__input email">
+        <input
+          type="email"
+          v-model="signup.username"
+          name="new-email"
+          placeholder="E-mailadres"
+          autocomplete="off"
+        />
+      </label>
+      <label class="login__input password">
+        <input
+          type="password"
+          v-model="signup.password"
+          name="new-password"
+          placeholder="Nieuw wachtwoord"
+          autocomplete="off"
+        />
+      </label>
+
+      <label class="login__input password">
+        <input
+          type="password"
+          v-model="signup.repeatPassword"
+          name="new-password-repeat"
+          placeholder="Herhaal wachtwoord"
+        />
+      </label>
       <span class="login__error">{{ signUperrorMsg }}</span>
       <button type="submit" class="cta">Registreer</button>
+      <a href="#" class="login__signup-back" @click.prevent="mode = 'login'"
+        >Terug naar inloggen</a
+      >
     </form>
   </div>
 </template>
@@ -69,6 +83,10 @@ export default {
     async register() {
       try {
         this.signUperrorMsg = "";
+        if (this.signup.repeatPassword !== this.signup.password) {
+          this.signUperrorMsg = "Wachtwoorden zijn niet gelijk";
+          return Promise.reject();
+        }
         await this.doRegister({
           username: this.signup.username,
           password: this.signup.password
@@ -101,7 +119,7 @@ export default {
 .login {
   padding: 20px 40px;
   height: 90vh;
-  max-width: 480px;
+  max-width: 420px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -110,10 +128,48 @@ export default {
   &__error {
     color: $red;
   }
+  &__input {
+    position: relative;
+    input {
+      padding: 0 0 0 50px !important;
+    }
+    &.password,
+    &.email {
+      &:before {
+        content: "";
+        width: 14px;
+        height: 14px;
+        display: block;
+        position: absolute;
+        left: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: {
+          image: url("../assets/icons/lock.svg") !important;
+          size: cover;
+        }
+      }
+    }
+    &.email {
+      &:before {
+        background: {
+          image: url("../assets/icons/email.svg") !important;
+        }
+      }
+    }
+  }
+  &__signup-back {
+    color: black;
+    display: block;
+    margin-top: 20px;
+  }
   button,
   .btn {
     width: 100%;
     margin-top: 20px;
+  }
+  h1 {
+    font-size: 60px;
   }
 }
 </style>

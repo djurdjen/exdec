@@ -227,6 +227,7 @@ export default {
     min-height: 60px;
     max-height: 60px;
     width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 
     &--shadow {
       animation: box-shadow-frames 0.3s;
@@ -267,10 +268,9 @@ export default {
     @include respond-to("medium-small") {
       max-height: none;
       height: 100%;
-      width: 400px;
+      width: 354px;
       box-shadow: none;
       border-right: 1px solid rgba(0, 0, 0, 0.15);
-      border-top: 1px solid rgba(0, 0, 0, 0.15);
     }
 
     &--hidden {
@@ -295,14 +295,19 @@ export default {
       animation: pulse-entry 2.5s forwards;
       @keyframes pulse-entry {
         0% {
-          background-color: #c9f1c3;
+          background-color: #e8f7e4;
         }
         50% {
-          background-color: #c9f1c3;
+          background-color: #e8f7e4;
         }
         100% {
           background-color: white;
         }
+      }
+    }
+    &:first-child {
+      .entries__single-meta {
+        border-top: 0;
       }
     }
     &:last-child {
@@ -311,8 +316,8 @@ export default {
       }
     }
     &-meta {
-      padding: 12px 20px;
       border-top: 1px solid rgba(0, 0, 0, 0.15);
+      padding: 12px 20px;
       position: relative;
       display: flex;
       align-items: center;

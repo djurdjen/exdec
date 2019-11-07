@@ -44,6 +44,7 @@ label {
   font-weight: bold;
   font-size: 14px;
   display: block;
+  margin-top: 10px;
 }
 
 form {
@@ -57,6 +58,7 @@ textarea,
 select {
   font-family: "Relative", "Open Sans", sans-serif;
   width: 100%;
+  appearance: none;
   height: 40px;
   border-radius: 4px;
   padding: 0px 14px;
@@ -72,6 +74,15 @@ select {
   }
 }
 
+select {
+  background: {
+    image: url("./assets/icons/sort-down.svg");
+    size: 10px 10px;
+    repeat: no-repeat;
+    position: calc(100% - 14px) 15px;
+  }
+}
+
 textarea {
   height: auto;
   padding: 12px 14px;
@@ -80,11 +91,11 @@ textarea {
 button,
 .btn {
   display: block;
-
   padding: 12px 12px;
   border: 2px solid $primary;
   color: $primary;
   font-size: 16px;
+  max-height: 46px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.5px;
@@ -92,6 +103,7 @@ button,
   background-color: white;
   text-decoration: none;
   cursor: pointer;
+  outline: none;
 
   &.cta {
     background-color: $primary;

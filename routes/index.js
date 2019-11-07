@@ -54,9 +54,16 @@ router.get("/settings", ensureAuthorized, (req, res, next) => {
 });
 
 router.put("/settings", ensureAuthorized, (req, res, next) => {
-  userActions.editUserSettings(req.decoded.username, req.body).then(resp => {
-    res.json({ settings: resp.settings });
-  });
+  userActions
+    .editUserSettings(req.decoded.username, req.body)
+    .then(resp => {
+      res.json({ settings: resp.settings });
+    })
+    .catch(err => {
+      res.status(400);
+      res.send({ hasError: true, error: err });
+      return;
+    });
 });
 
 router.get("/verify", ensureAuthorized, (req, res, next) => {

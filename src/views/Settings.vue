@@ -42,7 +42,9 @@
           <div class="preset-delete" @click="removePreset(key)">Verwijder</div>
         </div>
       </div>
-
+      <span class="settings__error" v-for="(error, i) in errors" :key="i">{{
+        error
+      }}</span>
       <button @click.prevent="editSettings" type="submit">Pas aan</button>
     </div>
   </div>
@@ -52,6 +54,7 @@
 import Vue from "vue";
 import InputText from "../elements/InputText.vue";
 import { pushToast } from "../services/toaster.js";
+import { mapState } from "vuex";
 
 export default {
   components: { InputText },
@@ -59,6 +62,11 @@ export default {
     return {
       settings: {}
     };
+  },
+  computed: {
+    ...mapState({
+      errors: state => state.errors.settings || []
+    })
   },
   mounted() {
     Vue.set(this, "settings", this.$store.state.settings);
@@ -106,6 +114,10 @@ export default {
     @include respond-to("medium-small") {
       padding-top: 20px;
     }
+
+    label {
+      margin-bottom: 20px;
+    }
   }
   &__presets {
     width: 100%;
@@ -139,6 +151,11 @@ export default {
         margin-left: auto;
       }
     }
+  }
+  &__error {
+    color: $red;
+    display: block;
+    margin-bottom: 20px;
   }
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="toast__container">
       <div class="toast__msg">{{ message }}</div>
     </div>
-    <div class="toast__close" @click="close"></div>
+    <!-- <div class="toast__close" @click="close"></div> -->
   </div>
 </template>
 
@@ -39,24 +39,26 @@ export default {
 .toast {
   font-family: Arial, Helvetica, sans-serif;
   position: fixed;
-  left: 0;
-  bottom: 0;
   right: 0;
+  max-width: 400px;
+  width: 100%;
+  top: 100px;
   color: white;
   overflow: hidden;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: bold;
   animation: HIDE 0.2s linear; /* IE 10+, Fx 29+ */
   animation-fill-mode: forwards;
-  padding: 12px 0 12px 0;
-  transform: translateY(100%);
+  padding: 12px 20px;
+  transform: translateX(100%);
+  border-radius: 5px 0 0 5px;
 
   @keyframes HIDE {
     0% {
-      transform: translateY(0);
+      transform: translateX(0);
     }
     100% {
-      transform: translateY(100%);
+      transform: translateX(100%);
     }
   }
 
@@ -65,10 +67,10 @@ export default {
     animation-fill-mode: forwards;
     @keyframes POPUP {
       0% {
-        transform: translateY(100%);
+        transform: translateX(100%);
       }
       100% {
-        transform: translateY(0);
+        transform: translateX(0);
       }
     }
   }
@@ -88,7 +90,6 @@ export default {
 
   &__msg {
     flex-grow: 1;
-    text-align: center;
   }
   &__close {
     font-weight: bold;

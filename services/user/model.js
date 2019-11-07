@@ -17,10 +17,10 @@ const User = connection.define(
     settings: {
       type: Sequelize.TEXT,
       validate: {
-        validateSettings(val) {
+        checkRules(val) {
           const settings = JSON.parse(val);
-          if (!("compensation" in settings)) {
-            return Promise.reject("Een of meerdere velden mist");
+          if (!settings.compensation) {
+            return Promise.reject("Het kilometervergoeding-veld is verplicht!");
           }
           return true;
         }

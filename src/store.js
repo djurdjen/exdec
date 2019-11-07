@@ -15,7 +15,8 @@ export default new Vuex.Store({
       failed: {}
     },
     deleting: null,
-    error: null
+    error: null,
+    errors: {}
   },
   mutations: {
     SET_USER_DATA(state, data) {
@@ -77,13 +78,15 @@ export default new Vuex.Store({
       Vue.delete(state.entries.failed, "edit");
     },
     EDIT_SETTINGS(state) {
+      Vue.delete(state.errors, "settings");
       Vue.set(state.loading, "edit-settings", true);
     },
     EDIT_SETTINGS_SUCCESS(state, settings) {
       Vue.set(state, "settings", settings);
       Vue.delete(state.loading, "edit-settings");
     },
-    EDIT_SETTINGS_FAILED(state) {
+    EDIT_SETTINGS_FAILED(state, data) {
+      Vue.set(state.errors, "settings", data.map(d => d.message));
       Vue.delete(state.loading, "edit-settings");
     },
     SEND_MAIL(state) {
@@ -177,10 +180,10 @@ export default new Vuex.Store({
       try {
         await api.put("settings", settings);
         commit("EDIT_SETTINGS_SUCCESS", settings);
-        Promise.resolve();
+        return Promise.resolve();
       } catch (err) {
-        commit("EDIT_SETTINGS_FAILED", settings);
-        Promise.reject(err);
+        commit("EDIT_SETTINGS_FAILED", err.response.data.error);
+        return Promise.reject(err);
       }
     },
     async mail({ commit, state }, file) {
