@@ -15,10 +15,14 @@
         placeholder="Beschrijving"
         :choices="presets"
       />
-      <label class="create__field">
+      <InputCheckbox
+        v-model="saveAsPreset"
+        label=" Sla beschrijving op als preset"
+      />
+      <!-- <label class="create__field">
         <input type="checkbox" v-model="saveAsPreset" />
         Sla beschrijving op als preset
-      </label>
+      </label> -->
       <InputText
         v-if="fieldData.transport === 'car'"
         pattern="\d*"
@@ -53,12 +57,13 @@ import { pushToast } from "../services/toaster.js";
 import InputDate from "../elements/InputDate.vue";
 import InputText from "../elements/InputText.vue";
 import InputTextSelect from "../elements/InputTextSelect.vue";
+import InputCheckbox from "../elements/InputCheckbox.vue";
 import Vue from "vue";
 import { transportation } from "../services/presets.js";
 
 export default {
   name: "CreateEntry",
-  components: { InputDate, InputText, InputTextSelect },
+  components: { InputDate, InputText, InputTextSelect, InputCheckbox },
   data() {
     return {
       fieldData: { ...this.dataModel() },

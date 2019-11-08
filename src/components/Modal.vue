@@ -13,10 +13,14 @@
         <p v-html="copy" />
       </div>
       <div v-if="prompt" class="modal__prompt">
-        <button href="#" class="cta" @click.prevent="$emit('send', $event)">
+        <button
+          href="#"
+          class="cta small"
+          @click.prevent="$emit('send', $event)"
+        >
           {{ proceed }}
         </button>
-        <button @click.prevent="closeModal">Annuleer</button>
+        <button class="small" @click.prevent="closeModal">Annuleer</button>
       </div>
     </div>
   </div>
@@ -89,7 +93,7 @@ export default {
     position: absolute;
     left: 50%;
     top: 50%;
-    padding: 20px;
+    padding: 12px;
     transform: translate(-50%, -50%);
     width: calc(100% - 60px);
     max-width: 500px;

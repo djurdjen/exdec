@@ -4,9 +4,14 @@
       :class="['entries__header', { 'entries__header--shadow': !showCreator }]"
     >
       <h1>Reizen</h1>
-      <button @click.prevent="showCreator = !showCreator">
-        {{ showCreator ? "Verberg" : "Toevoegen" }}
-      </button>
+      <div
+        @click.prevent="showCreator = !showCreator"
+        :class="['entries__header-toggle', { show: showCreator }]"
+      >
+        {{ showCreator ? "Verberg" : "Reis toevoegen" }}
+        <i v-if="!showCreator" class="fas fa-chevron-down"></i>
+        <i v-else class="fas fa-chevron-up"></i>
+      </div>
     </div>
     <div class="entries__data">
       <div
@@ -18,6 +23,30 @@
         <CreateEntry />
       </div>
       <div class="entries__list">
+        <div>
+          <div
+            :class="['entries__filter-toggle', { active: showFilters }]"
+            @click="showFilters = !showFilters"
+          >
+            {{ showFilters ? "Verberg filters" : "Toon filters" }}
+            <i class="fas fa-filter"></i>
+          </div>
+          <div :class="['entries__filters', { show: showFilters }]">
+            <select v-model="filters.transport">
+              <option value="all">Alle</option>
+              <option
+                v-for="(option, key) in transportation"
+                :key="key"
+                :value="option.val"
+                >{{ option.name }}</option
+              >
+            </select>
+            <select v-model="filters.order">
+              <option value="desc">Aflopend</option>
+              <option value="asc">Oplopend</option>
+            </select>
+          </div>
+        </div>
         <div
           :class="['entries__single', { pulse: pulser === entry.id }]"
           v-for="entry in entries"
@@ -34,7 +63,16 @@
             ]"
             @click="toggleEntry(entry)"
           >
-            <div :class="['icon', entry.transport]" />
+            <div
+              class="icon"
+              :title="transportation.find(t => t.val === entry.transport).name"
+            >
+              <i v-if="entry.transport === 'bus'" class="fas fa-bus"></i>
+              <i v-if="entry.transport === 'car'" class="fas fa-car"></i>
+              <i v-if="entry.transport === 'metro'" class="fas fa-subway"></i>
+              <i v-if="entry.transport === 'train'" class="fas fa-train"></i>
+              <i v-if="entry.transport === 'tram'" class="fas fa-train"></i>
+            </div>
             <div>
               <span v-if="entry.kilometres"
                 ><strong>Kilometers: </strong>{{ entry.kilometres }}</span
@@ -132,7 +170,12 @@ export default {
       entryDetail: null,
       transportation,
       pulser: null,
-      pulserTimeout: null
+      pulserTimeout: null,
+      showFilters: false,
+      filters: {
+        transport: "all",
+        order: "desc"
+      }
     };
   },
   computed: {
@@ -146,10 +189,17 @@ export default {
       if (!Object.keys(this.rawEntries).length) {
         return {};
       }
-
-      return Object.values(this.rawEntries).sort((a, b) => {
-        return new Date(b.date) - new Date(a.date);
-      });
+      const desc = this.filters.order === "desc";
+      return Object.values(this.rawEntries)
+        .sort((a, b) => {
+          return new Date((desc ? b : a).date) - new Date((desc ? a : b).date);
+        })
+        .filter(entry => {
+          if (this.filters.transport === "all") {
+            return entry;
+          }
+          return this.filters.transport === entry.transport;
+        });
     }
   },
   filters: {
@@ -207,6 +257,10 @@ export default {
       } catch (err) {
         console.warn(err);
       }
+    },
+    resetFilters() {
+      this.filters.transport = "all";
+      this.filters.order = "desc";
     }
   }
 };
@@ -223,25 +277,12 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px;
+    padding: 12px 20px 12px 12px;
     min-height: 60px;
     max-height: 60px;
     width: 100%;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-
-    &--shadow {
-      animation: box-shadow-frames 0.3s;
-      animation-fill-mode: forwards;
-      animation-delay: 0.2s; /* or: Xms */
-
-      @keyframes box-shadow-frames {
-        0% {
-          box-shadow: 0, 0, 0, 0, transparent;
-        }
-        100% {
-          box-shadow: 0px 5px 12px -4px rgba(0, 0, 0, 0.4);
-        }
-      }
+    @include respond-to("medium-small") {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     }
     h1 {
       padding: 0;
@@ -252,6 +293,61 @@ export default {
       }
     }
   }
+  &__header-toggle {
+    display: flex;
+    align-items: center;
+    @include respond-to("medium-small") {
+      display: none;
+    }
+    &.show {
+      color: $primary;
+    }
+    i {
+      margin-left: 20px;
+    }
+  }
+  &__filter-toggle {
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    i {
+      padding: 12px 20px;
+    }
+    &.active {
+      color: $primary;
+      cursor: pointer;
+    }
+    @include respond-to("medium-small") {
+      display: none;
+    }
+  }
+  &__filters {
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 12px 20px;
+    display: none;
+    &.show {
+      display: flex;
+      padding-top: 0;
+    }
+    @include respond-to("medium-small") {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: row;
+      padding: 0 12px;
+    }
+    select {
+      @include respond-to("medium-small") {
+        max-width: 300px;
+        margin-right: 12px;
+      }
+    }
+    a {
+      margin-left: auto;
+      white-space: nowrap;
+    }
+  }
 
   &__data {
     @include respond-to("medium-small") {
@@ -260,7 +356,7 @@ export default {
     }
   }
   &__create {
-    box-shadow: 0px 5px 12px -4px rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     transition: 300ms ease-in-out all;
     max-height: 400px;
     min-height: 271px;
@@ -269,7 +365,8 @@ export default {
       max-height: none;
       min-height: 100%;
       width: 354px;
-      box-shadow: none;
+      // box-shadow: none;
+      border-bottom: 0;
       border-right: 1px solid rgba(0, 0, 0, 0.15);
     }
 
@@ -338,16 +435,8 @@ export default {
         min-width: 30px;
         min-height: 30px;
         margin-right: 20px;
-        background: {
-          size: cover;
-          image: url("../assets/icons/train.svg");
-        }
-
-        &.car {
-          background-image: url("../assets/icons/car.svg");
-        }
-        &.bus {
-          background-image: url("../assets/icons/bus.svg");
+        i {
+          font-size: 30px;
         }
       }
     }

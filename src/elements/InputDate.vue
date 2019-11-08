@@ -1,5 +1,5 @@
 <template>
-  <label>
+  <label v-if="$isMobile.any()" class="inputDate">
     {{ label }}
     <input
       :value="dateValue()"
@@ -8,10 +8,21 @@
       type="date"
     />
   </label>
+  <div v-else style="margin-top: 10px;">
+    {{ label }}
+    <datepicker
+      :value="dateValue()"
+      @input="$emit('input', $event)"
+      name="uniquename"
+    ></datepicker>
+  </div>
 </template>
 
 <script>
+import Datepicker from "vuejs-datepicker";
+
 export default {
+  components: { Datepicker },
   props: {
     value: { type: [Number, String], default: "" },
     label: { type: String, default: "" }
@@ -24,4 +35,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style lang="scss"></style>

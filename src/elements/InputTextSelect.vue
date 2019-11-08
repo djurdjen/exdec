@@ -79,6 +79,7 @@ export default {
 @import "@/variables.scss";
 .input-text-select {
   position: relative;
+  z-index: 2;
   &.choices-active {
     .input-text-select__picker {
       border-bottom-right-radius: 0;
@@ -98,6 +99,7 @@ export default {
     width: 40px;
     background: $primary;
     border-radius: 0 3px 3px 0;
+    z-index: 20;
     cursor: pointer;
 
     &:before {
