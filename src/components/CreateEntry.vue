@@ -1,6 +1,6 @@
 <template>
   <div class="create">
-    <form class="create__form" @submit.prevent="send" novalidate>
+    <form class="create__form" @submit.prevent="" novalidate>
       <select v-model="fieldData.transport">
         <option
           v-for="(option, key) in transportation"
@@ -10,19 +10,17 @@
           >{{ option.name }}</option
         >
       </select>
+
       <InputTextSelect
         v-model="fieldData.description"
         placeholder="Beschrijving"
         :choices="presets"
+        :optionalDropdown="true"
       />
       <InputCheckbox
         v-model="saveAsPreset"
         label=" Sla beschrijving op als preset"
       />
-      <!-- <label class="create__field">
-        <input type="checkbox" v-model="saveAsPreset" />
-        Sla beschrijving op als preset
-      </label> -->
       <InputText
         v-if="fieldData.transport === 'car'"
         pattern="\d*"
@@ -39,10 +37,17 @@
       >
         <strong>&euro;</strong>
       </InputText>
-
+      <a
+        href="#"
+        class="create__calculator"
+        @click.prevent="openNsCalculator"
+        v-if="fieldData.transport === 'train'"
+      >
+        Gereisd met NS? Bereken je prijs
+      </a>
       <InputDate v-model="fieldData.date" />
       <div class="create__send-container">
-        <button class="cta">Voeg toe</button>
+        <a class="btn cta" @click="send">Voeg toe</a>
         <span v-if="failed.send" class="create__error">{{
           failed.send[0]
         }}</span>
@@ -54,6 +59,7 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import { pushToast } from "../services/toaster.js";
+import { nsModal } from "../services/modals/nsCalculateModal.js";
 import InputDate from "../elements/InputDate.vue";
 import InputText from "../elements/InputText.vue";
 import InputTextSelect from "../elements/InputTextSelect.vue";
@@ -119,6 +125,14 @@ export default {
       } catch (err) {
         pushToast("failed", "Er is iets mis gegaan met opslaan");
       }
+    },
+    async openNsCalculator() {
+      try {
+        const resp = await nsModal();
+        this.fieldData.ticketPrice = resp.data;
+      } catch (err) {
+        console.warn(err);
+      }
     }
   }
 };
@@ -160,6 +174,13 @@ export default {
     text-align: center;
     padding: 10px;
     color: red;
+  }
+  &__calculator {
+    color: black;
+    font-weight: 800;
+    font-size: 14px;
+    margin-left: 6px;
+    margin-top: 6px;
   }
 }
 </style>

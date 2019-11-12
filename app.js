@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
 var api = require("./routes");
+var nsApi = require("./routes/ns-api");
 var passport = require("passport");
 
 var app = express();
@@ -25,6 +26,7 @@ app.set("view options", { layout: false });
 
 // define api route
 app.use("/api", api);
+app.use("/ns-api", nsApi);
 
 app.all("/tmp", function(req, res) {
   res.status(403).send({

@@ -18,4 +18,21 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+const ns = axios.create({
+  baseURL: "/ns-api/",
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*"
+  },
+  timeout: 5000,
+  withCredentials: true
+});
+ns.interceptors.response.use(
+  resp => resp.data,
+
+  error => {
+    return Promise.reject(error);
+  }
+);
+
+export { api, ns };

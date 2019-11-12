@@ -1,18 +1,25 @@
+// Services
 const express = require("express");
 const router = express.Router();
+const mail = require("../services/mail");
+
+// Authorisation and Security services
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const secret = require("../services/secrets");
 const auth = require("../services/auth");
-const entry = require("../services/entry/actions");
-const userActions = require("../services/user/actions");
-const ensureAuthorized = require("../services/ensureAuthorized");
 const jwt = require("jsonwebtoken");
-const mail = require("../services/mail");
+
+// Controllers
+const entryController = require("../services/entry/actions");
+const userController = require("../services/user/actions");
+
+// Middleware
+const ensureAuthorized = require("../services/ensureAuthorized");
 
 router.post("/register", (req, res, next) => {
   bcrypt.hash(req.body.password, secret.saltRounds, function(err, hash) {
-    userActions
+    userController
       .register(req.body.username, hash)
       .then(resp => {
         res.json({ message: resp });
@@ -48,13 +55,13 @@ router.post("/login", (req, res, next) => {
 });
 
 router.get("/settings", ensureAuthorized, (req, res, next) => {
-  userActions.getUserSettings(req.decoded.username).then(settings => {
+  userController.getUserSettings(req.decoded.username).then(settings => {
     res.json({ settings });
   });
 });
 
 router.put("/settings", ensureAuthorized, (req, res, next) => {
-  userActions
+  userController
     .editUserSettings(req.decoded.username, req.body)
     .then(resp => {
       res.json({ settings: resp.settings });
@@ -72,7 +79,7 @@ router.get("/verify", ensureAuthorized, (req, res, next) => {
 
 // ensureAuthorized middleware hijacks response status if token is invalid
 router.get("/entries", ensureAuthorized, (req, res, next) => {
-  entry
+  entryController
     .getEntries(req)
     .then(data => {
       res.json(data);
@@ -84,7 +91,7 @@ router.get("/entries", ensureAuthorized, (req, res, next) => {
 });
 
 router.post("/entries", ensureAuthorized, (req, res, next) => {
-  entry
+  entryController
     .postEntry(req)
     .then(data => {
       res.json({ message: "success!", data: data });
@@ -96,7 +103,7 @@ router.post("/entries", ensureAuthorized, (req, res, next) => {
 });
 
 router.put("/entries/:id", ensureAuthorized, (req, res) => {
-  entry
+  entryController
     .editEntry(req)
     .then(data => {
       res.json({ message: "success!", data: data });
@@ -108,7 +115,7 @@ router.put("/entries/:id", ensureAuthorized, (req, res) => {
 });
 
 router.delete("/entries/:id", ensureAuthorized, (req, res, next) => {
-  entry
+  entryController
     .deleteEntry(req.params.id)
     .then(data => {
       res.json({ message: "success!", data: data });
@@ -121,7 +128,7 @@ router.delete("/entries/:id", ensureAuthorized, (req, res, next) => {
 
 router.post("/mail", ensureAuthorized, async (req, res) => {
   try {
-    const settings = await userActions.getUserSettings(req.decoded.username);
+    const settings = await userController.getUserSettings(req.decoded.username);
     await mail({
       ...req.body,
       ...{ email: JSON.parse(settings).altEmail || req.body.email }

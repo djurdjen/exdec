@@ -25,7 +25,7 @@
         </div>
         <div v-if="dataForExport" class="calculate__download">
           <button
-            v-if="!$isMobile"
+            v-if="!$isMobile.any()"
             class="calculate__download-link"
             @click.prevent="exportToTable"
           >

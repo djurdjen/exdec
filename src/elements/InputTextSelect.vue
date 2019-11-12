@@ -5,29 +5,41 @@
   >
     {{ label }}
     <input
+      v-if="optionalDropdown"
       :value="value"
       @input="changeData($event.target.value)"
       :placeholder="placeholder"
       :type="type"
       :pattern="pattern"
     />
+    <input
+      v-else
+      :value="value"
+      @input="changeData($event.target.value)"
+      @blur="closeChoices"
+      @focus="choicesActive = true"
+      :placeholder="placeholder"
+      :type="type"
+      :pattern="pattern"
+    />
+
     <div
+      v-if="optionalDropdown"
       :class="['input-text-select__picker', { active: choicesActive }]"
       @click="toggleChoices"
     ></div>
-    <div class="picker__choices" v-if="choicesActive">
+    <div class="picker__choices" v-show="choicesActive">
       <span v-if="!choices.length" class="picker__choices-single"
         >Geen presets bechikbaar</span
       >
-      <a
-        href="#"
-        class="picker__choices-single"
-        v-for="(choice, key) in choices"
+      <span
+        :class="['picker__choices-single', { active: choice.active }]"
+        v-for="(choice, key) in formattedChoices"
         :key="key"
-        @click.prevent="changeData(choice)"
+        @click.prevent="changeData(choice.name)"
       >
-        {{ choice }}
-      </a>
+        {{ choice.name }}
+      </span>
     </div>
   </label>
 </template>
@@ -40,36 +52,62 @@ export default {
     pattern: { type: String, default: "" },
     placeholder: { type: String, default: "" },
     type: { type: String, default: "text" },
-    choices: { type: Array, default: () => [] }
+    choices: { type: Array, default: () => [] },
+    suggestion: { type: Boolean, default: false },
+    optionalDropdown: { type: Boolean, default: false }
   },
   data() {
     return {
-      choicesActive: false
+      choicesActive: false,
+      selectionIndex: null
     };
   },
   watch: {
     choicesActive: {
       handler(val) {
         if (val) {
-          document.addEventListener("click", this.registerOutsideClick);
+          this.$el.addEventListener("keydown", this.onKeyEvents);
         } else {
-          document.removeEventListener("click", this.registerOutsideClick);
+          this.$el.removeEventListener("keydown", this.onKeyEvents);
+          this.selectionIndex = null;
         }
       }
     }
   },
+  computed: {
+    formattedChoices() {
+      return this.choices.map((c, key) => ({
+        name: typeof Object.values(this.choices)[0] === "string" ? c : c.name,
+        active: key + 1 === this.selectionIndex
+      }));
+    }
+  },
+
   methods: {
-    changeData(data) {
-      this.choicesActive = false;
+    onKeyEvents(e) {
+      if (this.choicesActive) {
+        if (e.keyCode === 40) {
+          this.selectionIndex < 6 && this.selectionIndex++;
+        }
+        if (e.keyCode === 38) {
+          this.selectionIndex && this.selectionIndex--;
+        }
+        if (e.keyCode === 13 && !isNaN(this.selectionIndex)) {
+          this.changeData(this.formattedChoices.find(c => c.active).name, true);
+        }
+      }
+    },
+    changeData(data, close = false) {
+      this.choicesActive = close ? false : this.suggestion;
       this.$emit("input", data);
     },
     toggleChoices() {
       this.choicesActive = !this.choicesActive;
     },
-    registerOutsideClick(e) {
-      if (!this.$refs.picker.contains(e.target)) {
+    closeChoices() {
+      setTimeout(() => {
         this.choicesActive = false;
-      }
+      }, 120); // race condition
     }
   }
 };
@@ -131,6 +169,7 @@ export default {
       border: 2px solid $primary;
       border-radius: 0 0 6px 6px;
       box-shadow: 2px 3px 3px 0px rgba(0, 0, 0, 0.3);
+      z-index: 40;
       &-single {
         text-decoration: none;
         color: black;
@@ -139,6 +178,9 @@ export default {
         border-bottom: 1px solid $grey-border;
         &:last-child {
           border-bottom: 0;
+        }
+        &.active {
+          background-color: #e1ebf9;
         }
       }
     }
