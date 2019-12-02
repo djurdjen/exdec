@@ -1,4 +1,4 @@
-# Exdec - Travel expanse manager
+# Exdec - Travel expense manager
 
 ```
 yarn install
