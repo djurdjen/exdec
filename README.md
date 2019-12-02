@@ -1,4 +1,4 @@
-# Node vue starter
+# Exdec
 
 ```
 yarn install
