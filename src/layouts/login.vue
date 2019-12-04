@@ -131,7 +131,7 @@ export default {
   background: $primary;
 
   &__container {
-    height: 90vh;
+    height: 100%;
     max-width: 420px;
     padding: 20px 40px;
     margin: 0 auto;

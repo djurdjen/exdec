@@ -11,7 +11,7 @@
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
+  // min-height: 100vh;
   margin: 0 auto;
   background-color: white;
 }
