@@ -17,7 +17,14 @@ const args =
 
 Promise.all([
   seedEntries.createEntryTable({
+    /**
+     * If force is true, each DAO will do DROP TABLE IF EXISTS ..., before it tries to create its own table
+     */
     force: args.includes("fresh"),
+    /**
+     * Alters tables to fit models. Not recommended for production use. Deletes data in columns
+     * that were removed or had their type changed in the model.
+     */
     alter: args.includes("alter")
   }),
   seedUsers.createUserTable({ force: args.includes("fresh") })
@@ -31,9 +38,7 @@ Promise.all([
         .register("admin@admin.nl", hash)
         .then(resp => {
           console.log(
-            `\x1b[32mCreated user: ${
-              resp.username
-            } - with password: ${pw}\x1b[0m`
+            `\x1b[32mCreated user: ${resp.username} - with password: ${pw}\x1b[0m`
           );
         })
         .catch(err => {

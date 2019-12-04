@@ -165,7 +165,7 @@ export default {
   components: { CreateEntry, InputText, InputDate, InputTextSelect },
   data() {
     return {
-      showCreator: true,
+      showCreator: false,
       scrollTop: document.documentElement.scrollTop,
       entryDetail: null,
       transportation,
