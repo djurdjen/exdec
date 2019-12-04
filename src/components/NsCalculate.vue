@@ -3,7 +3,7 @@
     <div class="ns-calculate__background" @click="closeModal"></div>
     <div class="ns-calculate__view">
       <div class="ns-calculate__header">
-        <strong>Bereken je reis met NS</strong>
+        <h2>Bereken je reis met NS</h2>
         <div class="ns-calculate__close" @click="closeModal">
           &times;
         </div>
@@ -122,7 +122,8 @@ export default {
       return (
         !this.invalidFromStation &&
         !this.invalidToStation &&
-        (this.inputTo && this.inputFrom)
+        this.inputTo &&
+        this.inputFrom
       );
     },
     observedDataValues() {
@@ -217,9 +218,11 @@ export default {
     display: flex;
     align-items: center;
 
-    strong {
+    h2 {
       font-size: 20px;
       flex-grow: 1;
+      margin: 0;
+      padding: 0;
     }
   }
   &__close {

@@ -1,58 +1,64 @@
 <template>
   <div class="login">
-    <h1>Exdec</h1>
-    <form @submit.prevent="login()" v-if="mode === 'login'">
-      <label class="login__input email">
-        <input type="email" v-model="username" placeholder="E-mailadres" />
-      </label>
-      <label class="login__input password">
-        <input type="password" v-model="password" placeholder="Wachtwoord" />
-      </label>
-      <span class="login__error">{{ errorMsg }}</span>
-      <button type="submit" class="cta">Login</button>
-      <a href="#" @click.prevent="mode = 'signup'" class="btn"
-        >Maak een account</a
+    <div class="login__container">
+      <h1>Exdec</h1>
+      <h2>Beheer je reiskosten, waar je ook bent!</h2>
+      <form @submit.prevent="login()" v-if="mode === 'login'">
+        <label class="login__input email">
+          <input type="email" v-model="username" placeholder="E-mailadres" />
+        </label>
+        <label class="login__input password">
+          <input type="password" v-model="password" placeholder="Wachtwoord" />
+        </label>
+        <span class="login__error">{{ errorMsg }}</span>
+        <button type="submit" class="cta cta--dark">Login</button>
+        <a
+          href="#"
+          @click.prevent="mode = 'signup'"
+          class="login__create-account"
+          >Maak een nieuw account</a
+        >
+      </form>
+      <form
+        name="new-user"
+        v-else-if="mode === 'signup'"
+        autocomplete="off"
+        @submit.prevent="register"
       >
-    </form>
-    <form
-      name="new-user"
-      v-else-if="mode === 'signup'"
-      autocomplete="off"
-      @submit.prevent="register"
-    >
-      <label class="login__input email">
-        <input
-          type="email"
-          v-model="signup.username"
-          name="new-email"
-          placeholder="E-mailadres"
-          autocomplete="off"
-        />
-      </label>
-      <label class="login__input password">
-        <input
-          type="password"
-          v-model="signup.password"
-          name="new-password"
-          placeholder="Nieuw wachtwoord"
-          autocomplete="off"
-        />
-      </label>
+        <label class="login__input email">
+          <input
+            type="email"
+            v-model="signup.username"
+            name="new-email"
+            placeholder="E-mailadres"
+            autocomplete="off"
+          />
+        </label>
+        <label class="login__input password">
+          <input
+            type="password"
+            v-model="signup.password"
+            name="new-password"
+            placeholder="Nieuw wachtwoord"
+            autocomplete="off"
+          />
+        </label>
 
-      <label class="login__input password">
-        <input
-          type="password"
-          v-model="signup.repeatPassword"
-          name="new-password-repeat"
-          placeholder="Herhaal wachtwoord"
-        />
-      </label>
-      <span class="login__error">{{ signUperrorMsg }}</span>
-      <button type="submit" class="cta">Registreer</button>
-      <a href="#" class="login__signup-back" @click.prevent="mode = 'login'"
-        >Terug naar inloggen</a
-      >
-    </form>
+        <label class="login__input password">
+          <input
+            type="password"
+            v-model="signup.repeatPassword"
+            name="new-password-repeat"
+            placeholder="Herhaal wachtwoord"
+          />
+        </label>
+        <span class="login__error">{{ signUperrorMsg }}</span>
+        <button type="submit" class="cta cta--dark">Registreer</button>
+        <a href="#" class="login__signup-back" @click.prevent="mode = 'login'"
+          >Terug naar inloggen</a
+        >
+      </form>
+    </div>
   </div>
 </template>
 
@@ -117,14 +123,26 @@ export default {
 <style lang="scss">
 @import "@/variables.scss";
 .login {
-  padding: 20px 40px;
-  height: 90vh;
-  max-width: 420px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: $primary;
+
+  &__container {
+    height: 90vh;
+    max-width: 420px;
+    padding: 20px 40px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    @include respond-to("medium-small") {
+      height: 100vh;
+    }
+  }
   &__error {
     color: $red;
   }
@@ -158,10 +176,12 @@ export default {
       }
     }
   }
+
+  &__create-account,
   &__signup-back {
-    color: black;
+    color: white;
     display: block;
-    margin-top: 20px;
+    margin: 20px 0;
   }
   button,
   .btn {
@@ -170,6 +190,14 @@ export default {
   }
   h1 {
     font-size: 60px;
+    color: white;
+    padding-bottom: 0.15em;
+
+    & + h2 {
+      font-size: 16px;
+      color: white;
+      margin-bottom: 20px;
+    }
   }
 }
 </style>

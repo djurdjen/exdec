@@ -3,7 +3,7 @@
     <div class="modal__background" @click="closeModal"></div>
     <div class="modal__view">
       <div class="modal__header">
-        <strong>Let op!</strong>
+        <h2>Let op!</h2>
         <div class="modal__close" @click="closeModal">
           &times;
         </div>
@@ -74,9 +74,11 @@ export default {
     display: flex;
     align-items: center;
 
-    strong {
+    h2 {
       font-size: 20px;
       flex-grow: 1;
+      margin: 0;
+      padding: 0;
     }
   }
   &__close {
