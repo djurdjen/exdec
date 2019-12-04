@@ -1,6 +1,6 @@
 <template>
   <div class="calculate">
-    <h1 class="calculate__header">Berekenen</h1>
+    <h1 class="calculate__header theme-header">Berekenen</h1>
     <div class="calculate__body" v-if="Object.keys(entries).length">
       <div class="calculate__body-form">
         <p>

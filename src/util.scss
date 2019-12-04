@@ -23,16 +23,18 @@ body {
 }
 
 h1 {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  &:before {
-    content: "";
-    display: block;
-    width: 8px;
-    background-color: $primary;
-    height: 8px;
-    margin-right: 12px;
+  &.theme-header {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    &:before {
+      content: "";
+      display: block;
+      width: 8px;
+      background-color: $primary;
+      height: 8px;
+      margin-right: 12px;
+    }
   }
 }
 

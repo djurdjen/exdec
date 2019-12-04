@@ -3,7 +3,7 @@
     <div
       :class="['entries__header', { 'entries__header--shadow': !showCreator }]"
     >
-      <h1>Reizen</h1>
+      <h1 class="theme-header">Reizen</h1>
       <div
         @click.prevent="showCreator = !showCreator"
         :class="['entries__header-toggle', { show: showCreator }]"

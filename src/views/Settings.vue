@@ -1,6 +1,6 @@
 <template>
   <div class="settings">
-    <h1 class="settings__header">Instellingen</h1>
+    <h1 class="settings__header theme-header">Instellingen</h1>
 
     <div class="settings__container">
       <InputText type="text" label="Naam" name="name" v-model="settings.name" />
