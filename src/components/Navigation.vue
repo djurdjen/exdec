@@ -10,7 +10,7 @@
         </strong>
       </div>
     </div>
-    <transition name="fade">
+    <div class="nav__container">
       <div :class="['nav__nav', { active: menuActive }]">
         <router-link :to="{ name: 'Entries' }"
           ><i class="fas fa-car"></i> Reizen
@@ -24,9 +24,9 @@
         <a href="#" @click.prevent="logout"
           ><i class="fas fa-sign-out-alt"></i> Logout</a
         >
-        <div class="nav__underlay" @click="menuActive = false"></div>
       </div>
-    </transition>
+      <div class="nav__underlay" @click="menuActive = false"></div>
+    </div>
   </div>
 </template>
 
@@ -74,17 +74,6 @@ export default {
 .nav {
   border-right: 1px solid rgba(0, 0, 0, 0.15);
 
-  &__underlay {
-    position: fixed;
-    left: 280px;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    @include respond-to("medium-small") {
-      display: none;
-    }
-  }
   &__header {
     height: 42px;
     padding: 12px;
@@ -132,19 +121,29 @@ export default {
       }
     }
   }
-  &__nav {
+  &__container {
     display: flex;
     position: fixed;
-    flex-direction: column;
-    background-color: white;
+    z-index: 10;
     top: 0;
     bottom: 0;
     left: 0;
+    @include respond-to("medium-small") {
+      display: block;
+      position: static;
+    }
+  }
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+
     width: 280px;
-    z-index: 10;
+
     padding-top: 30px;
     margin-top: 42px;
-    display: none;
+    transform: translateX(-100%);
+    transition: 200ms ease-in-out;
 
     @include respond-to("medium-small") {
       display: block;
@@ -152,10 +151,26 @@ export default {
       padding-top: 0;
       margin-top: 0;
       width: 140px;
+      transform: translateX(0);
     }
 
     &.active {
       display: block;
+      transform: translateX(0);
+      z-index: 10;
+
+      & + .nav__underlay {
+        width: 100vw;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        @include respond-to("medium-small") {
+          display: none;
+        }
+      }
     }
 
     a {
