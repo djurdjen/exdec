@@ -178,7 +178,6 @@ export default {
   &__header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 12px;
     min-height: 60px;
     max-height: 60px;
@@ -194,7 +193,7 @@ export default {
     &-form {
       width: 100%;
       border-right: 1px solid rgba(0, 0, 0, 0.15);
-      padding: 20px;
+      padding: 12px;
       max-width: 100%;
 
       @include respond-to("medium-small") {

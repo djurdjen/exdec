@@ -24,7 +24,7 @@ import Datepicker from "vuejs-datepicker";
 export default {
   components: { Datepicker },
   props: {
-    value: { type: [Number, String], default: "" },
+    value: { type: [Number, String, Date], default: "" },
     label: { type: String, default: "" }
   },
   methods: {

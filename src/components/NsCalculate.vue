@@ -281,7 +281,7 @@ export default {
     font-weight: bold;
     font-size: 26px;
     display: block;
-    margin: 30px auto 0;
+    margin: 30px 0 0 12px;
   }
   &__direct-calculations {
     display: flex;

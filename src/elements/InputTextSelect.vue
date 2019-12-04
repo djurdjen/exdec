@@ -30,13 +30,13 @@
     ></div>
     <div class="picker__choices" v-show="choicesActive">
       <span v-if="!choices.length" class="picker__choices-single"
-        >Geen presets bechikbaar</span
+        >Geen data bechikbaar</span
       >
       <span
         :class="['picker__choices-single', { active: choice.active }]"
         v-for="(choice, key) in formattedChoices"
         :key="key"
-        @click.prevent="changeData(choice.name)"
+        @click.prevent="clickedChoice(choice)"
       >
         {{ choice.name }}
       </span>
@@ -76,10 +76,13 @@ export default {
   },
   computed: {
     formattedChoices() {
-      return this.choices.map((c, key) => ({
-        name: typeof Object.values(this.choices)[0] === "string" ? c : c.name,
-        active: key + 1 === this.selectionIndex
-      }));
+      return this.choices.map((c, key) => {
+        return {
+          key,
+          name: typeof Object.values(this.choices)[0] === "string" ? c : c.name,
+          active: key + 1 === this.selectionIndex
+        };
+      });
     }
   },
 
@@ -100,6 +103,10 @@ export default {
     changeData(data, close = false) {
       this.choicesActive = close ? false : this.suggestion;
       this.$emit("input", data);
+    },
+    clickedChoice(val) {
+      this.changeData(val.name);
+      this.$emit("onChoice", this.choices[val.key]);
     },
     toggleChoices() {
       this.choicesActive = !this.choicesActive;

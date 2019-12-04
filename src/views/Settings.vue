@@ -97,7 +97,6 @@ export default {
   &__header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     padding: 12px;
     min-height: 60px;
     max-height: 60px;
@@ -149,6 +148,8 @@ export default {
         padding: 0 12px;
         text-align: center;
         margin-left: auto;
+        font-size: 14px;
+        cursor: pointer;
       }
     }
   }

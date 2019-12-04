@@ -1,6 +1,13 @@
 <template>
   <div class="create">
     <form class="create__form" @submit.prevent="" novalidate>
+      <InputTextSelect
+        :choices="presets"
+        :optionalDropdown="true"
+        v-model="fieldData.description"
+        placeholder="Beschrijving"
+        @onChoice="fillAllPresets"
+      />
       <select v-model="fieldData.transport">
         <option
           v-for="(option, key) in transportation"
@@ -11,16 +18,6 @@
         >
       </select>
 
-      <InputTextSelect
-        v-model="fieldData.description"
-        placeholder="Beschrijving"
-        :choices="presets"
-        :optionalDropdown="true"
-      />
-      <InputCheckbox
-        v-model="saveAsPreset"
-        label=" Sla beschrijving op als preset"
-      />
       <InputText
         v-if="fieldData.transport === 'car'"
         pattern="\d*"
@@ -45,6 +42,7 @@
       >
         Gereisd met NS? Bereken je prijs
       </a>
+      <InputCheckbox v-model="saveAsPreset" label="Sla reis op als preset" />
       <InputDate v-model="fieldData.date" />
       <div class="create__send-container">
         <a class="btn cta" @click="send">Voeg toe</a>
@@ -109,6 +107,15 @@ export default {
         date: this.$createNewDate()
       };
     },
+    fillAllPresets({ name, ticketPrice, kilometres, transport }) {
+      this.fieldData = {
+        ...this.fieldData,
+        description: name,
+        ...(ticketPrice && { ticketPrice }),
+        ...(kilometres && { kilometres }),
+        transport
+      };
+    },
     async send() {
       try {
         await this.sendEntry({
@@ -118,7 +125,11 @@ export default {
           [this.valueLabel]: this.fieldData[this.valueLabel].replace(",", ".")
         });
         if (this.saveAsPreset) {
-          await this.addPreset(this.fieldData.description);
+          await this.addPreset({
+            transport: this.fieldData.transport,
+            name: this.fieldData.description,
+            [this.valueLabel]: this.fieldData[this.valueLabel]
+          });
         }
         pushToast("success", "Reisdata succesvol opgeslagen");
         this.resetData();
@@ -180,7 +191,8 @@ export default {
     font-weight: 800;
     font-size: 14px;
     margin-left: 6px;
-    margin-top: 6px;
+    margin-top: 12px;
+    margin-bottom: 12px;
   }
 }
 </style>

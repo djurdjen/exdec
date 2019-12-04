@@ -94,6 +94,9 @@ export default new Vuex.Store({
     },
     SEND_MAIL_SUCCESS(state) {
       Vue.delete(state.loading, "mailing");
+    },
+    SEND_MAIL_FAILED(state) {
+      Vue.delete(state.loading, "mailing");
     }
   },
   actions: {
@@ -193,6 +196,7 @@ export default new Vuex.Store({
         commit("SEND_MAIL_SUCCESS");
         return Promise.resolve();
       } catch (err) {
+        commit("SEND_MAIL_FAILED");
         return Promise.reject(err);
       }
     }

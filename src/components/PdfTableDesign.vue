@@ -18,7 +18,7 @@
             ><i class="fas fa-times"></i>
           </span>
         </td>
-        <td>{{ data.date | formatTime }}</td>
+        <td style="width:100px">{{ data.date | formatTime }}</td>
         <td>{{ data.description }}</td>
         <td>{{ data.transport | translateTransport }}</td>
         <td>{{ data.kilometres || "-" }}</td>
