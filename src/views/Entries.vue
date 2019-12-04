@@ -255,6 +255,7 @@ export default {
         });
         await this.removeEntry(id);
       } catch (err) {
+        // eslint-disable-next-line
         console.warn(err);
       }
     },

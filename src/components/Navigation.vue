@@ -60,6 +60,7 @@ export default {
           window.location.href = "/login";
         });
       } catch (err) {
+        // eslint-disable-next-line
         console.warn(err);
       }
     }

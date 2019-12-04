@@ -86,7 +86,11 @@ export default new Vuex.Store({
       Vue.delete(state.loading, "edit-settings");
     },
     EDIT_SETTINGS_FAILED(state, data) {
-      Vue.set(state.errors, "settings", data.map(d => d.message));
+      Vue.set(
+        state.errors,
+        "settings",
+        data.map(d => d.message)
+      );
       Vue.delete(state.loading, "edit-settings");
     },
     SEND_MAIL(state) {
@@ -101,14 +105,14 @@ export default new Vuex.Store({
   },
   actions: {
     // the login is for creating a token
-    async login({ commit }, auth) {
+    async login(_, auth) {
       const resp = await api.post("login", auth);
       Object.assign(api.defaults, {
         headers: { "x-auth-token": resp.token }
       });
       localStorage.setItem("token", resp.token);
     },
-    async register({ commit }, data) {
+    async register(_, data) {
       return await api.post("register", data);
     },
     // the verify token function is for retrieving the user data that fits the token

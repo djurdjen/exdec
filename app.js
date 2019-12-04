@@ -10,6 +10,20 @@ var passport = require("passport");
 
 var app = express();
 
+function requireHTTPS(req, res, next) {
+  // The 'x-forwarded-proto' check is for Heroku
+  if (
+    !req.secure &&
+    req.get("x-forwarded-proto") !== "https" &&
+    !process.env.DEV
+  ) {
+    return res.redirect("https://" + req.get("host") + req.url);
+  }
+  next();
+}
+
+app.use(requireHTTPS);
+
 // view engine setup
 app.use(passport.initialize());
 app.use(passport.session());

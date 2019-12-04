@@ -142,6 +142,7 @@ export default {
         const resp = await nsModal();
         this.fieldData.ticketPrice = resp.data;
       } catch (err) {
+        // eslint-disable-next-line
         console.warn(err);
       }
     }
