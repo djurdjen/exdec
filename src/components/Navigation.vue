@@ -140,7 +140,6 @@ export default {
     left: 0;
     width: 280px;
     z-index: 10;
-    padding-top: 30px;
     margin-top: 42px;
     display: none;
 
@@ -173,8 +172,13 @@ export default {
       }
       &.router-link-exact-active {
         font-weight: bold;
+        background-color: $primary;
+        color: white;
         @include respond-to("medium-small") {
           background-color: $primary;
+          color: white;
+        }
+        i {
           color: white;
         }
       }

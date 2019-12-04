@@ -105,13 +105,10 @@ export default {
   }
   &__container {
     padding: {
-      top: 60px;
+      top: 20px;
       left: 20px;
       right: 20px;
       bottom: 30px;
-    }
-    @include respond-to("medium-small") {
-      padding-top: 20px;
     }
 
     label {
