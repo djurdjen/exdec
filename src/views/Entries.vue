@@ -387,10 +387,10 @@ export default {
   &__list {
     position: relative;
     flex: 1;
+    min-height: calc(100vh - 150px);
     @include respond-to("medium-small") {
       overflow: scroll;
       -webkit-overflow-scrolling: touch;
-
       max-height: calc(100vh - 60px);
     }
   }
@@ -399,6 +399,7 @@ export default {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    white-space: nowrap;
   }
   &__single {
     cursor: pointer;
