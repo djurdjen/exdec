@@ -10,13 +10,17 @@
         <label class="login__input password">
           <input type="password" v-model="password" placeholder="Wachtwoord" />
         </label>
+        <router-link :to="{ name: 'RequestPassword' }" class="login__forgot"
+          >Wachtwoord vergeten?</router-link
+        >
+
         <span class="login__error">{{ errorMsg }}</span>
         <button type="submit" class="cta cta--dark">Login</button>
         <a
           href="#"
           @click.prevent="mode = 'signup'"
           class="login__create-account"
-          >Maak een nieuw account</a
+          >Of maak een nieuw account</a
         >
       </form>
       <form
@@ -145,6 +149,8 @@ export default {
   }
   &__error {
     color: $red;
+    margin-top: 12px;
+    display: block;
   }
   &__input {
     position: relative;
@@ -153,6 +159,9 @@ export default {
     }
     &.password,
     &.email {
+      input {
+        font-size: 11px;
+      }
       &:before {
         content: "";
         width: 14px;
@@ -175,6 +184,14 @@ export default {
         }
       }
     }
+  }
+
+  &__forgot {
+    color: white;
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    cursor: pointer;
   }
 
   &__create-account,

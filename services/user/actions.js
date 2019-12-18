@@ -1,11 +1,13 @@
 const model = require("./model");
+const bcrypt = require("bcrypt");
+const secret = require("../secrets");
 
 const User = model.model;
 const connection = model.connection;
 
 const actions = {
-  async register(user, hash) {
-    console.log(user, hash);
+  async register(user, password) {
+    const hash = await bcrypt.hash(password, secret.saltRounds);
     return await connection
       .sync()
       .then(() =>
@@ -32,6 +34,14 @@ const actions = {
       }
     });
   },
+  async verifyUserExisting(username) {
+    const user = await User.findOne({ where: { username: username } });
+    if (user) {
+      return Promise.resolve(user);
+    } else {
+      return Promise.reject("Deze gebruiker is niet bekend bij ons");
+    }
+  },
   async getUserSettings(username) {
     const user = await User.findOne({ where: { username: username } });
     return Promise.resolve(user.dataValues.settings);
@@ -44,6 +54,13 @@ const actions = {
     } catch (err) {
       return Promise.reject(err.errors);
     }
+  },
+  async changePassword(data) {
+    const user = await User.findOne({ where: { username: data.user } });
+    await bcrypt.hash(data.password, secret.saltRounds, function(err, hash) {
+      user.update({ password: hash });
+    });
+    return Promise.resolve("password changed!");
   },
   async createUserTable({ force, alter }) {
     try {

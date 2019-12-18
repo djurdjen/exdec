@@ -203,6 +203,30 @@ export default new Vuex.Store({
         commit("SEND_MAIL_FAILED");
         return Promise.reject(err);
       }
+    },
+    async requestPassword(_, email) {
+      try {
+        await api.post("request-password", { email });
+        return Promise.resolve();
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    },
+    async validateResetToken(_, token) {
+      try {
+        await api.get(`validate-reset-token/${token}`);
+        return Promise.resolve();
+      } catch (err) {
+        return Promise.reject(err);
+      }
+    },
+    async resetPassword(_, data) {
+      try {
+        await api.post(`reset-password`, data);
+        return Promise.resolve();
+      } catch (err) {
+        return Promise.reject(err);
+      }
     }
   }
 });

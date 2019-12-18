@@ -5,6 +5,8 @@ import Login from "./layouts/login.vue";
 import Calculate from "./views/Calculate.vue";
 import Entries from "./views/Entries.vue";
 import Settings from "./views/Settings.vue";
+import ResetPassword from "./views/ResetPassword.vue";
+import RequestPassword from "./views/RequestPassword.vue";
 
 Vue.use(Router);
 
@@ -15,6 +17,16 @@ const router = new Router({
       path: "/login",
       name: "Login",
       component: Login
+    },
+    {
+      path: "/reset-password",
+      name: "ResetPassword",
+      component: ResetPassword
+    },
+    {
+      path: "/request-password",
+      name: "RequestPassword",
+      component: RequestPassword
     },
     {
       path: "/",

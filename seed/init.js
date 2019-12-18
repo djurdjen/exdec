@@ -2,6 +2,7 @@ require("dotenv").config({ silent: true });
 
 const secret = require("../services/secrets");
 const seedEntries = require("../services/entry/actions");
+const seedResetPassword = require("../services/resetPassword/actions");
 const seedUsers = require("../services/user/actions");
 const bcrypt = require("bcrypt");
 
@@ -17,14 +18,11 @@ const args =
 
 Promise.all([
   seedEntries.createEntryTable({
-    /**
-     * If force is true, each DAO will do DROP TABLE IF EXISTS ..., before it tries to create its own table
-     */
     force: args.includes("fresh"),
-    /**
-     * Alters tables to fit models. Not recommended for production use. Deletes data in columns
-     * that were removed or had their type changed in the model.
-     */
+    alter: args.includes("alter")
+  }),
+  seedResetPassword.createResetPasswordTable({
+    force: args.includes("fresh"),
     alter: args.includes("alter")
   }),
   seedUsers.createUserTable({ force: args.includes("fresh") })

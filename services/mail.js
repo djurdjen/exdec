@@ -5,6 +5,37 @@ const mg = mailgun({
 });
 const fs = require("fs");
 
+const mailErrors = err => {
+  switch (err.message) {
+    case "Sandbox subdomains are for test purposes only. Please add your own domain or add the address to authorized recipients in Account Settings.":
+      return {
+        status: 401,
+        message:
+          "Er kan geen e-mail verstuurd worden voor dit e-mail adres. Neem contact op met de developer voor e-mail features"
+      };
+    default:
+      return { status: 400, message: err.message };
+  }
+};
+
+const requestPassword = function({ email, url }) {
+  return new Promise((resolve, reject) => {
+    const data = {
+      from: "Exdec <no-reply@exdec.nl>",
+      to: email,
+      subject: "Forgot password",
+      text: `You requested a new password. If this was not you, please ignore this message!
+    Follow this link to reset your password: ${url}`
+    };
+    mg.messages().send(data, function(error, body) {
+      if (error) {
+        return reject(mailErrors(error));
+      }
+      return resolve(body);
+    });
+  });
+};
+
 const mail = function(req) {
   return new Promise((resolve, reject) => {
     // strip base64 from its url data
@@ -29,7 +60,7 @@ const mail = function(req) {
           from: "Exdec <no-reply@exdec.nl>",
           to: req.email,
           subject: "Your declaration",
-          text: "Thanks for using Exdec",
+          text: "Regards, The Exdec Team",
           attachment: fs.createReadStream(`tmp/${fileName}.pdf`)
         };
         mg.messages().send(data, function(error, body) {
@@ -46,4 +77,4 @@ const mail = function(req) {
   });
 };
 
-module.exports = mail;
+module.exports = { mail, requestPassword };
