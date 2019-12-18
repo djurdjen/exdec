@@ -155,7 +155,7 @@ router.post("/request-password", async (req, res) => {
     res.json({ succes: true });
   } catch (err) {
     res.status(err.status || 400);
-    res.json(err.message);
+    res.json(err.message || err);
   }
 });
 
