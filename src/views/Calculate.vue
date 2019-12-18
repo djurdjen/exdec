@@ -58,7 +58,7 @@
         <div>Doe een berekening voor een PDF voorbeeld</div>
       </div>
     </div>
-    <div v-else>
+    <div v-else class="calculate__no-results">
       Er is onvoldoende data om de reiskosten te berekenen
     </div>
   </div>
@@ -184,7 +184,12 @@ export default {
     width: 100%;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
-
+  &__no-results {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
   &__body {
     height: 100%;
     display: flex;

@@ -135,6 +135,9 @@
             >
           </div>
         </div>
+        <div v-if="!entries.length" class="entries__no-results">
+          Geen data beschikbaar
+        </div>
       </div>
     </div>
     <transition name="fade">
@@ -382,6 +385,7 @@ export default {
     }
   }
   &__list {
+    position: relative;
     flex: 1;
     @include respond-to("medium-small") {
       overflow: scroll;
@@ -389,6 +393,12 @@ export default {
 
       max-height: calc(100vh - 60px);
     }
+  }
+  &__no-results {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
   &__single {
     cursor: pointer;

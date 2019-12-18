@@ -53,6 +53,7 @@ export default {
   }
   &__view {
     padding-top: 42px;
+    position: relative;
 
     @include respond-to("medium-small") {
       padding-top: 0;

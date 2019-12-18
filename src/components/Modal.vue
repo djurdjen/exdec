@@ -68,7 +68,7 @@ export default {
     right: 0;
     top: 0;
     height: 50px;
-    padding: 0 0 0 20px;
+    padding: 0 0 0 13px;
     background-color: $primary;
     color: white;
     display: flex;
@@ -100,6 +100,7 @@ export default {
     width: calc(100% - 60px);
     max-width: 500px;
     background-color: white;
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
     z-index: 10;
     &-content {
       overflow: auto;
