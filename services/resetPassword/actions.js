@@ -40,11 +40,17 @@ const actions = {
   },
   async validateToken(token) {
     try {
+      const exists = await ResetPassword.findOne({
+        where: {
+          resetPasswordToken: token
+        }
+      });
       const data = await jwt.verify(token, secret.jwt);
-      if (data.exp < data.iat) {
+      if (!exists) {
+        // if token is valid but doesn't exist in the db as an active token
         return Promise.reject({
           success: false,
-          message: "Token has expired."
+          message: "Token is not valid"
         });
       }
       return Promise.resolve(data);
