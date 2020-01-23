@@ -30,22 +30,19 @@ Promise.all([
   .then(() => {
     console.log("\x1b[32mCreated tables!\x1b[0m");
     const pw = "admin";
-    bcrypt.hash(pw, secret.saltRounds, function(err, hash) {
-      // require here so the action doesn't polute the connection models
-      require("../services/user/actions")
-        .register("admin@admin.nl", hash)
-        .then(resp => {
-          console.log(
-            `\x1b[32mCreated user: ${resp.username} - with password: ${pw}\x1b[0m`
-          );
-        })
-        .catch(err => {
-          console.log(err);
-        })
-        .finally(() => {
-          process.exit();
-        });
-    });
+    require("../services/user/actions")
+      .register("admin@admin.nl", pw)
+      .then(resp => {
+        console.log(
+          `\x1b[32mCreated user: ${resp.username} - with password: ${pw}\x1b[0m`
+        );
+      })
+      .catch(err => {
+        console.log(err);
+      })
+      .finally(() => {
+        process.exit();
+      });
   })
   .catch(err => {
     console.log(`\x1b[31m${err}\x1b[0m`);
