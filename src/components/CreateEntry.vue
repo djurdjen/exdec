@@ -6,9 +6,10 @@
         :optionalDropdown="true"
         v-model="fieldData.description"
         placeholder="Beschrijving"
+        name="description"
         @onChoice="fillAllPresets"
       />
-      <select v-model="fieldData.transport">
+      <select name="transport-type" v-model="fieldData.transport">
         <option
           v-for="(option, key) in transportation"
           :selected="key === 0"
@@ -23,6 +24,7 @@
         pattern="\d*"
         v-model="fieldData.kilometres"
         placeholder="Kilometers"
+        name="kilometres"
       >
         <strong>km</strong>
       </InputText>
@@ -31,6 +33,7 @@
         type="number"
         v-model="fieldData.ticketPrice"
         placeholder="Prijs kaartje"
+        name="ticket-price"
       >
         <strong>&euro;</strong>
       </InputText>
@@ -45,7 +48,9 @@
       <InputCheckbox v-model="saveAsPreset" label="Sla reis op als preset" />
       <InputDate v-model="fieldData.date" />
       <div class="create__send-container">
-        <a class="btn cta" @click="send">Voeg toe</a>
+        <button class="btn cta" name="send-entry" @click="send">
+          Voeg toe
+        </button>
         <span v-if="failed.send" class="create__error">{{
           failed.send[0]
         }}</span>

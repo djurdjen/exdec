@@ -10,6 +10,7 @@
       @input="changeData($event.target.value)"
       :placeholder="placeholder"
       :type="type"
+      :name="name"
       :pattern="pattern"
     />
     <input
@@ -20,6 +21,7 @@
       @focus="choicesActive = true"
       :placeholder="placeholder"
       :type="type"
+      :name="name"
       :pattern="pattern"
     />
 
@@ -52,6 +54,7 @@ export default {
     pattern: { type: String, default: "" },
     placeholder: { type: String, default: "" },
     type: { type: String, default: "text" },
+    name: { type: String, default: "" },
     choices: { type: Array, default: () => [] },
     suggestion: { type: Boolean, default: false },
     optionalDropdown: { type: Boolean, default: false }

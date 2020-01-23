@@ -7,7 +7,8 @@
     "dev": "vue-cli-service serve --port 8080",
     "seed": "node ./seed/init",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "test": "testcafe chrome tests/*.test.js --app \"npm run dev\" --app-init-delay 10000 -S -s screenshots"
   },
   "dependencies": {
     "axios": "^0.18.0",

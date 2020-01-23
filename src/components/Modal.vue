@@ -15,12 +15,15 @@
       <div v-if="prompt" class="modal__prompt">
         <button
           href="#"
+          name="action-btn"
           class="cta small"
           @click.prevent="$emit('send', $event)"
         >
           {{ proceed }}
         </button>
-        <button class="small" @click.prevent="closeModal">Annuleer</button>
+        <button name="cancel-btn" class="small" @click.prevent="closeModal">
+          Annuleer
+        </button>
       </div>
     </div>
   </div>
