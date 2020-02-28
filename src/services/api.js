@@ -10,10 +10,6 @@ const api = axios.create({
   timeout: 5000,
   withCredentials: true
 });
-api.interceptors.request.use(resp => {
-  console.log(resp);
-  return resp;
-});
 api.interceptors.response.use(
   resp => resp.data,
 
