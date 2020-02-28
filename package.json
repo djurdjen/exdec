@@ -5,7 +5,7 @@
   "scripts": {
     "start": "npx nodemon ./bin/www",
     "dev": "vue-cli-service serve --port 8080",
-    "seed": "node ./seed/init",
+    "migrate": "yarn sequelize db:migrate && node ./config/createUser",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "test": "testcafe chrome tests/*.test.js --app \"npm run dev\" --app-init-delay 10000 -S -s screenshots"

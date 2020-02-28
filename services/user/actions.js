@@ -1,21 +1,15 @@
-const model = require("./model");
+const { Users } = require("../../models/index");
+
 const bcrypt = require("bcrypt");
 const secret = require("../secrets");
-
-const User = model.model;
-const connection = model.connection;
 
 const actions = {
   async register(user, password) {
     const hash = await bcrypt.hash(password, secret.saltRounds);
-    return await connection
-      .sync()
-      .then(() =>
-        User.findOrCreate({
-          where: { username: user },
-          defaults: { password: hash, settings: '{"compensation": 0.19}' }
-        })
-      )
+    return Users.findOrCreate({
+      where: { username: user },
+      defaults: { password: hash, settings: '{"compensation": 0.19}' }
+    })
       .catch(err => {
         return Promise.reject(String(err.message));
       })
@@ -28,14 +22,14 @@ const actions = {
       });
   },
   async login(user) {
-    return await User.findAll({
+    return await Users.findAll({
       where: {
         username: user
       }
     });
   },
   async verifyUserExisting(username) {
-    const user = await User.findOne({ where: { username: username } });
+    const user = await Users.findOne({ where: { username: username } });
     if (user) {
       return Promise.resolve(user);
     } else {
@@ -43,12 +37,12 @@ const actions = {
     }
   },
   async getUserSettings(username) {
-    const user = await User.findOne({ where: { username: username } });
+    const user = await Users.findOne({ where: { username: username } });
     return Promise.resolve(user.dataValues.settings);
   },
   async editUserSettings(username, settings) {
     try {
-      const user = await User.findOne({ where: { username: username } });
+      const user = await Users.findOne({ where: { username: username } });
       const val = await user.update({ settings: JSON.stringify(settings) });
       return Promise.resolve(val.dataValues);
     } catch (err) {
@@ -56,7 +50,7 @@ const actions = {
     }
   },
   async changePassword(data) {
-    const user = await User.findOne({ where: { username: data.user } });
+    const user = await Users.findOne({ where: { username: data.user } });
     await bcrypt.hash(data.password, secret.saltRounds, function(err, hash) {
       user.update({ password: hash });
     });

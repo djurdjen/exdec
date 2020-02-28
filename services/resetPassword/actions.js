@@ -1,20 +1,12 @@
-const model = require("./model");
+const { ResetPasswords } = require("../../models/index");
+
 const jwt = require("jsonwebtoken");
 const secret = require("../secrets");
 
-const ResetPassword = model.model;
-const connection = model.connection;
 const actions = {
-  async createResetPasswordTable({ force, alter }) {
-    try {
-      await connection.sync({ force, alter });
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  },
   async postResetPasswordToken(user) {
     try {
-      const oldToken = await ResetPassword.findOne({
+      const oldToken = await ResetPasswords.findOne({
         where: {
           userId: user.id
         }
@@ -22,7 +14,7 @@ const actions = {
       if (oldToken) {
         await oldToken.destroy(); // if an e-mail reset request already exists, remove it
       }
-      const resp = await ResetPassword.create({
+      const resp = await ResetPasswords.create({
         resetPasswordToken: jwt.sign(
           { user: user.username, id: user.id },
           secret.jwt,
@@ -40,7 +32,7 @@ const actions = {
   },
   async validateToken(token) {
     try {
-      const exists = await ResetPassword.findOne({
+      const exists = await ResetPasswords.findOne({
         where: {
           resetPasswordToken: token
         }
@@ -62,7 +54,7 @@ const actions = {
     }
   },
   async deleteToken(userId) {
-    const entry = await ResetPassword.findOne({
+    const entry = await ResetPasswords.findOne({
       where: {
         userId
       }
