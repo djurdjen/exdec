@@ -96,7 +96,7 @@ router.post("/entries", ensureAuthorized, (req, res, next) => {
     })
     .catch(err => {
       res.status(400);
-      res.send({ error: err.map(msg => msg.message) });
+      res.send(err);
     });
 });
 

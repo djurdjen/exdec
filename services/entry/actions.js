@@ -1,29 +1,21 @@
-const model = require("./model");
+const { Entries } = require("../../models/index");
 
-const Entry = model.model;
-const connection = model.connection;
 const actions = {
-  async createEntryTable({ force, alter }) {
-    try {
-      await connection.sync({ force, alter });
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  },
   async postEntry(req) {
     try {
-      const resp = await Entry.create({
+      const resp = await Entries.create({
         ...req.body,
         userId: req.decoded.id
       });
       return resp.dataValues;
     } catch (err) {
+      console.log(err);
       return Promise.reject(err.errors);
     }
   },
   async editEntry(req) {
     try {
-      const entry = await Entry.findOne({
+      const entry = await Entries.findOne({
         where: {
           id: req.body.id
         },
@@ -36,7 +28,7 @@ const actions = {
   },
   async getEntries(req) {
     try {
-      const entries = await Entry.findAll({
+      const entries = await Entries.findAll({
         where: {
           userId: req.decoded.id
         }
@@ -48,7 +40,7 @@ const actions = {
   },
   async deleteEntry(id) {
     try {
-      const entry = await Entry.findOne({
+      const entry = await Entries.findOne({
         where: {
           id: id
         },
@@ -61,7 +53,7 @@ const actions = {
   },
   async deleteAllEntries() {
     try {
-      Entry.destroy({
+      Entries.destroy({
         where: {},
         truncate: true
       });
