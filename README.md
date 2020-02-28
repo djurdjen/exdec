@@ -19,7 +19,7 @@ yarn run start
 ### Seed tables
 
 ```
-yarn run seed
+yarn run migrate
 ```
 
 ### Run Vue dev server
