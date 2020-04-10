@@ -9,13 +9,6 @@ module.exports = (Sequelize, DataTypes) => {
         validate: {
           notEmpty: { msg: "Key entry must contain a key value" }
         }
-      },
-      keyOwner: {
-        type: DataTypes.INTEGER,
-        references: {
-          model: "Users",
-          key: "id"
-        }
       }
     },
     {}
