@@ -1,12 +1,11 @@
 const jwt = require("jsonwebtoken");
-const secret = require("../services/secrets");
 var userActions = require("../services/user/actions");
 
 const auth = function(req, res, next) {
   const token = req.body.token || req.headers["x-auth-token"];
   if (token) {
     // verifies secret and checks exp
-    jwt.verify(token, secret.jwt, function(err, decoded) {
+    jwt.verify(token, process.env.PREMIUM_KEY_SECRET, function(err, decoded) {
       if (err) {
         return res.status(401).send({
           success: false,

@@ -17,7 +17,7 @@ const actions = {
       const resp = await ResetPasswords.create({
         resetPasswordToken: jwt.sign(
           { user: user.username, id: user.id },
-          secret.jwt,
+          process.env.PREMIUM_KEY_SECRET,
           {
             expiresIn: "1d"
           }
@@ -37,7 +37,7 @@ const actions = {
           resetPasswordToken: token
         }
       });
-      const data = await jwt.verify(token, secret.jwt);
+      const data = await jwt.verify(token, process.env.PREMIUM_KEY_SECRET);
       if (!exists) {
         // if token is valid but doesn't exist in the db as an active token
         return Promise.reject({

@@ -6,7 +6,6 @@ const bcrypt = require("bcrypt");
 const actions = {
   async createKey() {
     try {
-      console.log(process.env.PREMIUM_KEY_SECRET);
       const hash = await bcrypt.hash(
         process.env.PREMIUM_KEY_SECRET,
         secret.saltRounds

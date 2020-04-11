@@ -5,7 +5,6 @@ const { mail, requestPassword } = require("../services/mail");
 
 // Authorisation and Security services
 const passport = require("passport");
-const secret = require("../services/secrets");
 const auth = require("../services/auth");
 const jwt = require("jsonwebtoken");
 
@@ -46,7 +45,7 @@ router.post("/login", (req, res, next) => {
         username: req.body.username,
         id: user[0].dataValues.id
       }; // define payload for token (the username object in this case)
-      const token = jwt.sign(payload, secret.jwt); // create token
+      const token = jwt.sign(payload, process.env.PREMIUM_KEY_SECRET); // create token
       res.json({ message: "succes", token: token, name: req.body.username });
     })(req, res, next);
   });

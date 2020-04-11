@@ -45,7 +45,7 @@
       >
         Gereisd met NS? Bereken je prijs
       </a>
-      <InputCheckbox v-model="saveAsPreset" label="Sla reis op als preset" />
+      <InputCheckbox v-model="saveAsPreset" label="Bewaar reis" />
       <InputDate v-model="fieldData.date" />
       <div class="create__send-container">
         <button class="btn cta" name="send-entry" @click="send">
