@@ -3,13 +3,7 @@
     <h1 class="calculate__header theme-header">Berekenen</h1>
     <div class="calculate__body" v-if="Object.keys(entries).length">
       <div class="calculate__body-form">
-        <p>
-          Bereken hier de kosten over een bepaalde periode.<br />
-          <i
-            >(vraag toestemming aan de ontwikkelaar als je de uitdraai via mail
-            wil kunnen ontvangen)</i
-          >
-        </p>
+        <p>Bereken hier de kosten over een bepaalde periode.<br /></p>
         <br />
         <InputDate label="Begindatum" v-model="beginDate" />
         <InputDate label="Einddatum" v-model="endDate" />
