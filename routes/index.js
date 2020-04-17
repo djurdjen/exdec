@@ -46,7 +46,7 @@ router.post("/login", (req, res, next) => {
         id: user[0].dataValues.id
       }; // define payload for token (the username object in this case)
       const token = jwt.sign(payload, process.env.PREMIUM_KEY_SECRET); // create token
-      res.json({ message: "succes", token: token, name: req.body.username });
+      res.json({ message: "success", token: token, name: req.body.username });
     })(req, res, next);
   });
 });
@@ -130,7 +130,7 @@ router.post("/mail", ensureAuthorized, async (req, res) => {
       ...req.body,
       ...{ email: JSON.parse(settings).altEmail || req.body.email }
     });
-    res.json("succes");
+    res.json("success");
   } catch (err) {
     res.status(400);
     res.json(err.message);
@@ -151,7 +151,7 @@ router.post("/request-password", async (req, res) => {
       forgotPasswordController.deleteToken(user.id);
       return Promise.reject(err);
     });
-    res.json({ succes: true });
+    res.json({ success: true });
   } catch (err) {
     res.status(err.status || 400);
     res.json(err.message || err);
