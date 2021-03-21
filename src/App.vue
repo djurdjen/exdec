@@ -13,7 +13,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-@import "@/util.scss";
 * {
   box-sizing: border-box;
 }

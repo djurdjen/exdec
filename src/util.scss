@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Open+Sans");
 
-@import "./variables.scss";
-@import "./transitions.scss";
+@import "@/variables.scss";
 
 body {
   box-sizing: border-box;
@@ -43,6 +42,9 @@ h2,
 h3 {
   padding-bottom: 0.7em;
   font-weight: 500;
+  &.light {
+    color: white
+  }
 }
 
 span {
@@ -93,7 +95,7 @@ select {
 
 select {
   background: {
-    image: url("./assets/icons/sort-down.svg");
+    image: url("/assets/icons/sort-down.svg");
     size: 10px 10px;
     repeat: no-repeat;
     position: calc(100% - 14px) 15px;
