@@ -37,7 +37,7 @@
     "sequelize-cli": "^5.4.0",
     "superagent": "^5.1.0",
     "vue": "^3.0.0-beta.1",
-    "vue-router": "^3.0.1",
+    "vue-router": "4",
     "vue-scrollto": "^2.14.0",
     "vue-template-compiler": "^2.6.12",
     "vuejs-datepicker": "^1.6.2",
