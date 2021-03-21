@@ -4,7 +4,7 @@
       <h1>Exdec</h1>
       <h2>Beheer je reiskosten, waar je ook bent!</h2>
     </div>
-    <form-component @submit="doLogin">
+    <form-component @onSubmit="doLogin">
       <input-text v-model="credentials.username" placeholder="Gebruikersnaam" />
       <input-text
         v-model="credentials.password"
@@ -31,7 +31,14 @@ export default defineComponent({
       username: "",
       password: "",
     });
-    const doLogin = () => login(credentials);
+    const doLogin = () =>
+      login(credentials)
+        .then(() => {
+          // to dashboard
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     return {
       credentials,
       doLogin,

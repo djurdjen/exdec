@@ -19,10 +19,10 @@ const ensureAuthorized = require("../services/ensureAuthorized");
 router.post("/register", (req, res) => {
   userController
     .register(req.body.username, req.body.password)
-    .then(resp => {
+    .then((resp) => {
       res.json({ message: resp });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400);
       res.send({ hasError: true, error: err });
     });
@@ -38,21 +38,25 @@ router.post("/login", (req, res, next) => {
       }
       if (!user) {
         res.status(401);
-        res.end(info.message);
+        res.json({ status: 401, message: info.message });
         return;
       }
       const payload = {
         username: req.body.username,
-        id: user[0].dataValues.id
+        id: user[0].dataValues.id,
       }; // define payload for token (the username object in this case)
       const token = jwt.sign(payload, process.env.PREMIUM_KEY_SECRET); // create token
-      res.json({ message: "success", token: token, name: req.body.username });
+      res.cookie("JWT", token, {
+        maxAge: 24 * 60 * 60 * 1000,
+        httpOnly: true,
+      });
+      res.json({ message: "success", name: req.body.username });
     })(req, res, next);
   });
 });
 
 router.get("/settings", ensureAuthorized, (req, res, next) => {
-  userController.getUserSettings(req.decoded.username).then(settings => {
+  userController.getUserSettings(req.decoded.username).then((settings) => {
     res.json({ settings });
   });
 });
@@ -60,10 +64,10 @@ router.get("/settings", ensureAuthorized, (req, res, next) => {
 router.put("/settings", ensureAuthorized, (req, res, next) => {
   userController
     .editUserSettings(req.decoded.username, req.body)
-    .then(resp => {
+    .then((resp) => {
       res.json({ settings: resp.settings });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400);
       res.send({ hasError: true, error: err });
       return;
@@ -78,10 +82,10 @@ router.get("/verify", ensureAuthorized, (req, res, next) => {
 router.get("/entries", ensureAuthorized, (req, res, next) => {
   entryController
     .getEntries(req)
-    .then(data => {
+    .then((data) => {
       res.json(data);
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400);
       res.send({ hasError: true, error: err });
     });
@@ -90,10 +94,10 @@ router.get("/entries", ensureAuthorized, (req, res, next) => {
 router.post("/entries", ensureAuthorized, (req, res, next) => {
   entryController
     .postEntry(req)
-    .then(data => {
+    .then((data) => {
       res.json({ message: "success!", data: data });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400);
       res.send(err);
     });
@@ -102,24 +106,24 @@ router.post("/entries", ensureAuthorized, (req, res, next) => {
 router.put("/entries/:id", ensureAuthorized, (req, res) => {
   entryController
     .editEntry(req)
-    .then(data => {
+    .then((data) => {
       res.json({ message: "success!", data: data });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400);
-      res.send({ error: err.map(msg => msg.message) });
+      res.send({ error: err.map((msg) => msg.message) });
     });
 });
 
 router.delete("/entries/:id", ensureAuthorized, (req, res, next) => {
   entryController
     .deleteEntry(req.params.id)
-    .then(data => {
+    .then((data) => {
       res.json({ message: "success!", data: data });
     })
-    .catch(err => {
+    .catch((err) => {
       res.status(400);
-      res.send({ error: err.map(msg => msg.message) });
+      res.send({ error: err.map((msg) => msg.message) });
     });
 });
 
@@ -128,7 +132,7 @@ router.post("/mail", ensureAuthorized, async (req, res) => {
     const settings = await userController.getUserSettings(req.decoded.username);
     await mail({
       ...req.body,
-      ...{ email: JSON.parse(settings).altEmail || req.body.email }
+      ...{ email: JSON.parse(settings).altEmail || req.body.email },
     });
     res.json("success");
   } catch (err) {
@@ -146,8 +150,8 @@ router.post("/request-password", async (req, res) => {
         req.protocol +
         "://" +
         req.get("host") +
-        `/reset-password?token=${token.resetPasswordToken}`
-    }).catch(err => {
+        `/reset-password?token=${token.resetPasswordToken}`,
+    }).catch((err) => {
       forgotPasswordController.deleteToken(user.id);
       return Promise.reject(err);
     });
@@ -172,7 +176,7 @@ router.post("/reset-password", async (req, res) => {
     const data = await forgotPasswordController.validateToken(req.body.token);
     await userController.changePassword({
       ...data,
-      password: req.body.password
+      password: req.body.password,
     });
     await forgotPasswordController.deleteToken(data.id);
     res.json("success");

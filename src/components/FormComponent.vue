@@ -1,5 +1,6 @@
 <template>
   <form @submit.prevent="onSubmit">
+    <slot name="error" />
     <slot />
     <button type="submit" class="cta cta--dark">Login</button>
   </form>
@@ -12,7 +13,7 @@ export default defineComponent({
   name: "FormComponent",
   setup(props, { emit }) {
     const onSubmit = () => {
-      emit("submit");
+      emit("onSubmit");
     };
     return {
       onSubmit,
