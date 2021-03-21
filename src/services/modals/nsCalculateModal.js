@@ -19,16 +19,16 @@ export function nsModal() {
           resolve({ data: d });
           dialog.$destroy();
           dialog.$el.remove();
-        }
+        },
       },
       render(h) {
         return h(NsCalculate, {
           on: {
             close: this.closeHandler,
-            send: this.resolveModal
-          }
+            send: this.resolveModal,
+          },
         });
-      }
+      },
     }).$mount();
     document.body.appendChild(dialog.$el);
   });

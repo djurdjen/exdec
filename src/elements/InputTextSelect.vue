@@ -57,12 +57,12 @@ export default {
     name: { type: String, default: "" },
     choices: { type: Array, default: () => [] },
     suggestion: { type: Boolean, default: false },
-    optionalDropdown: { type: Boolean, default: false }
+    optionalDropdown: { type: Boolean, default: false },
   },
   data() {
     return {
       choicesActive: false,
-      selectionIndex: null
+      selectionIndex: null,
     };
   },
   watch: {
@@ -74,8 +74,8 @@ export default {
           this.$el.removeEventListener("keydown", this.onKeyEvents);
           this.selectionIndex = null;
         }
-      }
-    }
+      },
+    },
   },
   computed: {
     formattedChoices() {
@@ -83,10 +83,10 @@ export default {
         return {
           key,
           name: typeof Object.values(this.choices)[0] === "string" ? c : c.name,
-          active: key + 1 === this.selectionIndex
+          active: key + 1 === this.selectionIndex,
         };
       });
-    }
+    },
   },
 
   methods: {
@@ -99,7 +99,10 @@ export default {
           this.selectionIndex && this.selectionIndex--;
         }
         if (e.keyCode === 13 && !isNaN(this.selectionIndex)) {
-          this.changeData(this.formattedChoices.find(c => c.active).name, true);
+          this.changeData(
+            this.formattedChoices.find((c) => c.active).name,
+            true
+          );
         }
       }
     },
@@ -118,8 +121,8 @@ export default {
       setTimeout(() => {
         this.choicesActive = false;
       }, 120); // race condition
-    }
-  }
+    },
+  },
 };
 </script>
 

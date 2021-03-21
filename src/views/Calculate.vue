@@ -80,16 +80,16 @@ export default {
       beginDate: this.$createNewDate({ month: -1 }),
       endDate: this.$createNewDate(),
       total: null,
-      dataForExport: null
+      dataForExport: null,
     };
   },
   computed: {
     ...mapState({
-      entries: state => state.entries.data,
-      compensation: state => state.settings.compensation,
-      settings: state => state.settings,
-      mailLoading: state => state.loading.mailing
-    })
+      entries: (state) => state.entries.data,
+      compensation: (state) => state.settings.compensation,
+      settings: (state) => state.settings,
+      mailLoading: (state) => state.loading.mailing,
+    }),
   },
   async mounted() {
     await this.getEntries();
@@ -98,15 +98,17 @@ export default {
   methods: {
     ...mapActions(["getEntries", "mail"]),
     deleteEntry(id) {
-      this.dataForExport = this.dataForExport.filter(entry => entry.id !== id);
+      this.dataForExport = this.dataForExport.filter(
+        (entry) => entry.id !== id
+      );
       // re-calculate total with deleted entries
       this.total = this.dataForExport
-        .map(v => v.total)
+        .map((v) => v.total)
         .reduce((a, b) => a + b)
         .toFixed(2);
     },
     calculateTotals() {
-      let values = Object.values(this.entries).filter(e => {
+      let values = Object.values(this.entries).filter((e) => {
         const entryDate = new Date(e.date);
         return (
           entryDate <= new Date(this.endDate) &&
@@ -118,16 +120,16 @@ export default {
         this.total = null;
         return;
       }
-      values = values.map(v => {
+      values = values.map((v) => {
         return {
           ...v,
           total: Number(
             v.kilometres ? v.kilometres * this.compensation : v.ticketPrice
-          )
+          ),
         };
       });
       this.total = values
-        .map(v => v.total)
+        .map((v) => v.total)
         .reduce((a, b) => a + b)
         .toFixed(2);
       this.dataForExport = values;
@@ -147,7 +149,7 @@ export default {
     async exportToTable(mode = "save") {
       const ComponentClass = Vue.extend(PdfTableDesign);
       const instance = new ComponentClass({
-        propsData: { fields: this.dataForExport }
+        propsData: { fields: this.dataForExport },
       });
       const table = instance.$mount();
       const resp = await createPdf(
@@ -156,14 +158,14 @@ export default {
         {
           endDate: this.endDate,
           beginDate: this.beginDate,
-          ...this.settings
+          ...this.settings,
         },
         mode
       );
       instance.$destroy();
       return resp;
-    }
-  }
+    },
+  },
 };
 </script>
 

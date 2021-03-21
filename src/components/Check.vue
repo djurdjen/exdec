@@ -19,8 +19,8 @@ export default {
   props: {
     active: { type: Boolean, default: false },
     animateOnStart: { type: Boolean, default: false },
-    color: { type: String, default: "red" }
-  }
+    color: { type: String, default: "red" },
+  },
 };
 </script>
 

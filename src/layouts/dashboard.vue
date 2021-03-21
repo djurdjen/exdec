@@ -15,7 +15,7 @@ export default {
   components: { Navigation },
   data() {
     return {
-      showRoutes: false
+      showRoutes: false,
     };
   },
 
@@ -35,8 +35,8 @@ export default {
       this.logoutUser().then(() => {
         window.location.href = "/login";
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

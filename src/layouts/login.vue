@@ -77,18 +77,18 @@ export default {
       signup: {
         username: "",
         password: "",
-        repeatPassword: ""
+        repeatPassword: "",
       },
       username: "",
       password: "",
       errorMsg: "",
-      signUperrorMsg: ""
+      signUperrorMsg: "",
     };
   },
   methods: {
     ...mapActions({
       doLogin: "login",
-      doRegister: "register"
+      doRegister: "register",
     }),
     async register() {
       try {
@@ -99,7 +99,7 @@ export default {
         }
         await this.doRegister({
           username: this.signup.username,
-          password: this.signup.password
+          password: this.signup.password,
         });
         this.username = this.signup.username;
         this.password = this.signup.password;
@@ -113,14 +113,14 @@ export default {
         this.errorMsg = "";
         await this.doLogin({
           username: this.username,
-          password: this.password
+          password: this.password,
         });
         this.$router.push({ name: "Entries" });
       } catch (err) {
         this.errorMsg = err.response.data;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

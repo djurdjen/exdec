@@ -4,9 +4,7 @@
     <div class="modal__view">
       <div class="modal__header">
         <h2>Let op!</h2>
-        <div class="modal__close" @click="closeModal">
-          &times;
-        </div>
+        <div class="modal__close" @click="closeModal">&times;</div>
       </div>
 
       <div class="modal__view-content">
@@ -34,13 +32,13 @@ export default {
   props: {
     copy: { type: String, default: "" },
     prompt: { type: Boolean, default: false },
-    proceed: { type: String, required: true }
+    proceed: { type: String, required: true },
   },
   methods: {
     closeModal() {
       this.$emit("close");
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -19,21 +19,21 @@ export function modal({ copy, prompt = false, proceed = "Doorgaan" }) {
           resolve({ data: d });
           dialog.$destroy();
           dialog.$el.remove();
-        }
+        },
       },
       render(h) {
         return h(Modal, {
           props: {
             copy,
             prompt,
-            proceed
+            proceed,
           },
           on: {
             close: this.closeHandler,
-            send: this.resolveModal
-          }
+            send: this.resolveModal,
+          },
         });
-      }
+      },
     }).$mount();
     document.body.appendChild(dialog.$el);
   });

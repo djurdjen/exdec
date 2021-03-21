@@ -2,9 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { api } from "./services/api";
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default Vuex.createStore({
   state: {
     token: "",
     user: {},
@@ -12,11 +10,11 @@ export default new Vuex.Store({
     loading: {},
     entries: {
       data: [],
-      failed: {}
+      failed: {},
     },
     deleting: null,
     error: null,
-    errors: {}
+    errors: {},
   },
   mutations: {
     SET_USER_DATA(state, data) {
@@ -89,7 +87,7 @@ export default new Vuex.Store({
       Vue.set(
         state.errors,
         "settings",
-        data.map(d => d.message)
+        data.map((d) => d.message)
       );
       Vue.delete(state.loading, "edit-settings");
     },
@@ -101,14 +99,14 @@ export default new Vuex.Store({
     },
     SEND_MAIL_FAILED(state) {
       Vue.delete(state.loading, "mailing");
-    }
+    },
   },
   actions: {
     // the login is for creating a token
     async login(_, auth) {
       const resp = await api.post("login", auth);
       Object.assign(api.defaults, {
-        headers: { "x-auth-token": resp.token }
+        headers: { "x-auth-token": resp.token },
       });
       localStorage.setItem("token", resp.token);
     },
@@ -120,7 +118,7 @@ export default new Vuex.Store({
       // check if the token is not yet stored in the store and check the localStorage
       if (!state.token.length && localStorage.getItem("token")) {
         Object.assign(api.defaults, {
-          headers: { "x-auth-token": localStorage.getItem("token") }
+          headers: { "x-auth-token": localStorage.getItem("token") },
         });
       }
       const tokenData = await api.get("verify?=" + new Date().getTime()); // prevent cache
@@ -227,6 +225,6 @@ export default new Vuex.Store({
       } catch (err) {
         return Promise.reject(err);
       }
-    }
-  }
+    },
+  },
 });

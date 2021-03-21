@@ -35,15 +35,15 @@ import { modal } from "@/services/modal.js";
 export default {
   data() {
     return {
-      menuActive: false
+      menuActive: false,
     };
   },
   watch: {
     $route: {
       handler() {
         this.menuActive = false;
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapActions(["verifyToken", "logoutUser", "getSettings"]),
@@ -52,7 +52,7 @@ export default {
         await modal({
           copy: "Weet je zeker dat je wil uitloggen?",
           proceed: "Uitloggen",
-          prompt: true
+          prompt: true,
         });
         this.logoutUser().then(() => {
           window.location.href = "/login";
@@ -61,8 +61,8 @@ export default {
         // eslint-disable-next-line
         console.warn(err);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

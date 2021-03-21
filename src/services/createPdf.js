@@ -1,8 +1,8 @@
 import jsPDF from "jspdf";
 import "jspdf-autotable";
 
-export default function(table, rawData, settings = {}, mode = "save") {
-  return new Promise(resolve => {
+export default function (table, rawData, settings = {}, mode = "save") {
+  return new Promise((resolve) => {
     var doc = new jsPDF("l");
     doc.setFontSize(18);
     doc.text(
@@ -44,20 +44,20 @@ export default function(table, rawData, settings = {}, mode = "save") {
       startY: 52,
       showHead: "firstPage",
       columnStyles: {
-        1: { cellWidth: 60 }
+        1: { cellWidth: 60 },
       },
-      didParseCell: function(data) {
+      didParseCell: function (data) {
         if (data.row.index === rawData.length) {
           data.cell.styles.fontStyle = "bold";
         }
-      }
+      },
     });
     if (mode === "url") {
-      (async function() {
+      (async function () {
         const blob = await doc.output("blob");
         var reader = new FileReader();
         reader.readAsDataURL(blob);
-        reader.onloadend = function() {
+        reader.onloadend = function () {
           resolve(reader.result);
         };
       })();

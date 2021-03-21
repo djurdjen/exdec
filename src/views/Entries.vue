@@ -17,7 +17,7 @@
       <div
         :class="[
           'entries__create',
-          { 'entries__create--hidden': !showCreator }
+          { 'entries__create--hidden': !showCreator },
         ]"
       >
         <CreateEntry />
@@ -38,8 +38,9 @@
                 v-for="(option, key) in transportation"
                 :key="key"
                 :value="option.val"
-                >{{ option.name }}</option
               >
+                {{ option.name }}
+              </option>
             </select>
             <select v-model="filters.order">
               <option value="desc">Aflopend</option>
@@ -58,14 +59,16 @@
               'entries__single-meta',
               {
                 'entries__single-meta--active':
-                  entryDetail && entry.id === entryDetail.id
-              }
+                  entryDetail && entry.id === entryDetail.id,
+              },
             ]"
             @click="toggleEntry(entry)"
           >
             <div
               class="icon"
-              :title="transportation.find(t => t.val === entry.transport).name"
+              :title="
+                transportation.find((t) => t.val === entry.transport).name
+              "
             >
               <i v-if="entry.transport === 'bus'" class="fas fa-bus"></i>
               <i v-if="entry.transport === 'car'" class="fas fa-car"></i>
@@ -177,16 +180,16 @@ export default {
       showFilters: false,
       filters: {
         transport: "all",
-        order: "desc"
-      }
+        order: "desc",
+      },
     };
   },
   computed: {
     ...mapState({
-      rawEntries: state => state.entries.data,
-      error: state => state.entries.failed,
-      presets: state => state.settings.presets || [],
-      editLoading: state => state.loading.editEntry
+      rawEntries: (state) => state.entries.data,
+      error: (state) => state.entries.failed,
+      presets: (state) => state.settings.presets || [],
+      editLoading: (state) => state.loading.editEntry,
     }),
     entries() {
       if (!Object.keys(this.rawEntries).length) {
@@ -197,19 +200,19 @@ export default {
         .sort((a, b) => {
           return new Date((desc ? b : a).date) - new Date((desc ? a : b).date);
         })
-        .filter(entry => {
+        .filter((entry) => {
           if (this.filters.transport === "all") {
             return entry;
           }
           return this.filters.transport === entry.transport;
         });
-    }
+    },
   },
   filters: {
     formatTime(val) {
       date.locale("nl");
       return date.format(new Date(val), "dddd D MMMM YYYY");
-    }
+    },
   },
   async mounted() {
     await this.getEntries();
@@ -254,7 +257,7 @@ export default {
         await modal({
           copy: "Weet je zeker dat je deze invoer wil verwijderen?",
           proceed: "Verwijderen",
-          prompt: true
+          prompt: true,
         });
         await this.removeEntry(id);
       } catch (err) {
@@ -265,8 +268,8 @@ export default {
     resetFilters() {
       this.filters.transport = "all";
       this.filters.order = "desc";
-    }
-  }
+    },
+  },
 };
 </script>
 

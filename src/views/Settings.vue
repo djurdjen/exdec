@@ -60,13 +60,13 @@ export default {
   components: { InputText },
   data() {
     return {
-      settings: {}
+      settings: {},
     };
   },
   computed: {
     ...mapState({
-      errors: state => state.errors.settings || []
-    })
+      errors: (state) => state.errors.settings || [],
+    }),
   },
   mounted() {
     Vue.set(this, "settings", this.$store.state.settings);
@@ -82,8 +82,8 @@ export default {
     },
     removePreset(key) {
       Vue.delete(this.settings.presets, key);
-    }
-  }
+    },
+  },
 };
 </script>
 

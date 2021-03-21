@@ -1,24 +1,24 @@
-export default function(Vue) {
+export default function (Vue) {
   Vue.prototype.$isMobile = {
-    Android: function() {
+    Android: function () {
       return navigator.userAgent.match(/Android/i);
     },
-    BlackBerry: function() {
+    BlackBerry: function () {
       return navigator.userAgent.match(/BlackBerry/i);
     },
-    iOS: function() {
+    iOS: function () {
       return navigator.userAgent.match(/iPhone|iPad|iPod/i);
     },
-    Opera: function() {
+    Opera: function () {
       return navigator.userAgent.match(/Opera Mini/i);
     },
-    Windows: function() {
+    Windows: function () {
       return (
         navigator.userAgent.match(/IEMobile/i) ||
         navigator.userAgent.match(/WPDesktop/i)
       );
     },
-    any: function() {
+    any: function () {
       return (
         this.Android() ||
         this.BlackBerry() ||
@@ -26,6 +26,6 @@ export default function(Vue) {
         this.Opera() ||
         this.Windows()
       );
-    }
+    },
   };
 }

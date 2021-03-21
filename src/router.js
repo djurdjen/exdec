@@ -16,17 +16,17 @@ const router = new Router({
     {
       path: "/login",
       name: "Login",
-      component: Login
+      component: Login,
     },
     {
       path: "/reset-password",
       name: "ResetPassword",
-      component: ResetPassword
+      component: ResetPassword,
     },
     {
       path: "/request-password",
       name: "RequestPassword",
-      component: RequestPassword
+      component: RequestPassword,
     },
     {
       path: "/",
@@ -35,21 +35,21 @@ const router = new Router({
         {
           path: "/",
           name: "Entries",
-          component: Entries
+          component: Entries,
         },
         {
           path: "/calculate",
           name: "Calculate",
-          component: Calculate
+          component: Calculate,
         },
         {
           path: "/settings",
           name: "Settings",
-          component: Settings
-        }
-      ]
-    }
-  ]
+          component: Settings,
+        },
+      ],
+    },
+  ],
 });
 
 router.beforeEach((to, from, next) => {

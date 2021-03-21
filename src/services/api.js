@@ -5,15 +5,15 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
     "Access-Control-Allow-Origin": "*",
-    "x-auth-token": ""
+    "x-auth-token": "",
   },
   timeout: 5000,
-  withCredentials: true
+  withCredentials: true,
 });
 api.interceptors.response.use(
-  resp => resp.data,
+  (resp) => resp.data,
 
-  error => {
+  (error) => {
     return Promise.reject(error);
   }
 );
@@ -22,15 +22,15 @@ const ns = axios.create({
   baseURL: "/ns-api/",
   headers: {
     "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*"
+    "Access-Control-Allow-Origin": "*",
   },
   timeout: 5000,
-  withCredentials: true
+  withCredentials: true,
 });
 ns.interceptors.response.use(
-  resp => resp.data,
+  (resp) => resp.data,
 
-  error => {
+  (error) => {
     return Promise.reject(error);
   }
 );

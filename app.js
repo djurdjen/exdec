@@ -41,18 +41,18 @@ app.set("view options", { layout: false });
 app.use("/api", api);
 app.use("/ns-api", nsApi);
 
-app.all("/tmp", function(req, res) {
+app.all("/tmp", function (req, res) {
   res.status(403).send({
-    message: "Access Forbidden"
+    message: "Access Forbidden",
   });
 });
 // Route wildcard for Vue application
-app.get("/*", function(req, res) {
+app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "dist") + "/index.html");
 });
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error("Not Found");
   err.status = 404;
   next(err);

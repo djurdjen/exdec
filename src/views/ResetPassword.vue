@@ -57,11 +57,11 @@ export default {
     return {
       reset: {
         password: "",
-        repeatPassword: ""
+        repeatPassword: "",
       },
       validToken: false,
       resetErrorMsg: "",
-      resetSuccess: false
+      resetSuccess: false,
     };
   },
   async mounted() {
@@ -75,7 +75,7 @@ export default {
   methods: {
     ...mapActions({
       resetPassword: "resetPassword",
-      validateResetToken: "validateResetToken"
+      validateResetToken: "validateResetToken",
     }),
     async doReset() {
       if (this.reset.repeatPassword !== this.reset.password) {
@@ -84,11 +84,11 @@ export default {
       }
       await this.resetPassword({
         password: this.reset.password,
-        token: this.$route.query.token
+        token: this.$route.query.token,
       });
       this.resetSuccess = true;
-    }
-  }
+    },
+  },
 };
 </script>
 

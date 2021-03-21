@@ -12,11 +12,11 @@ export default {
   name: "Toaster",
   props: {
     type: { type: String, default: "neutral" },
-    message: { type: String, required: true }
+    message: { type: String, required: true },
   },
   data() {
     return {
-      active: true
+      active: true,
     };
   },
   mounted() {
@@ -30,8 +30,8 @@ export default {
       setTimeout(() => {
         this.$emit("close");
       }, 300);
-    }
-  }
+    },
+  },
 };
 </script>
 

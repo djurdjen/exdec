@@ -18,7 +18,7 @@
             ><i class="fas fa-times"></i>
           </span>
         </td>
-        <td style="width:100px">{{ data.date | formatTime }}</td>
+        <td style="width: 100px">{{ data.date | formatTime }}</td>
         <td>{{ data.description }}</td>
         <td>{{ data.transport | translateTransport }}</td>
         <td>{{ data.kilometres || "-" }}</td>
@@ -31,7 +31,7 @@
         <td>
           {{
             fields
-              .map(v => v.total)
+              .map((v) => v.total)
               .reduce((a, b) => a + b)
               .toFixed(2)
           }},-
@@ -48,7 +48,7 @@ import { getName } from "@/services/presets.js";
 export default {
   props: {
     fields: { type: [Array, Object], required: true },
-    editMode: { type: Boolean, default: false }
+    editMode: { type: Boolean, default: false },
   },
   filters: {
     formatTime(val) {
@@ -56,8 +56,8 @@ export default {
     },
     translateTransport(val) {
       return getName(val);
-    }
-  }
+    },
+  },
 };
 </script>
 

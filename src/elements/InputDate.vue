@@ -8,7 +8,7 @@
       type="date"
     />
   </label>
-  <div v-else style="margin-top: 10px;">
+  <div v-else style="margin-top: 10px">
     {{ label }}
     <datepicker
       :value="dateValue()"
@@ -25,13 +25,13 @@ export default {
   components: { Datepicker },
   props: {
     value: { type: [Number, String, Date], default: "" },
-    label: { type: String, default: "" }
+    label: { type: String, default: "" },
   },
   methods: {
     dateValue() {
       return this.$createNewDate({ existing: this.value });
-    }
-  }
+    },
+  },
 };
 </script>
 

@@ -15,8 +15,9 @@
           :selected="key === 0"
           :key="key"
           :value="option.val"
-          >{{ option.name }}</option
         >
+          {{ option.name }}
+        </option>
       </select>
 
       <InputText
@@ -77,20 +78,20 @@ export default {
     return {
       fieldData: { ...this.dataModel() },
       saveAsPreset: false,
-      transportation
+      transportation,
     };
   },
   computed: {
     ...mapState({
-      failed: state => state.entries.failed,
-      presets: state => state.settings.presets || []
+      failed: (state) => state.entries.failed,
+      presets: (state) => state.settings.presets || [],
     }),
     valueLabel() {
       if (this.fieldData.transport === "car") {
         return "kilometres";
       }
       return "ticketPrice";
-    }
+    },
   },
   methods: {
     ...mapActions(["sendEntry", "addPreset"]),
@@ -109,7 +110,7 @@ export default {
         description: "",
         transport: "car",
         ticketPrice: "",
-        date: this.$createNewDate()
+        date: this.$createNewDate(),
       };
     },
     fillAllPresets({ name, ticketPrice, kilometres, transport }) {
@@ -118,7 +119,7 @@ export default {
         description: name,
         ...(ticketPrice && { ticketPrice }),
         ...(kilometres && { kilometres }),
-        transport
+        transport,
       };
     },
     async send() {
@@ -127,13 +128,13 @@ export default {
           description: this.fieldData.description,
           date: this.fieldData.date,
           transport: this.fieldData.transport,
-          [this.valueLabel]: this.fieldData[this.valueLabel].replace(",", ".")
+          [this.valueLabel]: this.fieldData[this.valueLabel].replace(",", "."),
         });
         if (this.saveAsPreset) {
           await this.addPreset({
             transport: this.fieldData.transport,
             name: this.fieldData.description,
-            [this.valueLabel]: this.fieldData[this.valueLabel]
+            [this.valueLabel]: this.fieldData[this.valueLabel],
           });
         }
         pushToast("success", "Reisdata succesvol opgeslagen");
@@ -150,8 +151,8 @@ export default {
         // eslint-disable-next-line
         console.warn(err);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

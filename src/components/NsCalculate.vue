@@ -4,9 +4,7 @@
     <div class="ns-calculate__view">
       <div class="ns-calculate__header">
         <h2>Bereken je reis met NS</h2>
-        <div class="ns-calculate__close" @click="closeModal">
-          &times;
-        </div>
+        <div class="ns-calculate__close" @click="closeModal">&times;</div>
       </div>
       <div class="ns-calculate__view-content">
         <InputTextSelect
@@ -34,7 +32,7 @@
           v-model="travelClass"
           :options="[
             { value: 1, label: 'Eerste klas' },
-            { value: 2, label: 'Tweede klas' }
+            { value: 2, label: 'Tweede klas' },
           ]"
           label=" Korting (40%)"
         />
@@ -86,16 +84,16 @@ export default {
       price: null,
       loading: false,
       retour: false,
-      calculationInProgress: true
+      calculationInProgress: true,
     };
   },
   computed: {
     fromStation() {
-      const found = this.stations.find(c => c.name === this.inputFrom);
+      const found = this.stations.find((c) => c.name === this.inputFrom);
       return found ? found.code : null;
     },
     toStation() {
-      const found = this.stations.find(c => c.name === this.inputTo);
+      const found = this.stations.find((c) => c.name === this.inputTo);
       return found ? found.code : null;
     },
     invalidFromStation() {
@@ -110,9 +108,9 @@ export default {
         (!this.getMatches(this.inputTo).length || !this.toStation)
       );
     },
-    getMatches: ctx => input => {
+    getMatches: (ctx) => (input) => {
       return ctx.stations
-        .filter(e => {
+        .filter((e) => {
           const check = new RegExp(input, "gi");
           return e.name.match(check);
         })
@@ -132,14 +130,14 @@ export default {
         this.inputTo,
         this.discount,
         this.travelClass,
-        this.retour
+        this.retour,
       ];
-    }
+    },
   },
   watch: {
     observedDataValues() {
       this.calculationInProgress = true;
-    }
+    },
   },
   methods: {
     closeModal() {
@@ -166,7 +164,7 @@ export default {
           fromStation: this.fromStation,
           toStation: this.toStation,
           plannedFromTime: new Date().toISOString(),
-          excludeHighSpeedTrains: true
+          excludeHighSpeedTrains: true,
         });
         this.price = resp.priceInCents;
         this.$nextTick(() => {
@@ -177,11 +175,11 @@ export default {
       } finally {
         this.loading = false;
       }
-    }
+    },
   },
   mounted() {
     this.getStations();
-  }
+  },
 };
 </script>
 

@@ -8,20 +8,20 @@ export function pushToast(type, message) {
   const dialog = new Vue({
     methods: {
       closePopup() {
-        return function() {
+        return function () {
           dialog.$destroy();
           dialog.$el.remove();
         };
-      }
+      },
     },
     render(h) {
       return h(Toaster, {
         props: { type, message },
         on: {
-          close: this.closePopup()
-        }
+          close: this.closePopup(),
+        },
       });
-    }
+    },
   }).$mount();
   if (!document.getElementById(dialog.$el.id)) {
     document.body.appendChild(dialog.$el);

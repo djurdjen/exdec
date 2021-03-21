@@ -3,7 +3,7 @@
  * @param {Object} Vue
  */
 
-export default function(Vue) {
+export default function (Vue) {
   Vue.prototype.$createNewDate = (settings = {}) => {
     const date = settings.existing ? new Date(settings.existing) : new Date();
     if (settings.month) {

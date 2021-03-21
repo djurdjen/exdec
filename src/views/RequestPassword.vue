@@ -45,12 +45,12 @@ export default {
     return {
       email: "",
       mailSend: false,
-      requestErrorMsg: ""
+      requestErrorMsg: "",
     };
   },
   methods: {
     ...mapActions({
-      requestPassword: "requestPassword"
+      requestPassword: "requestPassword",
     }),
     async doRequest() {
       try {
@@ -59,8 +59,8 @@ export default {
       } catch (err) {
         this.requestErrorMsg = err.response.data;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

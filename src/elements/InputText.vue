@@ -25,8 +25,8 @@ export default {
     pattern: { type: String, default: "" },
     placeholder: { type: String, default: "" },
     type: { type: String, default: "text" },
-    name: { type: String, default: "text" }
-  }
+    name: { type: String, default: "text" },
+  },
 };
 </script>
 

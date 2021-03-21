@@ -23,8 +23,8 @@ export default {
     value: { type: [Boolean, Number, String], required: true },
     label: { type: String, default: "" },
     name: { type: String, default: "" },
-    options: { type: Array, required: true }
-  }
+    options: { type: Array, required: true },
+  },
 };
 </script>
 

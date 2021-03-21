@@ -18,8 +18,8 @@ export default {
   components: { Check },
   props: {
     value: { type: Boolean, required: true },
-    label: { type: String, default: "" }
-  }
+    label: { type: String, default: "" },
+  },
 };
 </script>
 
