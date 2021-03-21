@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "npx nodemon ./bin/www",
-    "dev": "vue-cli-service serve --port 8080",
-    "migrate": "yarn sequelize db:migrate && node ./cmd/createUser",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "dev": "vue-cli-service serve --port 8080",
+    "migrate": "yarn sequelize db:migrate && node ./cmd/createUser",
+    "start": "npx nodemon ./bin/www",
     "test": "yarn cypress open"
   },
   "dependencies": {
@@ -16,6 +16,7 @@
     "blob-to-buffer": "^1.2.8",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
+    "core-js": "^3.6.5",
     "cypress": "^4.4.0",
     "date-and-time": "^0.6.3",
     "debug": "~2.6.9",
@@ -43,12 +44,17 @@
     "xlsx": "^0.14.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.5",
-    "@vue/cli-plugin-eslint": "^3.0.5",
+    "@vue/cli-plugin-babel": "^4.5.12",
+    "@vue/cli-plugin-eslint": "^4.5.12",
     "@vue/cli-service": "^3.0.5",
-    "@vue/eslint-config-prettier": "^3.0.5",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
     "eslint-plugin-only-warn": "^1.0.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.9.0",
+    "prettier": "^2.2.1",
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.17"
   },
