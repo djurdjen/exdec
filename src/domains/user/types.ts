@@ -8,3 +8,8 @@ export interface LoginResponse {
   name: string;
   token: string;
 }
+
+export interface EnsureAuthorizedResponse {
+  username: string;
+  id: string;
+}

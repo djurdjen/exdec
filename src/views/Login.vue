@@ -27,7 +27,7 @@
 <script lang="ts">
 import { defineComponent, reactive, ref, watch } from "vue";
 import { FormComponent, InputText, ErrorMessage } from "@/components";
-import { login } from "@/utils/endpoints";
+import { login } from "@/domains/user/endpoints";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
@@ -48,6 +48,7 @@ export default defineComponent({
           errorMessage.value = err.message;
         });
     };
+
     return {
       credentials,
       doLogin,

@@ -55,6 +55,11 @@ router.post("/login", (req, res, next) => {
   });
 });
 
+router.post("/logout", (req, res) => {
+  res.clearCookie("JWT");
+  res.json({ message: "Succesfuly logged out" });
+});
+
 router.get("/settings", ensureAuthorized, (req, res, next) => {
   userController.getUserSettings(req.decoded.username).then((settings) => {
     res.json({ settings });

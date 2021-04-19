@@ -8,9 +8,9 @@ const actions = {
     const hash = await bcrypt.hash(password, secret.saltRounds);
     return Users.findOrCreate({
       where: { username: user },
-      defaults: { password: hash, settings: '{"compensation": 0.19}' }
+      defaults: { password: hash, settings: '{"compensation": 0.19}' },
     })
-      .catch(err => {
+      .catch((err) => {
         return Promise.reject(String(err.message));
       })
       .spread((user, unique) => {
@@ -24,8 +24,8 @@ const actions = {
   async login(user) {
     return await Users.findAll({
       where: {
-        username: user
-      }
+        username: user,
+      },
     });
   },
   async verifyUserExisting(username) {
@@ -51,7 +51,7 @@ const actions = {
   },
   async changePassword(data) {
     const user = await Users.findOne({ where: { username: data.user } });
-    await bcrypt.hash(data.password, secret.saltRounds, function(err, hash) {
+    await bcrypt.hash(data.password, secret.saltRounds, function (err, hash) {
       user.update({ password: hash });
     });
     return Promise.resolve("password changed!");
@@ -62,7 +62,7 @@ const actions = {
     } catch (err) {
       return Promise.reject(err.errors);
     }
-  }
+  },
 };
 
 module.exports = actions;

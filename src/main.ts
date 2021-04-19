@@ -2,8 +2,7 @@ import Vue, { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import "@/util.scss";
-
-// import store from "./store";
+import { DataStore } from "./services/DataStore";
 
 // import VueScrollTo from "vue-scrollto";
 // import prototypes from "./services/prototypes";
