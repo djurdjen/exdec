@@ -1,4 +1,5 @@
-import { DataStore, DataStoreInterface } from "@/services/DataStore";
+import { DataStore } from "@/services/DataStore";
+import { ensureAuthorized } from "./endpoints";
 
 interface UserState {
   username: string;
@@ -8,10 +9,26 @@ interface UserState {
 export const storeKey = "USER_DATA_STORE";
 
 export class UserDataStore extends DataStore<UserState> {
-  static open(): DataStoreInterface<UserState> {
-    return super.open(storeKey, UserDataStore);
+  constructor() {
+    super(storeKey);
   }
-  static getState() {
-    return super.getState(storeKey);
+  createModel(model: UserState) {
+    model.username = "";
+    model.id = "";
+    return model;
   }
+  async ensureUserIsAuthorized() {
+    return ensureAuthorized()
+      .then((resp) => {
+        this.state.username = resp.username;
+        this.state.id = resp.id;
+      })
+      .catch((err) => {
+        return Promise.reject(err);
+      });
+  }
+}
+
+export function getUserDataStore() {
+  return UserDataStore.getDataStore<UserState>(storeKey);
 }

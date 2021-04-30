@@ -15,15 +15,11 @@ export default defineComponent({
   name: "Dashboard",
   setup() {
     const router = useRouter();
-    const store = UserDataStore.open();
+    const store = new UserDataStore();
 
-    ensureAuthorized()
-      .then((resp) => {
-        store.set({ username: resp.username, id: resp.id });
-      })
-      .catch((err) => {
-        router.replace({ name: "Login" });
-      });
+    store.ensureUserIsAuthorized().catch(() => {
+      router.replace({ name: "Login" });
+    });
 
     const doLogout = async () => {
       await logout();

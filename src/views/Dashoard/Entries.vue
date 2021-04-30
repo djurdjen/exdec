@@ -1,17 +1,18 @@
 <template>
   <div>
-    {{ state }}
+    {{ userState }}
   </div>
 </template>
 
 <script>
-import { UserDataStore } from "@/domains/user/UserDataStore";
+import { getUserDataStore, UserDataStore } from "@/domains/user/UserDataStore";
 import { defineComponent } from "@vue/runtime-core";
 
 export default defineComponent({
   name: "Entries",
   setup() {
-    return { state: UserDataStore.getState() };
+    const userState = getUserDataStore();
+    return { userState: userState.state };
   },
 });
 </script>
